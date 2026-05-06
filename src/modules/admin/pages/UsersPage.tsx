@@ -4,8 +4,8 @@ import { User } from '@/core/types';
 import { mockUsers } from '@/modules/auth/mock/users.mock';
 import { Badge } from '@/shared/ui/Badge';
 
-const roleColors: Record<string, 'brand' | 'green' | 'yellow' | 'slate'> = {
-  PLATFORM_ADMIN: 'brand',
+const roleColors: Record<string, 'blue' | 'green' | 'yellow' | 'slate'> = {
+  PLATFORM_ADMIN: 'blue',
   STORE_ADMIN: 'green',
   STORE_MANAGER: 'yellow',
   CUSTOMER: 'slate',
