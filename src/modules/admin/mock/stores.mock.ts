@@ -1,0 +1,43 @@
+import { Store } from '@/core/types';
+
+export const mockStores: Store[] = [
+  {
+    id: 's1',
+    name: 'Demo Store',
+    slug: 'demo-store',
+    description: 'A general merchandise store for all your needs.',
+    category: 'General',
+    status: 'active',
+    ownerId: 'u2',
+    createdAt: '2024-02-15T10:30:00Z',
+    productCount: 24,
+    orderCount: 142,
+    revenue: 18450,
+  },
+  {
+    id: 's2',
+    name: 'Tech Store',
+    slug: 'tech-store',
+    description: 'Cutting-edge electronics and gadgets.',
+    category: 'Electronics',
+    status: 'active',
+    ownerId: 'u3',
+    createdAt: '2024-03-01T08:00:00Z',
+    productCount: 56,
+    orderCount: 389,
+    revenue: 94210,
+  },
+  {
+    id: 's3',
+    name: 'Fashion Store',
+    slug: 'fashion-store',
+    description: 'Trendy clothing and accessories for every occasion.',
+    category: 'Fashion',
+    status: 'active',
+    ownerId: 'u4',
+    createdAt: '2024-03-20T14:00:00Z',
+    productCount: 88,
+    orderCount: 512,
+    revenue: 62340,
+  },
+];

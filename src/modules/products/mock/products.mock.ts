@@ -1,0 +1,36 @@
+import { Product } from '@/core/types';
+
+const demoProducts: Product[] = [
+  { id: 'dp1', name: 'Wireless Headphones', description: 'Premium over-ear wireless headphones with 30h battery life.', price: 79.99, comparePrice: 119.99, images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'], category: 'Electronics', stock: 34, sku: 'WH-001', status: 'active', storeSlug: 'demo-store', rating: 4.5, reviewCount: 128, createdAt: '2024-03-01T10:00:00Z' },
+  { id: 'dp2', name: 'Smart Watch', description: 'Track fitness, notifications and more from your wrist.', price: 149.99, images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'], category: 'Wearables', stock: 18, sku: 'SW-002', status: 'active', storeSlug: 'demo-store', rating: 4.2, reviewCount: 87, createdAt: '2024-03-05T11:00:00Z' },
+  { id: 'dp3', name: 'Portable Speaker', description: 'Waterproof Bluetooth speaker with 360° surround sound.', price: 49.99, comparePrice: 69.99, images: ['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400'], category: 'Audio', stock: 52, sku: 'PS-003', status: 'active', storeSlug: 'demo-store', rating: 4.7, reviewCount: 203, createdAt: '2024-03-10T09:00:00Z' },
+  { id: 'dp4', name: 'USB-C Hub', description: '7-in-1 USB-C hub with HDMI, USB 3.0, and SD card reader.', price: 34.99, images: ['https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400'], category: 'Accessories', stock: 78, sku: 'UH-004', status: 'active', storeSlug: 'demo-store', rating: 4.1, reviewCount: 55, createdAt: '2024-03-12T14:00:00Z' },
+  { id: 'dp5', name: 'Laptop Stand', description: 'Ergonomic aluminum laptop stand, adjustable height.', price: 29.99, images: ['https://images.unsplash.com/photo-1619639791680-5c3f4b1e2e2f?w=400'], category: 'Accessories', stock: 45, sku: 'LS-005', status: 'active', storeSlug: 'demo-store', rating: 4.4, reviewCount: 91, createdAt: '2024-03-15T08:00:00Z' },
+  { id: 'dp6', name: 'Mechanical Keyboard', description: 'TKL mechanical keyboard with RGB backlight and tactile switches.', price: 89.99, comparePrice: 109.99, images: ['https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400'], category: 'Peripherals', stock: 0, sku: 'MK-006', status: 'active', storeSlug: 'demo-store', rating: 4.8, reviewCount: 312, createdAt: '2024-03-20T10:00:00Z' },
+];
+
+const techProducts: Product[] = [
+  { id: 'tp1', name: 'MacBook Pro M3', description: 'Apple MacBook Pro 14" with M3 chip, 16GB RAM, 512GB SSD.', price: 1999.99, images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'], category: 'Laptops', stock: 12, sku: 'MBP-M3-001', status: 'active', storeSlug: 'tech-store', rating: 4.9, reviewCount: 445, createdAt: '2024-03-01T10:00:00Z' },
+  { id: 'tp2', name: 'Sony A7 IV Camera', description: 'Full-frame mirrorless camera with 33MP sensor.', price: 2499.99, images: ['https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400'], category: 'Cameras', stock: 5, sku: 'SA7-002', status: 'active', storeSlug: 'tech-store', rating: 4.8, reviewCount: 198, createdAt: '2024-03-05T11:00:00Z' },
+  { id: 'tp3', name: '4K Gaming Monitor', description: '27" 4K 144Hz gaming monitor with 1ms response time.', price: 599.99, comparePrice: 749.99, images: ['https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400'], category: 'Monitors', stock: 23, sku: 'GM-003', status: 'active', storeSlug: 'tech-store', rating: 4.6, reviewCount: 321, createdAt: '2024-03-10T09:00:00Z' },
+  { id: 'tp4', name: 'RTX 4090 GPU', description: 'NVIDIA GeForce RTX 4090 24GB — flagship gaming GPU.', price: 1599.99, images: ['https://images.unsplash.com/photo-1591488320449-011701bb6704?w=400'], category: 'Components', stock: 3, sku: 'RTX-004', status: 'active', storeSlug: 'tech-store', rating: 5.0, reviewCount: 89, createdAt: '2024-03-12T14:00:00Z' },
+  { id: 'tp5', name: 'iPad Pro 12.9"', description: 'Apple iPad Pro with M2 chip, Liquid Retina XDR display.', price: 1099.99, images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400'], category: 'Tablets', stock: 29, sku: 'IPP-005', status: 'active', storeSlug: 'tech-store', rating: 4.7, reviewCount: 267, createdAt: '2024-03-15T08:00:00Z' },
+  { id: 'tp6', name: 'Mechanical Keyboard Pro', description: 'Full-size wireless mechanical keyboard with premium switches.', price: 179.99, comparePrice: 219.99, images: ['https://images.unsplash.com/photo-1561112078-7d24e04c3407?w=400'], category: 'Peripherals', stock: 41, sku: 'MKP-006', status: 'active', storeSlug: 'tech-store', rating: 4.5, reviewCount: 134, createdAt: '2024-03-20T10:00:00Z' },
+];
+
+const fashionProducts: Product[] = [
+  { id: 'fp1', name: 'Premium Wool Coat', description: 'Tailored wool coat for a sophisticated winter look.', price: 249.99, comparePrice: 349.99, images: ['https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400'], category: 'Outerwear', stock: 18, sku: 'WC-001', status: 'active', storeSlug: 'fashion-store', rating: 4.6, reviewCount: 93, createdAt: '2024-03-01T10:00:00Z' },
+  { id: 'fp2', name: 'Classic White Sneakers', description: 'Minimalist leather sneakers, timeless design.', price: 89.99, images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'], category: 'Footwear', stock: 67, sku: 'WS-002', status: 'active', storeSlug: 'fashion-store', rating: 4.4, reviewCount: 412, createdAt: '2024-03-05T11:00:00Z' },
+  { id: 'fp3', name: 'Silk Evening Dress', description: 'Elegant silk dress for formal occasions.', price: 189.99, comparePrice: 249.99, images: ['https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400'], category: 'Dresses', stock: 12, sku: 'ED-003', status: 'active', storeSlug: 'fashion-store', rating: 4.7, reviewCount: 78, createdAt: '2024-03-10T09:00:00Z' },
+  { id: 'fp4', name: 'Leather Crossbody Bag', description: 'Genuine leather bag with adjustable strap.', price: 129.99, images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400'], category: 'Bags', stock: 34, sku: 'CB-004', status: 'active', storeSlug: 'fashion-store', rating: 4.5, reviewCount: 156, createdAt: '2024-03-12T14:00:00Z' },
+  { id: 'fp5', name: 'Slim Fit Chinos', description: 'Stretch chino trousers in a modern slim silhouette.', price: 69.99, comparePrice: 89.99, images: ['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400'], category: 'Bottoms', stock: 89, sku: 'CH-005', status: 'active', storeSlug: 'fashion-store', rating: 4.3, reviewCount: 234, createdAt: '2024-03-15T08:00:00Z' },
+  { id: 'fp6', name: 'Cashmere Turtleneck', description: '100% cashmere turtleneck sweater, ultra-soft feel.', price: 159.99, images: ['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400'], category: 'Knitwear', stock: 22, sku: 'CT-006', status: 'active', storeSlug: 'fashion-store', rating: 4.8, reviewCount: 67, createdAt: '2024-03-20T10:00:00Z' },
+];
+
+export const mockProducts: Product[] = [...demoProducts, ...techProducts, ...fashionProducts];
+
+export const getProductsByStore = (slug: string): Product[] =>
+  mockProducts.filter((p) => p.storeSlug === slug);
+
+export const getProductById = (id: string): Product | undefined =>
+  mockProducts.find((p) => p.id === id);
