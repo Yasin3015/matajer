@@ -7,8 +7,8 @@ import { Badge } from '@/shared/ui/Badge';
 import { statusBadge } from '@/shared/ui/Badge';
 
 const OrdersPage: React.FC = () => {
-  const { user } = useAuthStore();
-  const slug = user?.storeSlug ?? 'demo-store';
+  const { admin } = useAuthStore();
+  const slug = 'demo-store';
   const { data: orders = [], isLoading } = useOrders(slug);
 
   const columns: Column<Order>[] = [

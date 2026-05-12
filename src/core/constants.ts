@@ -1,11 +1,13 @@
 export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
+  VENDOR_REGISTER: '/vendor/register',
 
   // Platform Admin
   ADMIN: '/admin',
   ADMIN_STORES: '/admin/stores',
   ADMIN_USERS: '/admin/users',
+  ADMIN_PLANS: '/admin/plans',
 
   // Store Dashboard
   DASHBOARD: '/dashboard',

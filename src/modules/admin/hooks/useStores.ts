@@ -1,24 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import { mockStores } from '@/modules/admin/mock/stores.mock';
+// useStores is now a thin wrapper around the real /vendors API.
+// Kept the same function signatures so StoresPage & AdminDashboardPage
+// don't need to change their imports.
+export { useVendors as useStores, useVendors } from './useVendors';
 
-export function useStores() {
-  return useQuery({
-    queryKey: ['stores'],
-    queryFn: async () => {
-      await new Promise((r) => setTimeout(r, 300));
-      return mockStores;
-    },
-    staleTime: 1000 * 60 * 5,
-  });
-}
+// Single-vendor lookup by slug (used by StoreLayout etc.)
+import { useQuery } from '@tanstack/react-query';
+import { vendorsService } from '../services/vendorsService';
 
 export function useStore(slug: string) {
   return useQuery({
-    queryKey: ['store', slug],
+    queryKey: ['vendors', 'slug', slug],
     queryFn: async () => {
-      await new Promise((r) => setTimeout(r, 200));
-      return mockStores.find((s) => s.slug === slug) ?? null;
+      const res = await vendorsService.getAll();
+      return res.data.data.find((v) => v.slug === slug) ?? null;
     },
     enabled: !!slug,
+    staleTime: 1000 * 60 * 5,
   });
 }

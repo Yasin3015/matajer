@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Store, ArrowRight, ShoppingCart, Users, Package, TrendingUp, Zap, Shield, Globe } from 'lucide-react';
+import { Store, ArrowRight, ShoppingCart, Users, Package, TrendingUp, Zap, Shield, Globe, Check } from 'lucide-react';
 import { mockStores } from '@/modules/admin/mock/stores.mock';
 import { ROUTES } from '@/core/constants';
 import { Button } from '@/shared/ui/Button';
+import { usePublicPlans } from '@/modules/admin/hooks/usePlans';
 
 const features = [
   { icon: <Store size={22} />, title: 'Multi-Tenant', description: 'Each store gets its own branded storefront and admin dashboard.' },
@@ -15,6 +16,8 @@ const features = [
 ];
 
 const PlatformLandingPage: React.FC = () => {
+  const { data: plans = [], isLoading: loadingPlans } = usePublicPlans();
+
   return (
     <div className="min-h-screen bg-surface">
       {/* Nav */}
@@ -51,7 +54,7 @@ const PlatformLandingPage: React.FC = () => {
             Matajer is a scalable multi-tenant SaaS platform. Create stores, manage products, track orders, and grow your business — all from one dashboard.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to={ROUTES.LOGIN}>
+            <Link to={ROUTES.VENDOR_REGISTER}>
               <Button size="lg" icon={<ArrowRight size={20} />}>Get Started Free</Button>
             </Link>
             <Link to={ROUTES.store('demo-store')}>
@@ -75,6 +78,57 @@ const PlatformLandingPage: React.FC = () => {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Pricing Plans */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <h2 className="text-3xl font-bold text-white text-center mb-3">Simple Pricing</h2>
+        <p className="text-slate-400 text-center mb-12">Choose the plan that fits your business needs.</p>
+        
+        {loadingPlans ? (
+          <div className="text-center text-slate-400">Loading plans...</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {plans.filter(p => p.is_active).map((plan) => (
+              <div key={plan.id} className="card relative flex flex-col hover:border-brand-500/50 hover:shadow-2xl hover:shadow-brand-900/30 transition-all duration-300 hover:-translate-y-2">
+                {/* Popular Badge Example if you wanted to add it logic-based */}
+                {plan.name.toLowerCase() === 'pro' && (
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                    Most Popular
+                  </div>
+                )}
+                <h3 className="text-xl font-bold text-white mb-2 text-center">{plan.name}</h3>
+                <div className="text-center mb-6">
+                  <span className="text-4xl font-extrabold text-white">${Number(plan.price).toFixed(2)}</span>
+                  <span className="text-slate-400 text-sm block mt-1">/ {plan.duration_days} days</span>
+                </div>
+                <div className="flex-1 space-y-4 mb-8">
+                  <p className="flex items-center gap-3 text-sm text-slate-300">
+                    <Check size={18} className="text-brand-400" />
+                    {plan.features?.products_limit === null ? 'Unlimited Products' : `${plan.features?.products_limit} Products`}
+                  </p>
+                  <p className="flex items-center gap-3 text-sm text-slate-300">
+                    <Check size={18} className="text-brand-400" />
+                    {plan.features?.orders_limit === null ? 'Unlimited Orders' : `${plan.features?.orders_limit} Orders`}
+                  </p>
+                  <p className="flex items-center gap-3 text-sm text-slate-300">
+                    <Check size={18} className="text-brand-400" />
+                    {plan.features?.support || 'Standard'} Support
+                  </p>
+                  {plan.features?.custom_domain && (
+                    <p className="flex items-center gap-3 text-sm text-slate-300">
+                      <Check size={18} className="text-brand-400" />
+                      Custom Domain
+                    </p>
+                  )}
+                </div>
+                <Button className="w-full" variant={plan.name.toLowerCase() === 'pro' ? 'primary' : 'secondary'}>
+                  Get Started
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Live Stores */}
@@ -107,9 +161,9 @@ const PlatformLandingPage: React.FC = () => {
       <section className="py-20 px-4 text-center">
         <div className="max-w-2xl mx-auto card bg-gradient-to-br from-brand-900/40 to-brand-800/10 border-brand-700/30">
           <h2 className="text-3xl font-bold text-white mb-3">Ready to start selling?</h2>
-          <p className="text-slate-400 mb-6">Sign in as Platform Admin or Store Admin to explore the full dashboard.</p>
-          <Link to={ROUTES.LOGIN}>
-            <Button size="lg" icon={<ArrowRight size={20} />}>Sign In Now</Button>
+          <p className="text-slate-400 mb-6">Create your store and start exploring the full dashboard in seconds.</p>
+          <Link to={ROUTES.VENDOR_REGISTER}>
+            <Button size="lg" icon={<ArrowRight size={20} />}>Create Your Store</Button>
           </Link>
         </div>
       </section>

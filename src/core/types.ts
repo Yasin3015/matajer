@@ -86,11 +86,60 @@ export interface CartItem {
   quantity: number;
 }
 
-// ─── API wrappers (structure only) ────────────────────────────────────────────
+// ─── Platform Admin (from API) ───────────────────────────────────────────────
+export interface Admin {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  is_platform_owner?: boolean;
+  is_active?: boolean;
+  role?: 'platform_admin' | 'admin';
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ─── Plan (from API) ─────────────────────────────────────────────────────────
+export interface Plan {
+  id: string | number;
+  name: string;
+  description?: string;
+  price: string | number;
+  duration_days: number;
+  features: {
+    orders_limit: number | null;
+    products_limit: number | null;
+    support?: string;
+    custom_domain?: boolean;
+    [key: string]: any;
+  };
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ─── Vendor (= Store from API) ───────────────────────────────────────────────
+export interface Vendor {
+  id: string;
+  name: string;
+  slug: string;
+  custom_domain?: string | null;
+  is_active: boolean;
+  start_at?: string;
+  expire_at?: string;
+  owner?: {
+    id: string;
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  users_count?: number;
+}
+
+// ─── API wrappers (matching real backend shape) ───────────────────────────────
 export interface ApiResponse<T> {
-  data: T;
   message: string;
-  success: boolean;
+  data: T;
 }
 
 export interface PaginatedResponse<T> {

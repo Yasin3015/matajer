@@ -9,11 +9,13 @@ import { Spinner } from '@/shared/ui/Feedback';
 // ── Lazy imports ─────────────────────────────────────────────────────────────
 const PlatformLandingPage      = lazy(() => import('@/modules/store/pages/PlatformLandingPage'));
 const LoginPage                = lazy(() => import('@/modules/auth/pages/LoginPage'));
+const VendorRegisterPage       = lazy(() => import('@/modules/auth/pages/VendorRegisterPage'));
 
 // Admin
 const AdminDashboardPage       = lazy(() => import('@/modules/admin/pages/AdminDashboardPage'));
 const StoresPage               = lazy(() => import('@/modules/admin/pages/StoresPage'));
 const UsersPage                = lazy(() => import('@/modules/admin/pages/UsersPage'));
+const PlansPage                = lazy(() => import('@/modules/admin/pages/PlansPage'));
 
 // Store Dashboard
 const StoreDashboardPage       = lazy(() => import('@/modules/store/pages/StoreDashboardPage'));
@@ -50,6 +52,10 @@ const router = createBrowserRouter([
     path: '/login',
     element: <SuspenseWrapper><LoginPage /></SuspenseWrapper>,
   },
+  {
+    path: '/vendor/register',
+    element: <SuspenseWrapper><VendorRegisterPage /></SuspenseWrapper>,
+  },
 
   // ── Platform Admin ─────────────────────────────────────────────────────────
   {
@@ -61,6 +67,7 @@ const router = createBrowserRouter([
           { path: '/admin',        element: <SuspenseWrapper><AdminDashboardPage /></SuspenseWrapper> },
           { path: '/admin/stores', element: <SuspenseWrapper><StoresPage /></SuspenseWrapper> },
           { path: '/admin/users',  element: <SuspenseWrapper><UsersPage /></SuspenseWrapper> },
+          { path: '/admin/plans',  element: <SuspenseWrapper><PlansPage /></SuspenseWrapper> },
           { path: '/admin/settings', element: <SuspenseWrapper><SettingsPage /></SuspenseWrapper> },
         ],
       },

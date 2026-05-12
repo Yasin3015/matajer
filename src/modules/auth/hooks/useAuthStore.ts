@@ -1,44 +1,55 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User } from '@/core/types';
-import { mockUsers, mockCredentials } from '@/modules/auth/mock/users.mock';
+import { Admin } from '@/core/types';
+import { authService } from '@/modules/auth/services/authService';
 
 interface AuthState {
-  user: User | null;
+  admin: Admin | null;
   token: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (identity: string, password: string) => Promise<{ success: boolean; errors?: Record<string, string[]>; error?: string }>;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
-      user: null,
+    (set, get) => ({
+      admin: null,
       token: null,
       isAuthenticated: false,
 
-      login: async (email, password) => {
-        // Simulate API delay
-        await new Promise((r) => setTimeout(r, 600));
+      login: async (identity, password) => {
+        try {
+          const res = await authService.login({
+            identity,
+            password,
+            token: 'fcm_token_example_123456',
+            device: 'web'
+          });
+          const { token, admin } = res.data.data;
 
-        const expectedPassword = mockCredentials[email];
-        if (!expectedPassword || expectedPassword !== password) {
-          return { success: false, error: 'Invalid email or password.' };
+          localStorage.setItem('matajer_token', token);
+          set({ admin: { ...admin, email: identity } as Admin, token, isAuthenticated: true });
+          return { success: true };
+        } catch (err: any) {
+          if (err?.response?.status === 422 && err?.response?.data?.errors) {
+            return { success: false, errors: err.response.data.errors };
+          }
+          const message =
+            err?.response?.data?.message || 'Invalid email or password.';
+          return { success: false, error: message };
         }
-
-        const user = mockUsers.find((u) => u.email === email);
-        if (!user) return { success: false, error: 'User not found.' };
-
-        const token = `mock-jwt-${user.id}-${Date.now()}`;
-        localStorage.setItem('matajer_token', token);
-        set({ user, token, isAuthenticated: true });
-        return { success: true };
       },
 
-      logout: () => {
-        localStorage.removeItem('matajer_token');
-        set({ user: null, token: null, isAuthenticated: false });
+      logout: async () => {
+        try {
+          await authService.logout();
+        } catch {
+          // ignore logout errors silently
+        } finally {
+          localStorage.removeItem('matajer_token');
+          set({ admin: null, token: null, isAuthenticated: false });
+        }
       },
     }),
     { name: 'matajer-auth' }

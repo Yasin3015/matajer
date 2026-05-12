@@ -20,12 +20,16 @@ const navItems = [
 ];
 
 export const DashboardLayout: React.FC = () => {
-  const { user, logout } = useAuthStore();
+  const { admin, logout } = useAuthStore();
   const { sidebarOpen, toggleSidebar } = useUIStore();
   const navigate = useNavigate();
 
   const visibleItems = navItems.filter(
-    (item) => item.minRole === 'any' || user?.role === item.minRole || user?.role === ROLES.PLATFORM_ADMIN
+    (item) => {
+      if (item.minRole === 'any') return true;
+      const r = admin?.role?.toLowerCase() ?? '';
+      return r === 'platform_admin' || r === 'admin' || r === item.minRole?.toLowerCase();
+    }
   );
 
   const handleLogout = () => {
@@ -33,7 +37,7 @@ export const DashboardLayout: React.FC = () => {
     navigate(ROUTES.LOGIN);
   };
 
-  const storeSlug = user?.storeSlug ?? 'your-store';
+  const storeSlug = 'your-store'; // TODO: fetch from vendor context if needed
 
   return (
     <div className="flex h-screen bg-surface overflow-hidden">
@@ -111,11 +115,15 @@ export const DashboardLayout: React.FC = () => {
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-500 rounded-full" />
             </button>
             <div className="flex items-center gap-2 cursor-pointer hover:bg-surface-hover px-3 py-1.5 rounded-lg transition-colors">
-              <img src={user?.avatar} alt={user?.name} className="w-7 h-7 rounded-full" />
+              <div className="w-7 h-7 rounded-full bg-brand-600/40 flex items-center justify-center flex-shrink-0">
+                <span className="text-brand-300 text-xs font-bold uppercase">
+                  {admin?.name?.charAt(0) ?? 'A'}
+                </span>
+              </div>
               {sidebarOpen && (
                 <div className="hidden sm:block">
-                  <p className="text-xs font-medium text-white leading-tight">{user?.name}</p>
-                  <p className="text-[10px] text-slate-500 capitalize">{user?.role?.toLowerCase().replace('_', ' ')}</p>
+                  <p className="text-xs font-medium text-white leading-tight">{admin?.name}</p>
+                  <p className="text-[10px] text-slate-500 capitalize">{admin?.role?.toLowerCase().replace('_', ' ')}</p>
                 </div>
               )}
               <ChevronDown size={14} className="text-slate-400" />

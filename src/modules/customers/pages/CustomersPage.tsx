@@ -5,8 +5,8 @@ import { Table, Column } from '@/shared/components/Table';
 import { Customer } from '@/core/types';
 
 const CustomersPage: React.FC = () => {
-  const { user } = useAuthStore();
-  const slug = user?.storeSlug ?? 'demo-store';
+  const { admin } = useAuthStore();
+  const slug = 'demo-store'; // Placeholder for now
   const { data: customers = [], isLoading } = useCustomers(slug);
 
   const columns: Column<Customer>[] = [

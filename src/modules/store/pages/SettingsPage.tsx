@@ -7,10 +7,10 @@ import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
 import toast from 'react-hot-toast';
 
 const SettingsPage: React.FC = () => {
-  const { user } = useAuthStore();
-  const slug = user?.storeSlug ?? 'demo-store';
+  const { admin } = useAuthStore();
+  const slug = 'demo-store'; // admin does not have storeSlug
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ name: slug.replace('-', ' '), description: 'Your amazing store.', email: user?.email ?? '', currency: 'USD', category: 'General' });
+  const [form, setForm] = useState({ name: slug.replace('-', ' '), description: 'Your amazing store.', email: admin?.email ?? '', currency: 'USD', category: 'General' });
 
   const handleSave = async () => {
     setSaving(true);

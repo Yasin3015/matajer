@@ -30,7 +30,7 @@ const StoreHomePage: React.FC = () => {
             Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-brand-500">{store?.name ?? storeSlug}</span>
           </h1>
           <p className="text-slate-300 text-lg max-w-xl mx-auto mb-8">
-            {store?.description ?? 'Discover our curated collection of premium products.'}
+            {store?.custom_domain ?? 'Discover our curated collection of premium products.'}
           </p>
           <Link to={ROUTES.storeProducts(storeSlug)}>
             <Button size="lg" icon={<ArrowRight size={18} />}>

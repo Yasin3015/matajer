@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Store, Users, Settings, LogOut, Menu, Bell, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Store, Users, Settings, LogOut, Menu, Bell, ChevronDown, CreditCard } from 'lucide-react';
 import { ROUTES } from '@/core/constants';
 import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
 import { useUIStore } from '@/shared/hooks/useUIStore';
@@ -10,11 +10,12 @@ const navItems = [
   { to: ROUTES.ADMIN, icon: <LayoutDashboard size={18} />, label: 'Overview', end: true },
   { to: ROUTES.ADMIN_STORES, icon: <Store size={18} />, label: 'Stores' },
   { to: ROUTES.ADMIN_USERS, icon: <Users size={18} />, label: 'Users' },
+  { to: ROUTES.ADMIN_PLANS, icon: <CreditCard size={18} />, label: 'Plans' },
   { to: '/admin/settings', icon: <Settings size={18} />, label: 'Settings' },
 ];
 
 export const AdminLayout: React.FC = () => {
-  const { user, logout } = useAuthStore();
+  const { admin, logout } = useAuthStore();
   const { sidebarOpen, toggleSidebar } = useUIStore();
   const navigate = useNavigate();
 
@@ -93,10 +94,14 @@ export const AdminLayout: React.FC = () => {
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-500 rounded-full" />
             </button>
             <div className="flex items-center gap-2 cursor-pointer hover:bg-surface-hover px-3 py-1.5 rounded-lg transition-colors">
-              <img src={user?.avatar} alt={user?.name} className="w-7 h-7 rounded-full" />
+              <div className="w-7 h-7 rounded-full bg-brand-600/40 flex items-center justify-center flex-shrink-0">
+                <span className="text-brand-300 text-xs font-bold uppercase">
+                  {admin?.name?.charAt(0) ?? 'A'}
+                </span>
+              </div>
               <div className="hidden sm:block">
-                <p className="text-xs font-medium text-white leading-tight">{user?.name}</p>
-                <p className="text-[10px] text-slate-500">Platform Admin</p>
+                <p className="text-xs font-medium text-white leading-tight">{admin?.name ?? 'Admin'}</p>
+                <p className="text-[10px] text-slate-500">{admin?.role?.replace('_', ' ') ?? 'Platform Admin'}</p>
               </div>
               <ChevronDown size={14} className="text-slate-400" />
             </div>

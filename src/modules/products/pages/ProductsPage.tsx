@@ -15,8 +15,8 @@ import toast from 'react-hot-toast';
 const CATEGORIES = ['Electronics', 'Wearables', 'Audio', 'Accessories', 'Peripherals', 'Laptops', 'Cameras', 'Monitors', 'Components', 'Tablets', 'Outerwear', 'Footwear', 'Dresses', 'Bags', 'Bottoms', 'Knitwear', 'General'];
 
 const ProductsPage: React.FC = () => {
-  const { user } = useAuthStore();
-  const slug = user?.storeSlug ?? 'demo-store';
+  const { admin } = useAuthStore();
+  const slug = 'demo-store'; // admin?.storeSlug ?? 'demo-store';
   const { data: products = [], isLoading } = useProducts(slug);
   const { addProduct, deleteProduct } = useProductsMutation(slug);
 
