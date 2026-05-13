@@ -31,8 +31,13 @@ export function handleApiError(error: unknown): void {
   const appError = classifyError(error);
 
   if (appError.type === 'unauthorized') {
-    localStorage.removeItem('matajer_token');
-    window.location.href = '/login';
+    // Only force login when we had a session — otherwise public pages (e.g. `/`)
+    // that hit protected APIs would incorrectly redirect guests to `/login`.
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('matajer_token') : null;
+    if (token) {
+      localStorage.removeItem('matajer_token');
+      window.location.href = '/login';
+    }
     return;
   }
 

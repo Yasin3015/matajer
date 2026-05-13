@@ -88,9 +88,9 @@ const VendorRegisterPage: React.FC = () => {
         </div>
 
         <div className="w-full max-w-md my-auto">
-          <Link to="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm mb-8">
+          <Link to={ROUTES.HOME} className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm mb-8">
             <ArrowLeft size={16} />
-            Back to home
+            Back to store
           </Link>
 
           <h2 className="text-3xl font-bold text-white mb-2">Create Your Store</h2>

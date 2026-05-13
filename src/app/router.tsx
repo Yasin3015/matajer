@@ -1,5 +1,7 @@
 import React, { Suspense, lazy } from 'react';
+import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import clsx from 'clsx';
 import { ProtectedRoute } from '@/modules/auth/components/ProtectedRoute';
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout/DashboardLayout';
@@ -32,25 +34,48 @@ const StorefrontProductDetail  = lazy(() => import('@/modules/products/pages/Sto
 const CartPage                 = lazy(() => import('@/modules/cart/pages/CartPage'));
 const CheckoutPage             = lazy(() => import('@/modules/checkout/pages/CheckoutPage'));
 
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-surface">
-    <Spinner size="lg" />
+const PageLoader: React.FC<{ variant?: 'light' | 'dark' }> = ({ variant = 'light' }) => (
+  <div
+    className={clsx(
+      'flex-1 w-full flex flex-col items-center justify-center',
+      variant === 'light' && 'min-h-[50vh] bg-white text-slate-900',
+      variant === 'dark' && 'min-h-screen bg-surface text-slate-100',
+    )}
+  >
+    <Spinner size="lg" tone={variant === 'light' ? 'onLight' : 'default'} />
   </div>
 );
 
-const SuspenseWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Suspense fallback={<PageLoader />}>{children}</Suspense>
-);
+const SuspenseWrapper: React.FC<{ children: React.ReactNode; loaderVariant?: 'light' | 'dark' }> = ({
+  children,
+  loaderVariant = 'light',
+}) => <Suspense fallback={<PageLoader variant={loaderVariant} />}>{children}</Suspense>;
+
+const storefrontChildRoutes: RouteObject[] = [
+  { index: true,                               element: <SuspenseWrapper><StoreHomePage /></SuspenseWrapper> },
+  { path: 'products',                          element: <SuspenseWrapper><StorefrontProductsPage /></SuspenseWrapper> },
+  { path: 'products/:productId',               element: <SuspenseWrapper><StorefrontProductDetail /></SuspenseWrapper> },
+  { path: 'cart',                              element: <SuspenseWrapper><CartPage /></SuspenseWrapper> },
+  { path: 'checkout',                          element: <SuspenseWrapper><CheckoutPage /></SuspenseWrapper> },
+];
 
 const router = createBrowserRouter([
-  // ── Platform landing ───────────────────────────────────────────────────────
+  // ── Default storefront at `/` (demo-store) ─────────────────────────────────
   {
     path: '/',
-    element: <SuspenseWrapper><PlatformLandingPage /></SuspenseWrapper>,
+    element: <StoreLayout />,
+    children: storefrontChildRoutes,
   },
+
+  // ── Platform marketing landing ────────────────────────────────────────────
+  {
+    path: '/platform',
+    element: <SuspenseWrapper loaderVariant="dark"><PlatformLandingPage /></SuspenseWrapper>,
+  },
+
   {
     path: '/login',
-    element: <SuspenseWrapper><LoginPage /></SuspenseWrapper>,
+    element: <SuspenseWrapper loaderVariant="dark"><LoginPage /></SuspenseWrapper>,
   },
   {
     path: '/vendor/register',
@@ -64,11 +89,11 @@ const router = createBrowserRouter([
       {
         element: <AdminLayout />,
         children: [
-          { path: '/admin',        element: <SuspenseWrapper><AdminDashboardPage /></SuspenseWrapper> },
-          { path: '/admin/stores', element: <SuspenseWrapper><StoresPage /></SuspenseWrapper> },
-          { path: '/admin/users',  element: <SuspenseWrapper><UsersPage /></SuspenseWrapper> },
-          { path: '/admin/plans',  element: <SuspenseWrapper><PlansPage /></SuspenseWrapper> },
-          { path: '/admin/settings', element: <SuspenseWrapper><SettingsPage /></SuspenseWrapper> },
+          { path: '/admin',        element: <SuspenseWrapper loaderVariant="dark"><AdminDashboardPage /></SuspenseWrapper> },
+          { path: '/admin/stores', element: <SuspenseWrapper loaderVariant="dark"><StoresPage /></SuspenseWrapper> },
+          { path: '/admin/users',  element: <SuspenseWrapper loaderVariant="dark"><UsersPage /></SuspenseWrapper> },
+          { path: '/admin/plans',  element: <SuspenseWrapper loaderVariant="dark"><PlansPage /></SuspenseWrapper> },
+          { path: '/admin/settings', element: <SuspenseWrapper loaderVariant="dark"><SettingsPage /></SuspenseWrapper> },
         ],
       },
     ],
@@ -81,28 +106,22 @@ const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
-          { path: '/dashboard',            element: <SuspenseWrapper><StoreDashboardPage /></SuspenseWrapper> },
-          { path: '/dashboard/products',   element: <SuspenseWrapper><ProductsPage /></SuspenseWrapper> },
-          { path: '/dashboard/orders',     element: <SuspenseWrapper><OrdersPage /></SuspenseWrapper> },
-          { path: '/dashboard/customers',  element: <SuspenseWrapper><CustomersPage /></SuspenseWrapper> },
-          { path: '/dashboard/team',       element: <SuspenseWrapper><TeamPage /></SuspenseWrapper> },
-          { path: '/dashboard/settings',   element: <SuspenseWrapper><SettingsPage /></SuspenseWrapper> },
+          { path: '/dashboard',            element: <SuspenseWrapper loaderVariant="dark"><StoreDashboardPage /></SuspenseWrapper> },
+          { path: '/dashboard/products',   element: <SuspenseWrapper loaderVariant="dark"><ProductsPage /></SuspenseWrapper> },
+          { path: '/dashboard/orders',     element: <SuspenseWrapper loaderVariant="dark"><OrdersPage /></SuspenseWrapper> },
+          { path: '/dashboard/customers',  element: <SuspenseWrapper loaderVariant="dark"><CustomersPage /></SuspenseWrapper> },
+          { path: '/dashboard/team',       element: <SuspenseWrapper loaderVariant="dark"><TeamPage /></SuspenseWrapper> },
+          { path: '/dashboard/settings',   element: <SuspenseWrapper loaderVariant="dark"><SettingsPage /></SuspenseWrapper> },
         ],
       },
     ],
   },
 
-  // ── Public Storefront ──────────────────────────────────────────────────────
+  // ── Named storefront URLs (`/store/:storeSlug`) ───────────────────────────
   {
     path: '/store/:storeSlug',
     element: <StoreLayout />,
-    children: [
-      { index: true,                               element: <SuspenseWrapper><StoreHomePage /></SuspenseWrapper> },
-      { path: 'products',                          element: <SuspenseWrapper><StorefrontProductsPage /></SuspenseWrapper> },
-      { path: 'products/:productId',               element: <SuspenseWrapper><StorefrontProductDetail /></SuspenseWrapper> },
-      { path: 'cart',                              element: <SuspenseWrapper><CartPage /></SuspenseWrapper> },
-      { path: 'checkout',                          element: <SuspenseWrapper><CheckoutPage /></SuspenseWrapper> },
-    ],
+    children: storefrontChildRoutes,
   },
 
   // ── Catch-all ──────────────────────────────────────────────────────────────

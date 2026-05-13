@@ -1,0 +1,243 @@
+{
+  "common": {
+    "apply": "Apply",
+    "free": "Free",
+    "search": "Search products…",
+    "account": "Account",
+    "backToPlatform": "Back to platform",
+    "backToStore": "Back to store",
+    "language": "Language",
+    "languageEn": "English",
+    "languageAr": "Arabic",
+    "switchToArabic": "Switch to Arabic",
+    "switchToEnglish": "Switch to English",
+    "toastAddedToCart": "Added to cart!"
+  },
+  "home": {
+    "hero": {
+      "kicker": "Limited edition",
+      "title": "Summer collection",
+      "subtitle": "Up to 50% off selected styles",
+      "body": "Curated picks at {{store}}. Fresh arrivals for the season.",
+      "cta": "Shop now"
+    },
+    "category": {
+      "viewAll": "View all",
+      "title": "Shop by category",
+      "fallback": {
+        "sports": "Sports",
+        "accessories": "Accessories",
+        "beauty": "Beauty",
+        "homeDecor": "Home decor",
+        "fashion": "Fashion",
+        "electronics": "Electronics"
+      }
+    },
+    "onSale": {
+      "title": "On sale"
+    },
+    "catalog": {
+      "title": "Our catalog",
+      "subtitle": "Explore our full range of curated premium products.",
+      "sortBy": "Sort by",
+      "filter": "Filter",
+      "sortFeatured": "Featured",
+      "sortPriceAsc": "Price: Low to high",
+      "sortPriceDesc": "Price: High to low",
+      "sortName": "Name",
+      "filterAll": "All",
+      "empty": "No products in this store yet.",
+      "loadMore": "Load more products"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "collections": "Collections",
+    "newArrivals": "New arrivals",
+    "cart": "Cart"
+  },
+  "layout": {
+    "newsletter": "Newsletter",
+    "newsletterHint": "Subscribe for new arrivals, exclusive offers, and style inspiration.",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "company": "Company",
+    "aboutUs": "About us",
+    "shippingPolicy": "Shipping policy",
+    "privacyPolicy": "Privacy policy",
+    "contactSupport": "Contact support",
+    "shop": "Shop",
+    "bestSellers": "Best sellers",
+    "tagline": "Curated products with reliable delivery and easy returns.",
+    "secureCheckout": "Secure checkout",
+    "sslEncrypted": "SSL encrypted",
+    "copyright": "© {{year}} {{brand}}. All rights reserved."
+  },
+  "cart": {
+    "title": "Shopping cart",
+    "subtitle": "You have {{count}} products in your cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyHint": "Browse products and add items to your cart.",
+    "browseProducts": "Browse products",
+    "quantity": "Quantity",
+    "lineTotal": "Line total",
+    "removeItem": "Remove item",
+    "clearCart": "Clear cart",
+    "summaryTitle": "Order summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax ({{pct}}%)",
+    "total": "Total",
+    "discountCode": "Discount code",
+    "discountPlaceholder": "Enter code",
+    "checkout": "Complete purchase",
+    "continueShopping": "Continue shopping",
+    "freeShippingHint": "You qualify for free shipping.",
+    "freeShippingMore": "Add {{amount}} more for free shipping",
+    "discountDemo": "Demo: codes are not applied yet."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "emptyTitle": "Your cart is empty.",
+    "continueShopping": "Continue shopping",
+    "customerTitle": "Customer details",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Enter your full name",
+    "phone": "Phone number",
+    "phonePlaceholder": "+1 555 000 0000",
+    "shippingAddress": "Shipping address",
+    "shippingPlaceholder": "City, street, building number, apartment (optional)",
+    "paymentTitle": "Payment method",
+    "codTitle": "Cash on delivery",
+    "codHint": "Pay cash when your order arrives.",
+    "cardTitle": "Bank card (Paymob)",
+    "cardHint": "Safe and fast online payment.",
+    "cardNumber": "Card number",
+    "cardName": "Cardholder name",
+    "expiry": "Expiry date",
+    "cvv": "CVV",
+    "orderSummary": "Order summary",
+    "qty": "Qty: {{count}}",
+    "moreItems": "+{{count}} more items",
+    "finalTotal": "Final total",
+    "confirmOrder": "Confirm and place order",
+    "secureNote": "100% secure encryption for your data.",
+    "footerPrivacy": "Privacy policy",
+    "footerTerms": "Terms and conditions",
+    "orderSuccess": "Order placed successfully!",
+    "fillCustomer": "Please fill in your name, phone, and shipping address."
+  },
+  "product": {
+    "notFound": "Product not found.",
+    "backToProducts": "Back to products",
+    "breadcrumbHome": "Home",
+    "breadcrumbProducts": "Products",
+    "premiumBadge": "Premium collection",
+    "reviews": "{{rating}} ({{count}} reviews)",
+    "inStock": "In stock ({{count}} available)",
+    "outOfStock": "Out of stock",
+    "quantity": "Quantity",
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "shippingBadge": "Fast & free shipping",
+    "warrantyBadge": "2-year warranty",
+    "returnsBadge": "Easy returns",
+    "sku": "SKU: {{sku}}",
+    "descriptionTitle": "Product description",
+    "specsTitle": "Technical specifications",
+    "careTitle": "Care & maintenance",
+    "specMaterial": "Materials and build quality as described by the manufacturer.",
+    "specMovement": "Movement, dimensions, and water resistance — see packaging for details.",
+    "careBody": "Avoid harsh chemicals; store in a dry place. Service by an authorized dealer is recommended.",
+    "backToAll": "Back to all products",
+    "addedToCart": "{{qty}}× {{name}} added to cart!"
+  },
+  "products": {
+    "title": "All products",
+    "count": "{{count}} products",
+    "searchPlaceholder": "Search products…",
+    "emptyTitle": "No products found",
+    "emptyHint": "Try a different search or category.",
+    "saleBadge": "SALE",
+    "outOfStock": "Out of stock",
+    "filterAll": "All",
+    "addToCartAria": "Add {{name}} to cart",
+    "addedShort": "Added!"
+  },
+  "platform": {
+    "signIn": "Sign In",
+    "badge": "Multi-Tenant SaaS E-Commerce Platform",
+    "heroBefore": "Launch Your",
+    "heroHighlight": "Online Store",
+    "heroAfter": "In Minutes",
+    "heroSub": "Matajer is a scalable multi-tenant SaaS platform. Create stores, manage products, track orders, and grow your business — all from one dashboard.",
+    "ctaPrimary": "Get Started Free",
+    "ctaDemo": "View demo store",
+    "featuresTitle": "Everything You Need",
+    "storesTitle": "Demo stores",
+    "storesSub": "Explore the live storefronts on this platform.",
+    "productCount": "{{count}} products",
+    "orderCount": "{{count}} orders",
+    "visit": "Visit →",
+    "ctaEndTitle": "Ready to start selling?",
+    "ctaEndHint": "Sign in as Platform Admin or Store Admin to explore the full dashboard.",
+    "ctaEndButton": "Sign In Now",
+    "footerTag": "Multi-Tenant SaaS E-Commerce · Frontend Architecture Demo",
+    "pricingTitle": "Simple Pricing",
+    "pricingSub": "Choose the plan that fits your business needs.",
+    "pricingLoading": "Loading plans...",
+    "pricingPopular": "Most Popular",
+    "pricingGetStarted": "Get Started",
+    "pricingDuration": "/ {{days}} days",
+    "pricingUnlimitedProducts": "Unlimited Products",
+    "pricingProductsLimit": "{{count}} Products",
+    "pricingUnlimitedOrders": "Unlimited Orders",
+    "pricingOrdersLimit": "{{count}} Orders",
+    "pricingSupport": "{{level}} Support",
+    "pricingSupportStandard": "Standard",
+    "pricingCustomDomain": "Custom Domain",
+    "features": {
+      "multiTenant": {
+        "title": "Multi-Tenant",
+        "desc": "Each store gets its own branded storefront and admin dashboard."
+      },
+      "fullCommerce": {
+        "title": "Full E-Commerce",
+        "desc": "Products, orders, customers, and checkout — all built in."
+      },
+      "teamRoles": {
+        "title": "Team Roles",
+        "desc": "Store Admin and Manager roles with granular access control."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "desc": "Revenue, orders, and customer insights at a glance."
+      },
+      "blazing": {
+        "title": "Blazing Fast",
+        "desc": "Built with Vite + React Query for optimal performance."
+      },
+      "rbac": {
+        "title": "Role-Based Auth",
+        "desc": "Protected routes and role-based UI rendering."
+      }
+    }
+  },
+  "login": {
+    "welcome": "Welcome to Matajer",
+    "subtitle": "Sign in to your account",
+    "demoHint": "Quick demo login:",
+    "clickToFill": "Click to fill",
+    "email": "Email address",
+    "password": "Password",
+    "signIn": "Sign In",
+    "footerTag": "Multi-Tenant SaaS Platform · Demo Mode",
+    "toastMissing": "Please enter your email and password.",
+    "toastFailed": "Login failed.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "demoPlatformAdmin": "Platform Admin",
+    "demoStoreDemo": "Store Admin (Demo)",
+    "demoStoreTech": "Store Admin (Tech)"
+  }
+}

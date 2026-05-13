@@ -124,6 +124,7 @@ export interface Vendor {
   name: string;
   slug: string;
   custom_domain?: string | null;
+  description?: string;
   is_active: boolean;
   start_at?: string;
   expire_at?: string;

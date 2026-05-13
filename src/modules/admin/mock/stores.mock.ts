@@ -3,7 +3,7 @@ import { Store } from '@/core/types';
 export const mockStores: Store[] = [
   {
     id: 's1',
-    name: 'Demo Store',
+    name: 'Yallamatgar',
     slug: 'demo-store',
     description: 'A general merchandise store for all your needs.',
     category: 'General',

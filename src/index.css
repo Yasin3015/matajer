@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -55,4 +55,18 @@
   .badge-red    { @apply badge bg-red-900/50    text-red-400    ring-1 ring-red-500/30; }
   .badge-blue   { @apply badge bg-blue-900/50   text-blue-400   ring-1 ring-blue-500/30; }
   .badge-slate  { @apply badge bg-slate-800     text-slate-400  ring-1 ring-slate-600; }
+
+  /* Public storefront (light theme) — nested under <main> from StoreLayout */
+  .storefront-page .label {
+    @apply text-slate-700;
+  }
+  .storefront-page .input {
+    @apply bg-white border-slate-200 text-slate-900 placeholder:text-slate-400;
+  }
+  .storefront-page .card {
+    @apply bg-white border-slate-200 shadow-sm;
+  }
+  .storefront-page .btn-secondary {
+    @apply bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200;
+  }
 }

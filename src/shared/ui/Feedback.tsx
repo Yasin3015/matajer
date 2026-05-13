@@ -57,11 +57,18 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   </div>
 );
 
-export const Spinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
+export const Spinner: React.FC<{ size?: 'sm' | 'md' | 'lg'; tone?: 'default' | 'onLight' }> = ({
+  size = 'md',
+  tone = 'default',
+}) => {
   const s = { sm: 'w-4 h-4', md: 'w-8 h-8', lg: 'w-12 h-12' };
+  const ring =
+    tone === 'onLight'
+      ? 'border-blue-600 border-t-transparent'
+      : 'border-brand-500 border-t-transparent';
   return (
     <div className="flex items-center justify-center py-8">
-      <span className={`${s[size]} border-2 border-brand-500 border-t-transparent rounded-full animate-spin`} />
+      <span className={`${s[size]} border-2 ${ring} rounded-full animate-spin`} />
     </div>
   );
 };

@@ -1,81 +1,100 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Trash2, Plus, Minus, ShoppingCart, ArrowRight } from 'lucide-react';
 import { useCartStore } from '../hooks/useCartStore';
-import { ROUTES } from '@/core/constants';
+import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Button } from '@/shared/ui/Button';
-import { EmptyState } from '@/shared/ui/Feedback';
+import toast from 'react-hot-toast';
+
+const TAX_PCT = 8;
 
 const CartPage: React.FC = () => {
-  const { storeSlug = '' } = useParams<{ storeSlug: string }>();
+  const { t, i18n } = useTranslation();
+  const { storeSlug: storeSlugParam } = useParams<{ storeSlug?: string }>();
+  const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
   const getCart = useCartStore((s) => s.getCart);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeFromCart = useCartStore((s) => s.removeFromCart);
   const getTotal = useCartStore((s) => s.getTotal);
   const clearCart = useCartStore((s) => s.clearCart);
 
+  const [discountInput, setDiscountInput] = useState('');
+
   const cart = getCart(storeSlug);
   const total = getTotal(storeSlug);
   const shipping = total > 0 ? (total > 100 ? 0 : 9.99) : 0;
-  const tax = total * 0.08;
+  const tax = total * (TAX_PCT / 100);
+
+  const applyDiscount = () => {
+    if (!discountInput.trim()) return;
+    toast(t('cart.discountDemo'));
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-      <h1 className="text-3xl font-bold text-white mb-8">Your Cart</h1>
+      <h1 className="text-3xl font-bold text-slate-900 mb-2">{t('cart.title')}</h1>
+      {cart.length > 0 && (
+        <p className="text-slate-600 text-sm mb-8">{t('cart.subtitle', { count: cart.length })}</p>
+      )}
 
       {cart.length === 0 ? (
-        <EmptyState
-          title="Your cart is empty"
-          description="Browse products and add items to your cart."
-          icon={<ShoppingCart size={28} />}
-          action={
-            <Link to={ROUTES.storeProducts(storeSlug)}>
-              <Button>Browse Products</Button>
-            </Link>
-          }
-        />
+        <div className="flex flex-col items-center justify-center py-16 gap-4 text-center rounded-2xl border border-slate-200 bg-slate-50/50">
+          <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400">
+            <ShoppingCart size={28} />
+          </div>
+          <div>
+            <p className="text-slate-900 font-medium">{t('cart.emptyTitle')}</p>
+            <p className="text-sm text-slate-600 mt-1 max-w-xs">{t('cart.emptyHint')}</p>
+          </div>
+          <Link to={ROUTES.storeProducts(storeSlug)}>
+            <Button className="!bg-blue-600 hover:!bg-blue-700">{t('cart.browseProducts')}</Button>
+          </Link>
+        </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Items */}
           <div className="lg:col-span-2 space-y-4">
             {cart.map(({ product, quantity }) => (
-              <div key={product.id} className="card flex items-center gap-4">
+              <div key={product.id} className="card flex flex-wrap sm:flex-nowrap items-center gap-4">
                 <img
                   src={product.images[0]}
                   alt={product.name}
-                  className="w-20 h-20 rounded-xl object-cover bg-surface-hover flex-shrink-0"
+                  className="w-20 h-20 rounded-xl object-cover bg-slate-100 shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <Link
                     to={ROUTES.storeProduct(storeSlug, product.id)}
-                    className="font-semibold text-white hover:text-brand-300 transition-colors block truncate"
+                    className="font-semibold text-slate-900 hover:text-blue-600 transition-colors block truncate"
                   >
                     {product.name}
                   </Link>
                   <p className="text-xs text-slate-500 mt-0.5">{product.category}</p>
-                  <p className="text-brand-400 font-bold mt-1">${product.price.toFixed(2)}</p>
+                  <p className="text-blue-600 font-bold mt-1">${product.price.toFixed(2)}</p>
                 </div>
-                <div className="flex items-center gap-2 bg-surface border border-surface-border rounded-lg p-1 flex-shrink-0">
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg p-1 shrink-0">
                   <button
+                    type="button"
                     onClick={() => updateQuantity(storeSlug, product.id, quantity - 1)}
-                    className="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-white hover:bg-surface-hover rounded transition-colors"
+                    className="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-white rounded transition-colors"
                   >
                     <Minus size={12} />
                   </button>
-                  <span className="w-6 text-center text-white text-sm font-medium">{quantity}</span>
+                  <span className="w-8 text-center text-slate-900 text-sm font-medium">{quantity}</span>
                   <button
+                    type="button"
                     onClick={() => updateQuantity(storeSlug, product.id, quantity + 1)}
-                    className="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-white hover:bg-surface-hover rounded transition-colors"
+                    className="w-7 h-7 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-white rounded transition-colors"
                   >
                     <Plus size={12} />
                   </button>
                 </div>
-                <div className="text-right flex-shrink-0">
-                  <p className="font-bold text-white">${(product.price * quantity).toFixed(2)}</p>
+                <div className="text-end shrink-0 min-w-[4.5rem]">
+                  <p className="font-bold text-slate-900">${(product.price * quantity).toFixed(2)}</p>
                   <button
+                    type="button"
                     onClick={() => removeFromCart(storeSlug, product.id)}
-                    className="mt-1 text-slate-500 hover:text-red-400 transition-colors"
-                    aria-label="Remove item"
+                    className="mt-1 text-slate-500 hover:text-red-600 transition-colors"
+                    aria-label={t('cart.removeItem')}
                   >
                     <Trash2 size={14} />
                   </button>
@@ -85,53 +104,74 @@ const CartPage: React.FC = () => {
 
             <div className="flex justify-end">
               <button
+                type="button"
                 onClick={() => clearCart(storeSlug)}
-                className="text-xs text-slate-500 hover:text-red-400 transition-colors"
+                className="text-xs text-slate-500 hover:text-red-600 transition-colors"
               >
-                Clear cart
+                {t('cart.clearCart')}
               </button>
             </div>
-          </div>
 
-          {/* Summary */}
-          <div className="space-y-4">
-            <div className="card space-y-4">
-              <h2 className="font-semibold text-white">Order Summary</h2>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-slate-400">
-                  <span>Subtotal</span>
-                  <span className="text-white">${total.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-slate-400">
-                  <span>Shipping</span>
-                  <span className={shipping === 0 ? 'text-green-400' : 'text-white'}>
-                    {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
-                  </span>
-                </div>
-                <div className="flex justify-between text-slate-400">
-                  <span>Tax (8%)</span>
-                  <span className="text-white">${tax.toFixed(2)}</span>
-                </div>
-                <div className="border-t border-surface-border pt-2 flex justify-between font-bold text-white text-base">
-                  <span>Total</span>
-                  <span>${(total + shipping + tax).toFixed(2)}</span>
-                </div>
-              </div>
-              <Link to={ROUTES.storeCheckout(storeSlug)}>
-                <Button className="w-full justify-center" size="lg" icon={<ArrowRight size={18} />}>
-                  Proceed to Checkout
-                </Button>
-              </Link>
-              <p className="text-[10px] text-slate-600 text-center">
-                {shipping === 0 && total > 0 ? '🎉 You qualify for free shipping!' : `Add $${(100 - total).toFixed(2)} more for free shipping`}
-              </p>
-            </div>
             <Link
               to={ROUTES.storeProducts(storeSlug)}
-              className="block text-center text-sm text-slate-400 hover:text-white transition-colors"
+              className={`inline-flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600 transition-colors ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}
             >
-              ← Continue Shopping
+              <ArrowRight size={16} className={i18n.language === 'ar' ? 'rotate-180' : undefined} />
+              {t('cart.continueShopping')}
             </Link>
+          </div>
+
+          <div className="space-y-4">
+            <div className="card space-y-4">
+              <h2 className="font-semibold text-slate-900">{t('cart.summaryTitle')}</h2>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between gap-4 text-slate-600">
+                  <span>{t('cart.subtotal')}</span>
+                  <span className="text-slate-900 shrink-0">${total.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between gap-4 text-slate-600">
+                  <span>{t('cart.shipping')}</span>
+                  <span className={shipping === 0 ? 'text-emerald-600 font-medium shrink-0' : 'text-slate-900 shrink-0'}>
+                    {shipping === 0 ? t('common.free') : `$${shipping.toFixed(2)}`}
+                  </span>
+                </div>
+                <div className="flex justify-between gap-4 text-slate-600">
+                  <span>{t('cart.tax', { pct: TAX_PCT })}</span>
+                  <span className="text-slate-900 shrink-0">${tax.toFixed(2)}</span>
+                </div>
+                <div className="border-t border-slate-200 pt-2 flex justify-between gap-4 font-bold text-slate-900 text-base">
+                  <span>{t('cart.total')}</span>
+                  <span className="text-blue-600 shrink-0">${(total + shipping + tax).toFixed(2)}</span>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-medium text-slate-700 mb-2">{t('cart.discountCode')}</p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={discountInput}
+                    onChange={(e) => setDiscountInput(e.target.value)}
+                    placeholder={t('cart.discountPlaceholder')}
+                    className="input flex-1 min-w-0"
+                  />
+                  <Button type="button" variant="secondary" className="shrink-0" onClick={applyDiscount}>
+                    {t('common.apply')}
+                  </Button>
+                </div>
+              </div>
+
+              <Link to={ROUTES.storeCheckout(storeSlug)}>
+                <Button className="w-full justify-center my-4 !bg-blue-600 hover:!bg-blue-700" size="lg" icon={<ArrowRight size={18} className={i18n.language === 'ar' ? 'rotate-180' : undefined} />}>
+                  {t('cart.checkout')}
+                </Button>
+              </Link>
+              <p className="text-[10px] text-slate-500 text-center">
+                {shipping === 0 && total > 0
+                  ? t('cart.freeShippingHint')
+                  : t('cart.freeShippingMore', { amount: `$${(100 - total).toFixed(2)}` })}
+              </p>
+            </div>
           </div>
         </div>
       )}

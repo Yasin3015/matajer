@@ -1,0 +1,243 @@
+{
+  "common": {
+    "apply": "تطبيق",
+    "free": "مجاني",
+    "search": "ابحث عن المنتجات…",
+    "account": "الحساب",
+    "backToPlatform": "العودة للمنصة",
+    "backToStore": "العودة للمتجر",
+    "language": "اللغة",
+    "languageEn": "الإنجليزية",
+    "languageAr": "العربية",
+    "switchToArabic": "التبديل إلى العربية",
+    "switchToEnglish": "التبديل إلى الإنجليزية",
+    "toastAddedToCart": "تمت الإضافة إلى السلة!"
+  },
+  "home": {
+    "hero": {
+      "kicker": "إصدار محدود",
+      "title": "مجموعة الصيف",
+      "subtitle": "خصم يصل إلى 50% على مختارات",
+      "body": "منتقاة من {{store}}. وصلات جديدة للموسم.",
+      "cta": "تسوق الآن"
+    },
+    "category": {
+      "viewAll": "عرض الكل",
+      "title": "تسوق حسب الفئة",
+      "fallback": {
+        "sports": "رياضة",
+        "accessories": "إكسسوارات",
+        "beauty": "جمال",
+        "homeDecor": "ديكور المنزل",
+        "fashion": "أزياء",
+        "electronics": "إلكترونيات"
+      }
+    },
+    "onSale": {
+      "title": "تخفيضات"
+    },
+    "catalog": {
+      "title": "كتالوجنا",
+      "subtitle": "استكشف مجموعتنا الكاملة من المنتجات المميزة.",
+      "sortBy": "ترتيب حسب",
+      "filter": "تصفية",
+      "sortFeatured": "مميز",
+      "sortPriceAsc": "السعر: من الأقل للأعلى",
+      "sortPriceDesc": "السعر: من الأعلى للأقل",
+      "sortName": "الاسم",
+      "filterAll": "الكل",
+      "empty": "لا توجد منتجات في هذا المتجر بعد.",
+      "loadMore": "تحميل المزيد من المنتجات"
+    }
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "collections": "المجموعات",
+    "newArrivals": "وصل حديثاً",
+    "cart": "السلة"
+  },
+  "layout": {
+    "newsletter": "النشرة البريدية",
+    "newsletterHint": "اشترك لتصلك أحدث المنتجات والعروض الحصرية.",
+    "emailPlaceholder": "البريد الإلكتروني",
+    "subscribe": "اشتراك",
+    "company": "الشركة",
+    "aboutUs": "من نحن",
+    "shippingPolicy": "سياسة الشحن",
+    "privacyPolicy": "سياسة الخصوصية",
+    "contactSupport": "الدعم الفني",
+    "shop": "المتجر",
+    "bestSellers": "الأكثر مبيعاً",
+    "tagline": "منتجات مختارة مع توصيل موثوق وإرجاع سهل.",
+    "secureCheckout": "دفع آمن",
+    "sslEncrypted": "تشفير SSL",
+    "copyright": "© {{year}} {{brand}}. جميع الحقوق محفوظة."
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "subtitle": "لديك {{count}} منتجات في سلتك",
+    "emptyTitle": "سلة التسوق فارغة",
+    "emptyHint": "تصفح المنتجات وأضف ما تريد إلى السلة.",
+    "browseProducts": "تصفح المنتجات",
+    "quantity": "الكمية",
+    "lineTotal": "المجموع",
+    "removeItem": "حذف المنتج",
+    "clearCart": "إفراغ السلة",
+    "summaryTitle": "ملخص الطلب",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "tax": "الضريبة ({{pct}}٪)",
+    "total": "الإجمالي",
+    "discountCode": "كود الخصم",
+    "discountPlaceholder": "أدخل الكود",
+    "checkout": "إتمام عملية الشراء",
+    "continueShopping": "متابعة التسوق",
+    "freeShippingHint": "تستحق الشحن المجاني.",
+    "freeShippingMore": "أضف {{amount}} أخرى للشحن المجاني",
+    "discountDemo": "تجريبي: الأكواد غير مفعّلة بعد."
+  },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "emptyTitle": "سلة التسوق فارغة.",
+    "continueShopping": "متابعة التسوق",
+    "customerTitle": "بيانات العميل",
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "أدخل اسمك بالكامل",
+    "phone": "رقم الهاتف",
+    "phonePlaceholder": "+966 5XX XXX XXX",
+    "shippingAddress": "عنوان الشحن",
+    "shippingPlaceholder": "المحافظة، المدينة، اسم الشارع، ورقم المبنى",
+    "paymentTitle": "طريقة الدفع",
+    "codTitle": "الدفع عند الاستلام",
+    "codHint": "ادفع نقداً عند وصول طلبك.",
+    "cardTitle": "بطاقة بنكية (Paymob)",
+    "cardHint": "دفع آمن وسريع أونلاين.",
+    "cardNumber": "رقم البطاقة",
+    "cardName": "اسم حامل البطاقة",
+    "expiry": "تاريخ الانتهاء",
+    "cvv": "رمز الأمان",
+    "orderSummary": "ملخص الطلب",
+    "qty": "الكمية: {{count}}",
+    "moreItems": "+{{count}} منتجات إضافية",
+    "finalTotal": "الإجمالي النهائي",
+    "confirmOrder": "تأكيد وطلب الآن",
+    "secureNote": "تشفير آمن بنسبة 100% لبياناتك.",
+    "footerPrivacy": "سياسة الخصوصية",
+    "footerTerms": "الشروط والأحكام",
+    "orderSuccess": "تم تأكيد الطلب بنجاح!",
+    "fillCustomer": "يرجى إدخال الاسم والهاتف وعنوان الشحن."
+  },
+  "product": {
+    "notFound": "المنتج غير موجود.",
+    "backToProducts": "العودة للمنتجات",
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbProducts": "المنتجات",
+    "premiumBadge": "مجموعة مميزة",
+    "reviews": "{{rating}} ({{count}} تقييم)",
+    "inStock": "متوفر: {{count}} قطعة",
+    "outOfStock": "غير متوفر",
+    "quantity": "الكمية",
+    "addToCart": "إضافة إلى السلة",
+    "buyNow": "شراء الآن",
+    "shippingBadge": "شحن سريع ومجاني",
+    "warrantyBadge": "ضمان لمدة سنتين",
+    "returnsBadge": "إرجاع سهل",
+    "sku": "رمز المنتج: {{sku}}",
+    "descriptionTitle": "وصف المنتج",
+    "specsTitle": "المواصفات التقنية",
+    "careTitle": "العناية والاهتمام",
+    "specMaterial": "المواد وجودة التصنيع وفقاً لما يعلنه المصنع.",
+    "specMovement": "المقاسات والمقاومة للماء — راجع العبوة للتفاصيل.",
+    "careBody": "تجنب المواد الكيميائية القاسية؛ خزّن في مكان جاف. يُفضّل الصيانة لدى وكيل معتمد.",
+    "backToAll": "العودة لجميع المنتجات",
+    "addedToCart": "تمت الإضافة: {{qty}}× {{name}}"
+  },
+  "products": {
+    "title": "جميع المنتجات",
+    "count": "{{count}} منتج",
+    "searchPlaceholder": "ابحث عن المنتجات…",
+    "emptyTitle": "لا توجد منتجات",
+    "emptyHint": "جرّب بحثاً أو فئة أخرى.",
+    "saleBadge": "تخفيض",
+    "outOfStock": "غير متوفر",
+    "filterAll": "الكل",
+    "addToCartAria": "إضافة {{name}} إلى السلة",
+    "addedShort": "تمت الإضافة!"
+  },
+  "platform": {
+    "signIn": "تسجيل الدخول",
+    "badge": "منصة SaaS للتجارة الإلكترونية متعددة المستأجرين",
+    "heroBefore": "أطلق",
+    "heroHighlight": "متجرك الإلكتروني",
+    "heroAfter": "في دقائق",
+    "heroSub": "متجرك منصة SaaS قابلة للتوسع. أنشئ المتاجر، أدر المنتجات، تتبع الطلبات، ونمِّ عملك — من لوحة تحكم واحدة.",
+    "ctaPrimary": "ابدأ مجاناً",
+    "ctaDemo": "عرض المتجر التجريبي",
+    "featuresTitle": "كل ما تحتاجه",
+    "storesTitle": "متاجر تجريبية",
+    "storesSub": "استكشف واجهات المتجر الحية على هذه المنصة.",
+    "productCount": "{{count}} منتج",
+    "orderCount": "{{count}} طلب",
+    "visit": "زيارة ←",
+    "ctaEndTitle": "مستعد للبيع؟",
+    "ctaEndHint": "سجّل الدخول كمسؤول منصة أو مسؤول متجر لاستكشاف لوحة التحكم بالكامل.",
+    "ctaEndButton": "سجّل الدخول الآن",
+    "footerTag": "منصة SaaS للتجارة متعددة المستأجرين · عرض هندسة الواجهات",
+    "pricingTitle": "أسعار بسيطة",
+    "pricingSub": "اختر الخطة التي تناسب عملك.",
+    "pricingLoading": "جاري تحميل الخطط...",
+    "pricingPopular": "الأكثر شعبية",
+    "pricingGetStarted": "ابدأ الآن",
+    "pricingDuration": "/ {{days}} يوماً",
+    "pricingUnlimitedProducts": "منتجات غير محدودة",
+    "pricingProductsLimit": "{{count}} منتجات",
+    "pricingUnlimitedOrders": "طلبات غير محدودة",
+    "pricingOrdersLimit": "{{count}} طلبات",
+    "pricingSupport": "دعم {{level}}",
+    "pricingSupportStandard": "قياسي",
+    "pricingCustomDomain": "نطاق مخصص",
+    "features": {
+      "multiTenant": {
+        "title": "متعدد المستأجرين",
+        "desc": "كل متجر يحصل على واجهة خاصة ولوحة إدارة بعلامته التجارية."
+      },
+      "fullCommerce": {
+        "title": "تجارة إلكترونية كاملة",
+        "desc": "منتجات، طلبات، عملاء، ودفع — مدمجة بالكامل."
+      },
+      "teamRoles": {
+        "title": "أدوار الفريق",
+        "desc": "أدوار مسؤول المتجر والمدير مع صلاحيات دقيقة."
+      },
+      "analytics": {
+        "title": "تحليلات",
+        "desc": "الإيرادات والطلبات ورؤى العملاء في لمحة."
+      },
+      "blazing": {
+        "title": "سريع جداً",
+        "desc": "مبني على Vite و React Query للأداء الأمثل."
+      },
+      "rbac": {
+        "title": "صلاحيات حسب الدور",
+        "desc": "مسارات محمية وواجهة تتبع الأدوار."
+      }
+    }
+  },
+  "login": {
+    "welcome": "مرحباً بك في Matajer",
+    "subtitle": "سجّل الدخول إلى حسابك",
+    "demoHint": "تسجيل دخول تجريبي سريع:",
+    "clickToFill": "اضغط للتعبئة",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "signIn": "تسجيل الدخول",
+    "footerTag": "منصة SaaS للتجارة · وضع تجريبي",
+    "toastMissing": "يرجى إدخال البريد وكلمة المرور.",
+    "toastFailed": "فشل تسجيل الدخول.",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "demoPlatformAdmin": "مسؤول المنصة",
+    "demoStoreDemo": "مسؤول المتجر (تجريبي)",
+    "demoStoreTech": "مسؤول المتجر (تقني)"
+  }
+}
