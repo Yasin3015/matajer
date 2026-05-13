@@ -12,9 +12,9 @@ export const mockUsers: User[] = [
   {
     id: 'u2',
     name: 'Sarah Connor',
-    email: 'sarah@demo-store.com',
+    email: 'sarah@Yallamatgar.com',
     role: 'STORE_ADMIN',
-    storeSlug: 'demo-store',
+    storeSlug: 'Yallamatgar',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
     createdAt: '2024-02-15T10:30:00Z',
   },
@@ -39,9 +39,9 @@ export const mockUsers: User[] = [
   {
     id: 'u5',
     name: 'Tom Manager',
-    email: 'tom@demo-store.com',
+    email: 'tom@Yallamatgar.com',
     role: 'STORE_MANAGER',
-    storeSlug: 'demo-store',
+    storeSlug: 'Yallamatgar',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Tom',
     createdAt: '2024-04-01T11:00:00Z',
   },
@@ -50,8 +50,8 @@ export const mockUsers: User[] = [
 // Mock credentials map  (email → password)
 export const mockCredentials: Record<string, string> = {
   'admin@matajer.com':       'admin123',
-  'sarah@demo-store.com':    'store123',
+  'sarah@Yallamatgar.com':    'store123',
   'mark@tech-store.com':     'store123',
   'lila@fashion-store.com':  'store123',
-  'tom@demo-store.com':      'store123',
+  'tom@Yallamatgar.com':      'store123',
 };

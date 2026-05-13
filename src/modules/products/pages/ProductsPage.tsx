@@ -16,7 +16,7 @@ const CATEGORIES = ['Electronics', 'Wearables', 'Audio', 'Accessories', 'Periphe
 
 const ProductsPage: React.FC = () => {
   const { admin } = useAuthStore();
-  const slug = 'demo-store'; // admin?.storeSlug ?? 'demo-store';
+  const slug = 'Yallamatgar'; // admin?.storeSlug ?? 'Yallamatgar';
   const { data: products = [], isLoading } = useProducts(slug);
   const { addProduct, deleteProduct } = useProductsMutation(slug);
 

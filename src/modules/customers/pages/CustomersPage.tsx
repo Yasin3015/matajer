@@ -6,7 +6,7 @@ import { Customer } from '@/core/types';
 
 const CustomersPage: React.FC = () => {
   const { admin } = useAuthStore();
-  const slug = 'demo-store'; // Placeholder for now
+  const slug = 'Yallamatgar'; // Placeholder for now
   const { data: customers = [], isLoading } = useCustomers(slug);
 
   const columns: Column<Customer>[] = [

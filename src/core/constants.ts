@@ -1,5 +1,5 @@
 /** Default tenant served at `/` without `/store/:slug` prefix. */
-export const DEFAULT_STORE_SLUG = 'demo-store';
+export const DEFAULT_STORE_SLUG = 'Yallamatgar';
 
 export const ROUTES = {
   /** Default public storefront (root). */

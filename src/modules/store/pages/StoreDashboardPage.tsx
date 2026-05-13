@@ -10,7 +10,7 @@ import { statusBadge } from '@/shared/ui/Badge';
 
 const StoreDashboardPage: React.FC = () => {
   const { admin } = useAuthStore();
-  const slug = 'demo-store'; // admin does not have storeSlug
+  const slug = 'Yallamatgar'; // admin does not have storeSlug
 
   const { data: orders = [] } = useOrders(slug);
   const { data: products = [] } = useProducts(slug);

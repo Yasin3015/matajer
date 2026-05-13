@@ -17,7 +17,7 @@ const DEMO_LOGINS: {
   color: string;
 }[] = [
   { labelKey: 'login.demoPlatformAdmin', email: 'admin@matajer.com', password: 'admin123', color: 'text-brand-400' },
-  { labelKey: 'login.demoStoreDemo', email: 'sarah@demo-store.com', password: 'store123', color: 'text-green-400' },
+  { labelKey: 'login.demoStoreDemo', email: 'sarah@Yallamatgar.com', password: 'store123', color: 'text-green-400' },
   { labelKey: 'login.demoStoreTech', email: 'mark@tech-store.com', password: 'store123', color: 'text-yellow-400' },
 ];
 

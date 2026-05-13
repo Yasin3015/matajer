@@ -60,7 +60,7 @@ const storefrontChildRoutes: RouteObject[] = [
 ];
 
 const router = createBrowserRouter([
-  // ── Default storefront at `/` (demo-store) ─────────────────────────────────
+  // ── Default storefront at `/` (Yallamatgar) ─────────────────────────────────
   {
     path: '/',
     element: <StoreLayout />,

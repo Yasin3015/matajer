@@ -9,9 +9,9 @@ import { Input, Select } from '@/shared/ui/Input';
 import toast from 'react-hot-toast';
 
 const mockTeam: TeamMember[] = [
-  { id: 'tm1', name: 'Sarah Connor', email: 'sarah@demo-store.com', role: 'STORE_ADMIN', status: 'active', joinedAt: '2024-02-15T10:30:00Z' },
-  { id: 'tm2', name: 'Tom Manager', email: 'tom@demo-store.com', role: 'STORE_MANAGER', status: 'active', joinedAt: '2024-04-01T11:00:00Z' },
-  { id: 'tm3', name: 'Jane Invited', email: 'jane@demo-store.com', role: 'STORE_MANAGER', status: 'invited', joinedAt: '2024-04-18T09:00:00Z' },
+  { id: 'tm1', name: 'Sarah Connor', email: 'sarah@Yallamatgar.com', role: 'STORE_ADMIN', status: 'active', joinedAt: '2024-02-15T10:30:00Z' },
+  { id: 'tm2', name: 'Tom Manager', email: 'tom@Yallamatgar.com', role: 'STORE_MANAGER', status: 'active', joinedAt: '2024-04-01T11:00:00Z' },
+  { id: 'tm3', name: 'Jane Invited', email: 'jane@Yallamatgar.com', role: 'STORE_MANAGER', status: 'invited', joinedAt: '2024-04-18T09:00:00Z' },
 ];
 
 const TeamPage: React.FC = () => {
