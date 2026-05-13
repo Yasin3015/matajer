@@ -4,7 +4,7 @@ export const mockStores: Store[] = [
   {
     id: 's1',
     name: 'Yallamatgar',
-    slug: 'demo-store',
+    slug: 'Yallamatgar',
     description: 'A general merchandise store for all your needs.',
     category: 'General',
     status: 'active',
