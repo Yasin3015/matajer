@@ -2,9 +2,8 @@
 export const DEFAULT_STORE_SLUG = 'demo-store';
 
 export const ROUTES = {
-  /** Default public storefront (root). */
+  /** Platform marketing landing. */
   HOME: '/',
-  /** SaaS marketing / platform landing. */
   PLATFORM: '/platform',
   LOGIN: '/login',
   VENDOR_REGISTER: '/vendor/register',
@@ -23,15 +22,10 @@ export const ROUTES = {
   DASHBOARD_TEAM: '/dashboard/team',
   DASHBOARD_SETTINGS: '/dashboard/settings',
 
-  // Storefront helpers (default store uses short URLs: /, /products, …)
-  store: (slug: string) =>
-    slug === DEFAULT_STORE_SLUG ? '/' : `/store/${slug}`,
-  storeProducts: (slug: string) =>
-    slug === DEFAULT_STORE_SLUG ? '/products' : `/store/${slug}/products`,
-  storeProduct: (slug: string, id: string) =>
-    slug === DEFAULT_STORE_SLUG ? `/products/${id}` : `/store/${slug}/products/${id}`,
-  storeCart: (slug: string) =>
-    slug === DEFAULT_STORE_SLUG ? '/cart' : `/store/${slug}/cart`,
-  storeCheckout: (slug: string) =>
-    slug === DEFAULT_STORE_SLUG ? '/checkout' : `/store/${slug}/checkout`,
+  // Storefront helpers
+  store: (slug: string) => `/store/${slug}`,
+  storeProducts: (slug: string) => `/store/${slug}/products`,
+  storeProduct: (slug: string, id: string) => `/store/${slug}/products/${id}`,
+  storeCart: (slug: string) => `/store/${slug}/cart`,
+  storeCheckout: (slug: string) => `/store/${slug}/checkout`,
 } as const;

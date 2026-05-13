@@ -60,16 +60,9 @@ const storefrontChildRoutes: RouteObject[] = [
 ];
 
 const router = createBrowserRouter([
-  // ── Default storefront at `/` (demo-store) ─────────────────────────────────
-  {
-    path: '/',
-    element: <StoreLayout />,
-    children: storefrontChildRoutes,
-  },
-
   // ── Platform marketing landing ────────────────────────────────────────────
   {
-    path: '/platform',
+    path: '/',
     element: <SuspenseWrapper loaderVariant="dark"><PlatformLandingPage /></SuspenseWrapper>,
   },
 
