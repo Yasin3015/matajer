@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Star, Search, SlidersHorizontal } from 'lucide-react';
-import { useProducts } from '@/modules/products/hooks/useProducts';
+import { useStorefrontProducts } from '@/modules/store/hooks/useStorefrontData';
 import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Spinner } from '@/shared/ui/Feedback';
@@ -15,7 +15,7 @@ const StorefrontProductsPage: React.FC = () => {
   const { t } = useTranslation();
   const { storeSlug: storeSlugParam } = useParams<{ storeSlug?: string }>();
   const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
-  const { data: products = [], isLoading } = useProducts(storeSlug);
+  const { data: products = [], isLoading } = useStorefrontProducts(storeSlug);
   const addToCart = useCartStore((s) => s.addToCart);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(FILTER_ALL);

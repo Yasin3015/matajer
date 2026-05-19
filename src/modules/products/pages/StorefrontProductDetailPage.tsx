@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Star, ArrowLeft, Package, Shield, Truck } from 'lucide-react';
-import { useProducts } from '../hooks/useProducts';
+import { useStorefrontProduct } from '@/modules/store/hooks/useStorefrontData';
 import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Button } from '@/shared/ui/Button';
@@ -15,8 +15,7 @@ const StorefrontProductDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { storeSlug: storeSlugParam, productId = '' } = useParams<{ storeSlug?: string; productId: string }>();
   const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
-  const { data: products = [], isLoading } = useProducts(storeSlug);
-  const product = products.find((p) => p.id === productId);
+  const { data: product, isLoading } = useStorefrontProduct(storeSlug, productId);
   const addToCart = useCartStore((s) => s.addToCart);
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
@@ -202,7 +201,7 @@ const StorefrontProductDetailPage: React.FC = () => {
             ))}
           </div>
 
-          <p className="text-xs text-slate-500">{t('product.sku', { sku: product.sku })}</p>
+          <p className="text-xs text-slate-500">{t('product.sku', { sku: product.id })}</p>
         </div>
       </div>
 
@@ -217,7 +216,7 @@ const StorefrontProductDetailPage: React.FC = () => {
             <ul className="text-sm text-slate-600 space-y-2 list-disc ps-5">
               <li>{t('product.specMaterial')}</li>
               <li>{t('product.specMovement')}</li>
-              <li>{t('product.sku', { sku: product.sku })}</li>
+              <li>{t('product.sku', { sku: product.id })}</li>
             </ul>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-6">

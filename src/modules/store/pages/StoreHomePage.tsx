@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { DEFAULT_STORE_SLUG } from '@/core/constants';
-import { useProducts } from '@/modules/products/hooks/useProducts';
+import { useStorefrontProducts } from '@/modules/store/hooks/useStorefrontData';
 import { useStore } from '@/modules/admin/hooks/useStores';
 import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import type { Product } from '@/core/types';
@@ -16,7 +16,7 @@ const StoreHomePage: React.FC = () => {
   const { storeSlug: storeSlugParam } = useParams<{ storeSlug?: string }>();
   const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
   const { data: store } = useStore(storeSlug);
-  const { data: products = [], isLoading } = useProducts(storeSlug);
+  const { data: products = [], isLoading } = useStorefrontProducts(storeSlug);
   const addToCart = useCartStore((s) => s.addToCart);
 
   const handleAdd = useCallback(

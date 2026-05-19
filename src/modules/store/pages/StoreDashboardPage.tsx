@@ -1,7 +1,7 @@
 import React from 'react';
 import { Package, ShoppingCart, Users, TrendingUp } from 'lucide-react';
 import { StatCard } from '@/shared/ui/Card';
-import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
 import { useOrders } from '@/modules/orders/hooks/useOrders';
 import { useProducts } from '@/modules/products/hooks/useProducts';
 import { useCustomers } from '@/modules/customers/hooks/useCustomers';
@@ -9,8 +9,8 @@ import { Badge } from '@/shared/ui/Badge';
 import { statusBadge } from '@/shared/ui/Badge';
 
 const StoreDashboardPage: React.FC = () => {
-  const { admin } = useAuthStore();
-  const slug = 'Yallamatgar'; // admin does not have storeSlug
+  const { storeSlug } = useVendorAuthStore();
+  const slug = storeSlug || 'Yallamatgar';
 
   const { data: orders = [] } = useOrders(slug);
   const { data: products = [] } = useProducts(slug);

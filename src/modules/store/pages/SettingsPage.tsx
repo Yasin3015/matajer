@@ -3,14 +3,14 @@ import { Save } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { Input, Select, Textarea } from '@/shared/ui/Input';
 import { Card } from '@/shared/ui/Card';
-import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
 import toast from 'react-hot-toast';
 
 const SettingsPage: React.FC = () => {
-  const { admin } = useAuthStore();
-  const slug = 'Yallamatgar'; // admin does not have storeSlug
+  const { vendorUser, storeSlug } = useVendorAuthStore();
+  const slug = storeSlug || 'Yallamatgar';
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState({ name: slug.replace('-', ' '), description: 'Your amazing store.', email: admin?.email ?? '', currency: 'USD', category: 'General' });
+  const [form, setForm] = useState({ name: slug.replace('-', ' '), description: 'Your amazing store.', email: vendorUser?.email ?? '', currency: 'USD', category: 'General' });
 
   const handleSave = async () => {
     setSaving(true);

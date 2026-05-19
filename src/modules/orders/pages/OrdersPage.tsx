@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
 import { useOrders } from '../hooks/useOrders';
 import { Table, Column } from '@/shared/components/Table';
 import { Order } from '@/core/types';
@@ -7,8 +7,8 @@ import { Badge } from '@/shared/ui/Badge';
 import { statusBadge } from '@/shared/ui/Badge';
 
 const OrdersPage: React.FC = () => {
-  const { admin } = useAuthStore();
-  const slug = 'Yallamatgar';
+  const { storeSlug } = useVendorAuthStore();
+  const slug = storeSlug || 'Yallamatgar';
   const { data: orders = [], isLoading } = useOrders(slug);
 
   const columns: Column<Order>[] = [

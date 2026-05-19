@@ -1,73 +1,84 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Edit, Search, Package } from 'lucide-react';
-import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
-import { useProducts, useProductsMutation } from '../hooks/useProducts';
+import { Plus, Trash2, Edit, Search, Package, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/core/constants';
+import {
+  useVendorProducts,
+  useDeleteVendorProduct,
+} from '@/modules/store/hooks/useVendorProducts';
+import type { ApiProduct } from '@/modules/store/services/vendorProductsService';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
-import { Input, Select, Textarea } from '@/shared/ui/Input';
+import { Input } from '@/shared/ui/Input';
 import { Modal } from '@/shared/components/Modal';
 import { Table, Column } from '@/shared/components/Table';
-import { Product } from '@/core/types';
-import { statusBadge } from '@/shared/ui/Badge';
 import { EmptyState } from '@/shared/ui/Feedback';
-import toast from 'react-hot-toast';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
 
-const CATEGORIES = ['Electronics', 'Wearables', 'Audio', 'Accessories', 'Peripherals', 'Laptops', 'Cameras', 'Monitors', 'Components', 'Tablets', 'Outerwear', 'Footwear', 'Dresses', 'Bags', 'Bottoms', 'Knitwear', 'General'];
+const getProductImage = (product: ApiProduct): string => {
+  if (product.images && product.images.length > 0 && product.images[0].url) return product.images[0].url;
+  if (product.image && typeof product.image === 'string' && product.image.trim() !== '') return product.image;
+  if (product.media && product.media.length > 0 && product.media[0].url) return product.media[0].url;
+  return `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(product.name)}`;
+};
 
 const ProductsPage: React.FC = () => {
-  const { admin } = useAuthStore();
-  const slug = 'Yallamatgar'; // admin?.storeSlug ?? 'Yallamatgar';
-  const { data: products = [], isLoading } = useProducts(slug);
-  const { addProduct, deleteProduct } = useProductsMutation(slug);
+  const navigate = useNavigate();
+  const { storeSlug } = useVendorAuthStore();
+  const vendorSlug = storeSlug || 'Yallamatgar';
+  
+  const { data: products = [], isLoading } = useVendorProducts(vendorSlug);
+  const deleteProduct = useDeleteVendorProduct(vendorSlug);
 
   const [search, setSearch] = useState('');
-  const [addOpen, setAddOpen] = useState(false);
-  const [form, setForm] = useState({
-    name: '', description: '', price: '', category: 'Electronics', stock: '', sku: '',
-  });
+  const [deleteConfirm, setDeleteConfirm] = useState<ApiProduct | null>(null);
 
   const filtered = products.filter(
-    (p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase())
+    (p) =>
+      p.name.toLowerCase().includes(search.toLowerCase()) ||
+      (p.category?.name ?? '').toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleAdd = async () => {
-    if (!form.name || !form.price) { toast.error('Name and price are required.'); return; }
-    await addProduct.mutateAsync({
-      name: form.name,
-      description: form.description,
-      price: parseFloat(form.price),
-      images: [`https://api.dicebear.com/7.x/shapes/svg?seed=${form.name}`],
-      category: form.category,
-      stock: parseInt(form.stock) || 0,
-      sku: form.sku || `SKU-${Date.now()}`,
-      status: 'active',
-      storeSlug: slug,
-    });
-    setForm({ name: '', description: '', price: '', category: 'Electronics', stock: '', sku: '' });
-    setAddOpen(false);
-  };
-
-  const columns: Column<Product>[] = [
+  const columns: Column<ApiProduct>[] = [
     {
       key: 'name',
       header: 'Product',
       sortable: true,
       render: (p) => (
         <div className="flex items-center gap-3">
-          <img src={p.images[0]} alt={p.name} className="w-10 h-10 rounded-lg object-cover bg-surface-hover" />
+          <img
+            src={getProductImage(p)}
+            alt={p.name}
+            className="w-10 h-10 rounded-lg object-cover bg-surface-hover"
+          />
           <div>
             <p className="font-medium text-white text-sm">{p.name}</p>
-            <p className="text-xs text-slate-500">{p.sku}</p>
+            <p className="text-xs text-slate-500">{p.slug || '—'}</p>
           </div>
         </div>
       ),
     },
-    { key: 'category', header: 'Category', sortable: true },
+    {
+      key: 'category',
+      header: 'Category',
+      render: (p) => (
+        <span className="text-slate-400 text-sm">{p.category?.name || '—'}</span>
+      ),
+    },
     {
       key: 'price',
       header: 'Price',
       sortable: true,
-      render: (p) => <span className="font-semibold text-white">${p.price.toFixed(2)}</span>,
+      render: (p) => (
+        <div>
+          <span className="font-semibold text-white">${Number(p.price).toFixed(2)}</span>
+          {p.price_before && (
+            <span className="ms-1.5 text-xs text-slate-500 line-through">
+              ${Number(p.price_before).toFixed(2)}
+            </span>
+          )}
+        </div>
+      ),
     },
     {
       key: 'stock',
@@ -79,22 +90,37 @@ const ProductsPage: React.FC = () => {
       ),
     },
     {
-      key: 'status',
+      key: 'is_active',
       header: 'Status',
-      render: (p) => <Badge variant={statusBadge(p.status)}>{p.status}</Badge>,
+      render: (p) => (
+        <Badge variant={p.is_active !== false ? 'green' : 'slate'}>
+          {p.is_active !== false ? 'Active' : 'Inactive'}
+        </Badge>
+      ),
     },
     {
-      key: 'actions',
+      key: 'actions' as keyof ApiProduct,
       header: '',
       render: (p) => (
         <div className="flex items-center gap-2">
-          <button onClick={() => toast('Edit (mock) — product: ' + p.name)} className="p-1.5 text-slate-400 hover:text-brand-400 transition-colors">
+          <button
+            onClick={() => navigate(`/dashboard/products/${p.id}`)}
+            className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors"
+            title="View product"
+          >
+            <Eye size={15} />
+          </button>
+          <button
+            onClick={() => navigate(`/dashboard/products/${p.id}/edit`)}
+            className="p-1.5 text-slate-400 hover:text-brand-400 transition-colors"
+            title="Edit product"
+          >
             <Edit size={15} />
           </button>
           <button
-            onClick={() => deleteProduct.mutate(p.id)}
-            disabled={deleteProduct.isPending}
+            onClick={() => setDeleteConfirm(p)}
             className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+            title="Delete product"
           >
             <Trash2 size={15} />
           </button>
@@ -110,7 +136,7 @@ const ProductsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Products</h1>
           <p className="text-slate-400 text-sm mt-1">{products.length} products in your store.</p>
         </div>
-        <Button icon={<Plus size={16} />} onClick={() => setAddOpen(true)}>
+        <Button icon={<Plus size={16} />} onClick={() => navigate('/dashboard/products/new')}>
           Add Product
         </Button>
       </div>
@@ -131,44 +157,46 @@ const ProductsPage: React.FC = () => {
           title="No products yet"
           description="Add your first product to start selling."
           icon={<Package size={24} />}
-          action={<Button icon={<Plus size={16} />} onClick={() => setAddOpen(true)}>Add Product</Button>}
+          action={
+            <Button icon={<Plus size={16} />} onClick={() => navigate('/dashboard/products/new')}>
+              Add Product
+            </Button>
+          }
         />
       ) : (
-        <Table data={filtered} columns={columns} loading={isLoading} pageSize={8} />
+        <Table data={filtered} columns={columns} loading={isLoading} pageSize={10} />
       )}
 
-      {/* Add Product Modal */}
+      {/* Delete Confirmation Modal */}
       <Modal
-        isOpen={addOpen}
-        onClose={() => setAddOpen(false)}
-        title="Add New Product"
-        size="lg"
+        isOpen={!!deleteConfirm}
+        onClose={() => setDeleteConfirm(null)}
+        title="Delete Product"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setAddOpen(false)}>Cancel</Button>
-            <Button onClick={handleAdd} loading={addProduct.isPending}>Add Product</Button>
+            <Button variant="secondary" onClick={() => setDeleteConfirm(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={async () => {
+                if (deleteConfirm) {
+                  await deleteProduct.mutateAsync(deleteConfirm.id);
+                  setDeleteConfirm(null);
+                }
+              }}
+              loading={deleteProduct.isPending}
+            >
+              Delete
+            </Button>
           </>
         }
       >
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <Input label="Product Name" placeholder="Wireless Headphones" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-            </div>
-            <Input label="Price ($)" type="number" placeholder="99.99" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
-            <Input label="Stock" type="number" placeholder="50" value={form.stock} onChange={(e) => setForm({ ...form, stock: e.target.value })} />
-            <Input label="SKU" placeholder="WH-001" value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} />
-            <Select
-              label="Category"
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              options={CATEGORIES.map((c) => ({ label: c, value: c }))}
-            />
-            <div className="col-span-2">
-              <Textarea label="Description" placeholder="Product description..." value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-            </div>
-          </div>
-        </div>
+        <p className="text-slate-300">
+          Are you sure you want to delete{' '}
+          <span className="text-white font-semibold">"{deleteConfirm?.name}"</span>? This action
+          cannot be undone.
+        </p>
       </Modal>
     </div>
   );

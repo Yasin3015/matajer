@@ -4,6 +4,7 @@ import { LayoutDashboard, Store, Users, Settings, LogOut, Menu, Bell, ChevronDow
 import { ROUTES } from '@/core/constants';
 import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
 import { useUIStore } from '@/shared/hooks/useUIStore';
+import { NotificationsPanel } from '@/shared/components/NotificationsPanel';
 import clsx from 'clsx';
 
 const navItems = [
@@ -89,10 +90,7 @@ export const AdminLayout: React.FC = () => {
             <h1 className="text-sm font-medium text-slate-300">Platform Administration</h1>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative text-slate-400 hover:text-white hover:bg-surface-hover p-2 rounded-lg transition-colors">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-500 rounded-full" />
-            </button>
+            <NotificationsPanel />
             <div className="flex items-center gap-2 cursor-pointer hover:bg-surface-hover px-3 py-1.5 rounded-lg transition-colors">
               <div className="w-7 h-7 rounded-full bg-brand-600/40 flex items-center justify-center flex-shrink-0">
                 <span className="text-brand-300 text-xs font-bold uppercase">

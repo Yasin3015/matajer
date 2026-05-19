@@ -1,18 +1,20 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Package, ShoppingCart, Users, Shield, Settings, LogOut, Menu, Bell,
-  ChevronDown, Store,
+  LayoutDashboard, Package, ShoppingCart, Users, Shield, Settings, LogOut, Menu,
+  ChevronDown, Store, Tag,
 } from 'lucide-react';
 import { ROUTES } from '@/core/constants';
-import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
 import { useUIStore } from '@/shared/hooks/useUIStore';
 import { ROLES } from '@/core/config';
+import { NotificationsPanel } from '@/shared/components/NotificationsPanel';
 import clsx from 'clsx';
 
 const navItems = [
   { to: ROUTES.DASHBOARD, icon: <LayoutDashboard size={18} />, label: 'Overview', end: true, minRole: 'any' },
   { to: ROUTES.DASHBOARD_PRODUCTS, icon: <Package size={18} />, label: 'Products', minRole: 'any' },
+  { to: ROUTES.DASHBOARD_CATEGORIES, icon: <Tag size={18} />, label: 'Categories', minRole: 'any' },
   { to: ROUTES.DASHBOARD_ORDERS, icon: <ShoppingCart size={18} />, label: 'Orders', minRole: 'any' },
   { to: ROUTES.DASHBOARD_CUSTOMERS, icon: <Users size={18} />, label: 'Customers', minRole: 'any' },
   { to: ROUTES.DASHBOARD_TEAM, icon: <Shield size={18} />, label: 'Team', minRole: ROLES.STORE_ADMIN },
@@ -20,24 +22,22 @@ const navItems = [
 ];
 
 export const DashboardLayout: React.FC = () => {
-  const { admin, logout } = useAuthStore();
+  const { vendorUser, storeSlug, logout } = useVendorAuthStore();
   const { sidebarOpen, toggleSidebar } = useUIStore();
   const navigate = useNavigate();
 
   const visibleItems = navItems.filter(
     (item) => {
       if (item.minRole === 'any') return true;
-      const r = admin?.role?.toLowerCase() ?? '';
-      return r === 'platform_admin' || r === 'admin' || r === item.minRole?.toLowerCase();
+      const r = (vendorUser as any)?.role?.toLowerCase() ?? '';
+      return r === 'platform_admin' || r === 'admin' || r === item.minRole?.toLowerCase() || !r;
     }
   );
 
   const handleLogout = () => {
     logout();
-    navigate(ROUTES.LOGIN);
+    navigate(ROUTES.VENDOR_LOGIN);
   };
-
-  const storeSlug = 'your-store'; // TODO: fetch from vendor context if needed
 
   return (
     <div className="flex h-screen bg-surface overflow-hidden">
@@ -54,7 +54,7 @@ export const DashboardLayout: React.FC = () => {
           </div>
           {sidebarOpen && (
             <div className="animate-fade-in overflow-hidden">
-              <p className="font-bold text-white text-sm leading-tight capitalize">{storeSlug.replace('-', ' ')}</p>
+              <p className="font-bold text-white text-sm leading-tight capitalize">{(storeSlug || 'Vendor').replace('-', ' ')}</p>
               <p className="text-[10px] text-brand-400 font-medium">Store Dashboard</p>
             </div>
           )}
@@ -110,20 +110,17 @@ export const DashboardLayout: React.FC = () => {
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative text-slate-400 hover:text-white hover:bg-surface-hover p-2 rounded-lg transition-colors">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-500 rounded-full" />
-            </button>
+            <NotificationsPanel />
             <div className="flex items-center gap-2 cursor-pointer hover:bg-surface-hover px-3 py-1.5 rounded-lg transition-colors">
               <div className="w-7 h-7 rounded-full bg-brand-600/40 flex items-center justify-center flex-shrink-0">
                 <span className="text-brand-300 text-xs font-bold uppercase">
-                  {admin?.name?.charAt(0) ?? 'A'}
+                  {vendorUser?.name?.charAt(0) ?? 'V'}
                 </span>
               </div>
               {sidebarOpen && (
                 <div className="hidden sm:block">
-                  <p className="text-xs font-medium text-white leading-tight">{admin?.name}</p>
-                  <p className="text-[10px] text-slate-500 capitalize">{admin?.role?.toLowerCase().replace('_', ' ')}</p>
+                  <p className="text-xs font-medium text-white leading-tight">{vendorUser?.name ?? 'Manager'}</p>
+                  <p className="text-[10px] text-slate-500 capitalize">{storeSlug}</p>
                 </div>
               )}
               <ChevronDown size={14} className="text-slate-400" />

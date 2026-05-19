@@ -161,6 +161,12 @@ const LoginPage: React.FC = () => {
         </div>
 
         <p className="text-center text-xs text-slate-600 mt-6">{t('login.footerTag')}</p>
+        <p className="text-center text-xs text-slate-700 mt-2">
+          Store owner?{' '}
+          <a href="/vendor/login" className="text-brand-500 hover:text-brand-400 transition-colors">
+            Sign in to your vendor dashboard →
+          </a>
+        </p>
       </div>
     </div>
   );

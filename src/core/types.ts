@@ -94,7 +94,8 @@ export interface Admin {
   phone?: string;
   is_platform_owner?: boolean;
   is_active?: boolean;
-  role?: 'platform_admin' | 'admin';
+  role?: 'platform_admin' | 'admin' | string;
+  storeSlug?: string;
   created_at?: string;
   updated_at?: string;
 }
@@ -159,4 +160,36 @@ export interface TeamMember {
   role: Extract<Role, 'STORE_ADMIN' | 'STORE_MANAGER'>;
   status: 'active' | 'invited';
   joinedAt: string;
+}
+
+// ─── Vendor Sub-User (from /vendor/users API) ─────────────────────────────────
+export interface VendorUser {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ─── Vendor Category (from /vendor/categories API) ────────────────────────────
+export interface VendorCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  products_count?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ─── Notification (from /notifications API) ───────────────────────────────────
+export interface Notification {
+  id: string;
+  title: string;
+  body: string;
+  read_at?: string | null;
+  created_at?: string;
+  data?: Record<string, any>;
 }

@@ -1,63 +1,161 @@
 import React, { useState } from 'react';
-import { Plus, Shield, UserCheck } from 'lucide-react';
-import { TeamMember } from '@/core/types';
+import { Plus, Trash2, Pencil, Eye, UserCheck, Shield, Search } from 'lucide-react';
 import { Table, Column } from '@/shared/components/Table';
 import { Badge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
 import { Modal } from '@/shared/components/Modal';
-import { Input, Select } from '@/shared/ui/Input';
-import toast from 'react-hot-toast';
+import { Input } from '@/shared/ui/Input';
+import { EmptyState } from '@/shared/ui/Feedback';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
+import { useForm } from 'react-hook-form';
+import {
+  useVendorUsers,
+  useCreateVendorUser,
+  useUpdateVendorUser,
+  useDeleteVendorUser,
+} from '@/modules/store/hooks/useVendorUsers';
+import type { VendorUser } from '@/modules/store/services/vendorUsersService';
 
-const mockTeam: TeamMember[] = [
-  { id: 'tm1', name: 'Sarah Connor', email: 'sarah@Yallamatgar.com', role: 'STORE_ADMIN', status: 'active', joinedAt: '2024-02-15T10:30:00Z' },
-  { id: 'tm2', name: 'Tom Manager', email: 'tom@Yallamatgar.com', role: 'STORE_MANAGER', status: 'active', joinedAt: '2024-04-01T11:00:00Z' },
-  { id: 'tm3', name: 'Jane Invited', email: 'jane@Yallamatgar.com', role: 'STORE_MANAGER', status: 'invited', joinedAt: '2024-04-18T09:00:00Z' },
-];
+interface UserForm {
+  name: string;
+  email: string;
+  phone?: string;
+  password?: string;
+  is_active?: boolean;
+}
 
 const TeamPage: React.FC = () => {
-  const [inviteOpen, setInviteOpen] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState('');
-  const [inviteRole, setInviteRole] = useState('STORE_MANAGER');
+  const { storeSlug } = useVendorAuthStore();
+  const vendorSlug = storeSlug || 'Yallamatgar';
+  const { data: users = [], isLoading } = useVendorUsers(vendorSlug);
+  const createUser = useCreateVendorUser(vendorSlug);
+  const updateUser = useUpdateVendorUser(vendorSlug);
+  const deleteUser = useDeleteVendorUser(vendorSlug);
 
-  const columns: Column<TeamMember>[] = [
+  const [search, setSearch] = useState('');
+  const [addOpen, setAddOpen] = useState(false);
+  const [editUser, setEditUser] = useState<VendorUser | null>(null);
+  const [viewUser, setViewUser] = useState<VendorUser | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<VendorUser | null>(null);
+
+  const {
+    register: registerAdd,
+    handleSubmit: handleSubmitAdd,
+    reset: resetAdd,
+    formState: { errors: errorsAdd },
+  } = useForm<UserForm>();
+
+  const {
+    register: registerEdit,
+    handleSubmit: handleSubmitEdit,
+    reset: resetEdit,
+    formState: { errors: errorsEdit },
+  } = useForm<UserForm>();
+
+  const filtered = users.filter(
+    (u) =>
+      u.name.toLowerCase().includes(search.toLowerCase()) ||
+      u.email.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const onAddSubmit = async (data: UserForm) => {
+    await createUser.mutateAsync({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      password: data.password || '123456',
+      is_active: true,
+    });
+    resetAdd();
+    setAddOpen(false);
+  };
+
+  const onEditSubmit = async (data: UserForm) => {
+    if (!editUser) return;
+    const payload: Record<string, any> = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+    };
+    if (data.password) payload.password = data.password;
+    await updateUser.mutateAsync({ id: editUser.id, payload });
+    setEditUser(null);
+  };
+
+  const openEdit = (u: VendorUser) => {
+    resetEdit({ name: u.name, email: u.email, phone: u.phone || '' });
+    setEditUser(u);
+  };
+
+  const columns: Column<VendorUser>[] = [
     {
       key: 'name',
       header: 'Member',
       sortable: true,
-      render: (m) => (
+      render: (u) => (
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-600/30 to-brand-800/20 flex items-center justify-center">
-            <span className="text-brand-300 font-semibold text-xs">{m.name[0]}</span>
+            <span className="text-brand-300 font-semibold text-xs">{u.name[0]}</span>
           </div>
           <div>
-            <p className="font-medium text-white text-sm">{m.name}</p>
-            <p className="text-xs text-slate-500">{m.email}</p>
+            <p className="font-medium text-white text-sm">{u.name}</p>
+            <p className="text-xs text-slate-500">{u.email}</p>
           </div>
         </div>
       ),
     },
     {
-      key: 'role',
-      header: 'Role',
-      render: (m) => (
-        <div className="flex items-center gap-2">
-          {m.role === 'STORE_ADMIN' ? <Shield size={14} className="text-brand-400" /> : <UserCheck size={14} className="text-green-400" />}
-          <span className="text-slate-300 text-sm">{m.role.replace('_', ' ')}</span>
-        </div>
-      ),
+      key: 'phone',
+      header: 'Phone',
+      render: (u) => <span className="text-slate-400 text-sm">{u.phone || '—'}</span>,
     },
     {
-      key: 'status',
+      key: 'is_active',
       header: 'Status',
-      render: (m) => (
-        <Badge variant={m.status === 'active' ? 'green' : 'yellow'}>{m.status}</Badge>
+      render: (u) => (
+        <Badge variant={u.is_active ? 'green' : 'slate'}>
+          {u.is_active ? 'Active' : 'Inactive'}
+        </Badge>
       ),
     },
     {
-      key: 'joinedAt',
+      key: 'created_at',
       header: 'Joined',
       sortable: true,
-      render: (m) => <span className="text-slate-400 text-sm">{new Date(m.joinedAt).toLocaleDateString()}</span>,
+      render: (u) => (
+        <span className="text-slate-400 text-sm">
+          {u.created_at ? new Date(u.created_at).toLocaleDateString() : '—'}
+        </span>
+      ),
+    },
+    {
+      key: 'actions' as keyof VendorUser,
+      header: '',
+      render: (u) => (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setViewUser(u)}
+            className="p-1.5 text-slate-400 hover:text-emerald-400 transition-colors"
+            title="View details"
+          >
+            <Eye size={15} />
+          </button>
+          <button
+            onClick={() => openEdit(u)}
+            className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors"
+            title="Edit member"
+          >
+            <Pencil size={15} />
+          </button>
+          <button
+            onClick={() => setDeleteConfirm(u)}
+            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+            title="Remove member"
+          >
+            <Trash2 size={15} />
+          </button>
+        </div>
+      ),
     },
   ];
 
@@ -66,40 +164,214 @@ const TeamPage: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Team</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your store team and permissions.</p>
+          <p className="text-slate-400 text-sm mt-1">Manage your store team members.</p>
         </div>
-        <Button icon={<Plus size={16} />} onClick={() => setInviteOpen(true)}>
-          Invite Member
+        <Button icon={<Plus size={16} />} onClick={() => setAddOpen(true)}>
+          Add Member
         </Button>
       </div>
 
-      <Table data={mockTeam} columns={columns} emptyMessage="No team members yet." />
+      <div className="flex items-center gap-3">
+        <div className="flex-1 max-w-sm">
+          <Input
+            placeholder="Search team members..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            icon={<Search size={16} />}
+          />
+        </div>
+      </div>
 
+      {!isLoading && filtered.length === 0 ? (
+        <EmptyState
+          title="No team members yet"
+          description="Add staff members to help manage your store."
+          icon={<UserCheck size={24} />}
+          action={<Button icon={<Plus size={16} />} onClick={() => setAddOpen(true)}>Add Member</Button>}
+        />
+      ) : (
+        <Table
+          data={filtered}
+          columns={columns}
+          loading={isLoading}
+          emptyMessage="No team members found."
+        />
+      )}
+
+      {/* Add Member Modal */}
       <Modal
-        isOpen={inviteOpen}
-        onClose={() => setInviteOpen(false)}
-        title="Invite Team Member"
+        isOpen={addOpen}
+        onClose={() => { setAddOpen(false); resetAdd(); }}
+        title="Add Team Member"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setInviteOpen(false)}>Cancel</Button>
-            <Button onClick={() => { toast.success(`Invite sent to ${inviteEmail} (mock)!`); setInviteOpen(false); }}>
-              Send Invite
+            <Button variant="secondary" onClick={() => { setAddOpen(false); resetAdd(); }}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmitAdd(onAddSubmit)} loading={createUser.isPending}>
+              Add Member
             </Button>
           </>
         }
       >
-        <div className="space-y-4">
-          <Input label="Email Address" type="email" placeholder="colleague@email.com" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} />
-          <Select
-            label="Role"
-            value={inviteRole}
-            onChange={(e) => setInviteRole(e.target.value)}
-            options={[
-              { label: 'Store Admin', value: 'STORE_ADMIN' },
-              { label: 'Store Manager', value: 'STORE_MANAGER' },
-            ]}
+        <form
+          className="max-h-[70vh] overflow-y-auto pr-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+          onSubmit={handleSubmitAdd(onAddSubmit)}
+        >
+          <Input
+            label="Name"
+            placeholder="Team Member Name"
+            {...registerAdd('name', { required: true })}
+            error={errorsAdd.name ? 'Name is required' : undefined}
           />
-        </div>
+          <Input
+            label="Email"
+            type="email"
+            placeholder="member@store.com"
+            {...registerAdd('email', { required: true })}
+            error={errorsAdd.email ? 'Email is required' : undefined}
+          />
+          <Input
+            label="Phone (optional)"
+            placeholder="0123456789"
+            {...registerAdd('phone')}
+          />
+          <Input
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            {...registerAdd('password', { required: true, minLength: 6 })}
+            error={errorsAdd.password ? 'Password must be at least 6 characters' : undefined}
+          />
+        </form>
+      </Modal>
+
+      {/* Edit Member Modal */}
+      <Modal
+        isOpen={!!editUser}
+        onClose={() => setEditUser(null)}
+        title="Edit Team Member"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setEditUser(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmitEdit(onEditSubmit)} loading={updateUser.isPending}>
+              Save Changes
+            </Button>
+          </>
+        }
+      >
+        <form
+          className="max-h-[70vh] overflow-y-auto pr-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+          onSubmit={handleSubmitEdit(onEditSubmit)}
+        >
+          <Input
+            label="Name"
+            placeholder="Team Member Name"
+            {...registerEdit('name', { required: true })}
+            error={errorsEdit.name ? 'Name is required' : undefined}
+          />
+          <Input
+            label="Email"
+            type="email"
+            placeholder="member@store.com"
+            {...registerEdit('email', { required: true })}
+            error={errorsEdit.email ? 'Email is required' : undefined}
+          />
+          <Input
+            label="Phone (optional)"
+            placeholder="0123456789"
+            {...registerEdit('phone')}
+          />
+          <Input
+            label="New Password (optional)"
+            type="password"
+            placeholder="Leave blank to keep unchanged"
+            {...registerEdit('password')}
+          />
+        </form>
+      </Modal>
+
+      {/* View Member Details Modal */}
+      <Modal
+        isOpen={!!viewUser}
+        onClose={() => setViewUser(null)}
+        title="Member Details"
+        footer={
+          <Button variant="secondary" onClick={() => setViewUser(null)}>
+            Close
+          </Button>
+        }
+      >
+        {viewUser && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-slate-500">ID</p>
+                <p className="text-sm text-white font-mono mt-1">{viewUser.id}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Name</p>
+                <p className="text-sm text-white mt-1">{viewUser.name}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Email</p>
+                <p className="text-sm text-white mt-1">{viewUser.email}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Phone</p>
+                <p className="text-sm text-white mt-1">{viewUser.phone || '—'}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Status</p>
+                <p className="text-sm mt-1">
+                  <Badge variant={viewUser.is_active ? 'green' : 'slate'}>
+                    {viewUser.is_active ? 'Active' : 'Inactive'}
+                  </Badge>
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Joined</p>
+                <p className="text-sm text-white mt-1">
+                  {viewUser.created_at ? new Date(viewUser.created_at).toLocaleString() : '—'}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={!!deleteConfirm}
+        onClose={() => setDeleteConfirm(null)}
+        title="Remove Team Member"
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setDeleteConfirm(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={async () => {
+                if (deleteConfirm) {
+                  await deleteUser.mutateAsync(deleteConfirm.id);
+                  setDeleteConfirm(null);
+                }
+              }}
+              loading={deleteUser.isPending}
+            >
+              Remove
+            </Button>
+          </>
+        }
+      >
+        <p className="text-slate-300">
+          Are you sure you want to remove{' '}
+          <span className="text-white font-semibold">{deleteConfirm?.name}</span> from the team?
+          This action cannot be undone.
+        </p>
       </Modal>
     </div>
   );

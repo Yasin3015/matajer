@@ -1,12 +1,12 @@
 import React from 'react';
-import { useAuthStore } from '@/modules/auth/hooks/useAuthStore';
+import { useVendorAuthStore } from '@/modules/auth/hooks/useVendorAuthStore';
 import { useCustomers } from '../hooks/useCustomers';
 import { Table, Column } from '@/shared/components/Table';
 import { Customer } from '@/core/types';
 
 const CustomersPage: React.FC = () => {
-  const { admin } = useAuthStore();
-  const slug = 'Yallamatgar'; // Placeholder for now
+  const { storeSlug } = useVendorAuthStore();
+  const slug = storeSlug || 'Yallamatgar';
   const { data: customers = [], isLoading } = useCustomers(slug);
 
   const columns: Column<Customer>[] = [

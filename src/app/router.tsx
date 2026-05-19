@@ -3,6 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { ProtectedRoute } from '@/modules/auth/components/ProtectedRoute';
+import { VendorProtectedRoute } from '@/modules/auth/components/VendorProtectedRoute';
 import { AdminLayout } from '@/layouts/AdminLayout/AdminLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout/DashboardLayout';
 import { StoreLayout } from '@/layouts/StoreLayout/StoreLayout';
@@ -11,6 +12,7 @@ import { Spinner } from '@/shared/ui/Feedback';
 // ── Lazy imports ─────────────────────────────────────────────────────────────
 const PlatformLandingPage      = lazy(() => import('@/modules/store/pages/PlatformLandingPage'));
 const LoginPage                = lazy(() => import('@/modules/auth/pages/LoginPage'));
+const VendorLoginPage          = lazy(() => import('@/modules/auth/pages/VendorLoginPage'));
 const VendorRegisterPage       = lazy(() => import('@/modules/auth/pages/VendorRegisterPage'));
 
 // Admin
@@ -22,6 +24,9 @@ const PlansPage                = lazy(() => import('@/modules/admin/pages/PlansP
 // Store Dashboard
 const StoreDashboardPage       = lazy(() => import('@/modules/store/pages/StoreDashboardPage'));
 const ProductsPage             = lazy(() => import('@/modules/products/pages/ProductsPage'));
+const ProductFormPage          = lazy(() => import('@/modules/products/pages/ProductFormPage'));
+const ProductDetailsPage       = lazy(() => import('@/modules/products/pages/ProductDetailsPage'));
+const CategoriesPage           = lazy(() => import('@/modules/products/pages/CategoriesPage'));
 const OrdersPage               = lazy(() => import('@/modules/orders/pages/OrdersPage'));
 const CustomersPage            = lazy(() => import('@/modules/customers/pages/CustomersPage'));
 const TeamPage                 = lazy(() => import('@/modules/store/pages/TeamPage'));
@@ -71,6 +76,10 @@ const router = createBrowserRouter([
     element: <SuspenseWrapper loaderVariant="dark"><LoginPage /></SuspenseWrapper>,
   },
   {
+    path: '/vendor/login',
+    element: <SuspenseWrapper loaderVariant="dark"><VendorLoginPage /></SuspenseWrapper>,
+  },
+  {
     path: '/vendor/register',
     element: <SuspenseWrapper><VendorRegisterPage /></SuspenseWrapper>,
   },
@@ -94,17 +103,21 @@ const router = createBrowserRouter([
 
   // ── Store Dashboard ────────────────────────────────────────────────────────
   {
-    element: <ProtectedRoute allowedRoles={['STORE_ADMIN', 'STORE_MANAGER']} />,
+    element: <VendorProtectedRoute />,
     children: [
       {
         element: <DashboardLayout />,
         children: [
-          { path: '/dashboard',            element: <SuspenseWrapper loaderVariant="dark"><StoreDashboardPage /></SuspenseWrapper> },
-          { path: '/dashboard/products',   element: <SuspenseWrapper loaderVariant="dark"><ProductsPage /></SuspenseWrapper> },
-          { path: '/dashboard/orders',     element: <SuspenseWrapper loaderVariant="dark"><OrdersPage /></SuspenseWrapper> },
-          { path: '/dashboard/customers',  element: <SuspenseWrapper loaderVariant="dark"><CustomersPage /></SuspenseWrapper> },
-          { path: '/dashboard/team',       element: <SuspenseWrapper loaderVariant="dark"><TeamPage /></SuspenseWrapper> },
-          { path: '/dashboard/settings',   element: <SuspenseWrapper loaderVariant="dark"><SettingsPage /></SuspenseWrapper> },
+          { path: '/dashboard',              element: <SuspenseWrapper loaderVariant="dark"><StoreDashboardPage /></SuspenseWrapper> },
+          { path: '/dashboard/products',     element: <SuspenseWrapper loaderVariant="dark"><ProductsPage /></SuspenseWrapper> },
+          { path: '/dashboard/products/new', element: <SuspenseWrapper loaderVariant="dark"><ProductFormPage /></SuspenseWrapper> },
+          { path: '/dashboard/products/:productId/edit', element: <SuspenseWrapper loaderVariant="dark"><ProductFormPage /></SuspenseWrapper> },
+          { path: '/dashboard/products/:productId',      element: <SuspenseWrapper loaderVariant="dark"><ProductDetailsPage /></SuspenseWrapper> },
+          { path: '/dashboard/categories',   element: <SuspenseWrapper loaderVariant="dark"><CategoriesPage /></SuspenseWrapper> },
+          { path: '/dashboard/orders',       element: <SuspenseWrapper loaderVariant="dark"><OrdersPage /></SuspenseWrapper> },
+          { path: '/dashboard/customers',    element: <SuspenseWrapper loaderVariant="dark"><CustomersPage /></SuspenseWrapper> },
+          { path: '/dashboard/team',         element: <SuspenseWrapper loaderVariant="dark"><TeamPage /></SuspenseWrapper> },
+          { path: '/dashboard/settings',     element: <SuspenseWrapper loaderVariant="dark"><SettingsPage /></SuspenseWrapper> },
         ],
       },
     ],

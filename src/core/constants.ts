@@ -5,7 +5,8 @@ export const ROUTES = {
   /** Platform marketing landing. */
   HOME: '/',
   PLATFORM: '/platform',
-  LOGIN: '/login',
+  LOGIN: '/vendor/login',
+  VENDOR_LOGIN: '/vendor/login',
   VENDOR_REGISTER: '/vendor/register',
 
   // Platform Admin
@@ -17,6 +18,7 @@ export const ROUTES = {
   // Store Dashboard
   DASHBOARD: '/dashboard',
   DASHBOARD_PRODUCTS: '/dashboard/products',
+  DASHBOARD_CATEGORIES: '/dashboard/categories',
   DASHBOARD_ORDERS: '/dashboard/orders',
   DASHBOARD_CUSTOMERS: '/dashboard/customers',
   DASHBOARD_TEAM: '/dashboard/team',
