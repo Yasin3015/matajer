@@ -22,6 +22,7 @@ export interface StorefrontCategory {
   name: string;
   slug: string;
   description?: string;
+  image?: string;
   products_count?: number;
 }
 
@@ -63,4 +64,22 @@ export const storefrontService = {
       headers: { Vendor: vendorSlug },
       params: search ? { search } : undefined,
     }),
+
+  /**
+   * POST /store/checkout
+   */
+  checkout: (vendorSlug: string, payload: {
+    name: string;
+    phone: string;
+    email?: string;
+    city?: string;
+    address: string;
+    notes?: string;
+    extra_fees?: number;
+    products: Array<{ product_id: string; quantity: number }>;
+  }) =>
+    api.post<ApiResponse<any>>('/store/checkout', payload, {
+      headers: { Vendor: vendorSlug },
+    }),
 };
+

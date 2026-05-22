@@ -6,6 +6,7 @@ import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
+import { storefrontService } from '@/modules/store/services/storefrontService';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 
@@ -32,7 +33,10 @@ const CheckoutPage: React.FC = () => {
   const [placing, setPlacing] = useState(false);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
+  const [notes, setNotes] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
   const [payment, setPayment] = useState({ cardNumber: '', expiry: '', cvv: '', cardName: '' });
 
@@ -47,11 +51,46 @@ const CheckoutPage: React.FC = () => {
         return;
       }
     }
+    if (cart.length === 0) {
+      toast.error('Your cart is empty.');
+      return;
+    }
     setPlacing(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    clearCart(storeSlug);
-    toast.success(t('checkout.orderSuccess'), { duration: 5000 });
-    navigate(ROUTES.store(storeSlug));
+    try {
+      const products = cart.map(item => ({
+        product_id: item.product.id,
+        quantity: item.quantity
+      }));
+      
+      const payload = {
+        name: fullName.trim(),
+        phone: phone.trim(),
+        email: email.trim() ? email.trim() : undefined,
+        city: city.trim() ? city.trim() : undefined,
+        address: shippingAddress.trim(),
+        notes: notes.trim() ? notes.trim() : undefined,
+        // Backend may expect integer — round to avoid float validation errors
+        extra_fees: Math.round(shipping),
+        products
+      };
+
+      await storefrontService.checkout(storeSlug, payload);
+      
+      clearCart(storeSlug);
+      toast.success(t('checkout.orderSuccess'), { duration: 5000 });
+      navigate(ROUTES.store(storeSlug));
+    } catch (error: any) {
+      // Show detailed validation errors if available
+      const apiErrors = error?.response?.data?.errors;
+      if (apiErrors && typeof apiErrors === 'object') {
+        const messages = Object.values(apiErrors).flat().join(' | ');
+        toast.error(messages || 'Failed to place order. Please try again.');
+      } else {
+        toast.error(error?.response?.data?.message || 'Failed to place order. Please try again.');
+      }
+    } finally {
+      setPlacing(false);
+    }
   };
 
   if (cart.length === 0 && !placing) {
@@ -133,11 +172,26 @@ const CheckoutPage: React.FC = () => {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label={t('checkout.phone')}
+                placeholder={t('checkout.phonePlaceholder')}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <Input
+                label="Email Address"
+                type="email"
+                placeholder="john@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
             <Input
-              label={t('checkout.phone')}
-              placeholder={t('checkout.phonePlaceholder')}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              label="City"
+              placeholder="Cairo"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
             />
             <div className="w-full">
               <label htmlFor="ship-addr" className="label">
@@ -152,6 +206,12 @@ const CheckoutPage: React.FC = () => {
                 onChange={(e) => setShippingAddress(e.target.value)}
               />
             </div>
+            <Input
+              label="Delivery Notes (optional)"
+              placeholder="Call before delivery, leave with concierge, etc."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
           </div>
 
           <div className="card space-y-4">

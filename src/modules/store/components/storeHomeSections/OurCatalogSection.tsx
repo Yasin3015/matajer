@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '@/core/constants';
 import type { Product } from '@/core/types';
+import { useStorefrontCategories } from '@/modules/store/hooks/useStorefrontData';
 import toast from 'react-hot-toast';
 import { Spinner } from '@/shared/ui/Feedback';
 
@@ -20,8 +21,18 @@ export const OurCatalogSection: React.FC<OurCatalogSectionProps> = ({
   onAddToCart,
 }) => {
   const { t } = useTranslation();
-  const catalog = products.slice(0, 8);
-  const categoryOptions = [...new Set(products.map((p) => p.category))];
+  const { data: apiCategories = [] } = useStorefrontCategories(storeSlug);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Filter products by selected category
+  const catalog = useMemo(() => {
+    const base = products.slice(0, 8);
+    if (selectedCategory === 'all') return base;
+    return products.filter((p) => p.category === selectedCategory).slice(0, 8);
+  }, [products, selectedCategory]);
+
+  // Use real API categories for the dropdown
+  const categoryOptions = useMemo(() => apiCategories.map((c) => c.name), [apiCategories]);
 
   return (
     <section className="py-14 sm:py-16 border-t border-slate-100">
@@ -50,7 +61,8 @@ export const OurCatalogSection: React.FC<OurCatalogSectionProps> = ({
           <select
             id="catalog-filter"
             className="rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-medium py-2.5 ps-3 pe-8 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-            defaultValue="all"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
           >
             <option value="all">{t('home.catalog.filterAll')}</option>
             {categoryOptions.map((c) => (
@@ -78,9 +90,11 @@ export const OurCatalogSection: React.FC<OurCatalogSectionProps> = ({
                   <img src={product.images[0]} alt="" className="w-full h-full object-cover" />
                 </Link>
                 <div className="p-4 flex flex-col flex-1 text-start">
-                  <p className="text-[11px] font-semibold tracking-wider text-blue-600 uppercase mb-1">
-                    {product.category}
-                  </p>
+                  {product.category && product.category !== 'Uncategorized' && (
+                    <p className="text-[11px] font-semibold tracking-wider text-blue-600 uppercase mb-1">
+                      {product.category}
+                    </p>
+                  )}
                   <Link to={ROUTES.storeProduct(storeSlug, product.id)}>
                     <h3 className="font-semibold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2">
                       {product.name}

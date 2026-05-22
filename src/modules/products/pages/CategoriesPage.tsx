@@ -16,6 +16,8 @@ import {
 } from '@/modules/store/hooks/useVendorCategories';
 import type { VendorCategory } from '@/modules/store/services/vendorCategoriesService';
 
+import { compressImage } from '@/shared/utils/imageCompressor';
+
 interface CategoryForm {
   name: string;
   slug: string;
@@ -43,13 +45,26 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   error,
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
+  const [compressing, setCompressing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
     if (file) {
-      setPreview(URL.createObjectURL(file));
-      onFileChange(file);
+      setCompressing(true);
+      const toastId = toast.loading('Optimizing category image...');
+      try {
+        const compressed = await compressImage(file, 1024, 1024, 0.75);
+        setPreview(URL.createObjectURL(compressed));
+        onFileChange(compressed);
+        toast.success('Category image optimized!', { id: toastId });
+      } catch (err) {
+        toast.error('Failed to optimize category image.', { id: toastId });
+        setPreview(URL.createObjectURL(file));
+        onFileChange(file);
+      } finally {
+        setCompressing(false);
+      }
     } else {
       setPreview(null);
       onFileChange(null);

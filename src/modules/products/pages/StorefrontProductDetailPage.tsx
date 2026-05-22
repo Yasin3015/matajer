@@ -108,7 +108,9 @@ const StorefrontProductDetailPage: React.FC = () => {
         <div className="space-y-6">
           <div>
             <p className="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-2">{t('product.premiumBadge')}</p>
-            <p className="text-sm text-blue-600 font-medium uppercase tracking-wider mb-1">{product.category}</p>
+            {product.category && (
+              <p className="text-sm text-blue-600 font-medium uppercase tracking-wider mb-1">{product.category}</p>
+            )}
             <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
             {product.rating && (
               <div className="flex items-center gap-2 mt-3 flex-wrap">

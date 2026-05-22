@@ -17,7 +17,9 @@ const StoreDashboardPage: React.FC = () => {
   const { data: customers = [] } = useCustomers(slug);
 
   const revenue = orders.reduce((sum, o) => sum + o.total, 0);
-  const recentOrders = [...orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
+  const recentOrders = [...orders]
+    .sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''))
+    .slice(0, 5);
 
   return (
     <div className="space-y-6 animate-fade-in">

@@ -80,7 +80,7 @@ export const DashboardLayout: React.FC = () => {
         {sidebarOpen && (
           <div className="px-3 pb-2">
             <NavLink
-              to={ROUTES.store(storeSlug)}
+              to={ROUTES.store(storeSlug ?? '')}
               className="flex items-center gap-2 text-xs text-brand-400 hover:text-brand-300 px-3 py-2 rounded-lg hover:bg-surface-hover transition-colors"
             >
               <Store size={14} />

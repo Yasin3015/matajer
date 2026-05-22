@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { ROUTES } from '@/core/constants';
 import clsx from 'clsx';
+import { compressImage } from '@/shared/utils/imageCompressor';
 
 interface ProductForm {
   name: string;
@@ -69,15 +70,36 @@ const ProductFormPage: React.FC = () => {
     ...categories.map((c) => ({ label: c.name, value: c.id })),
   ];
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [compressing, setCompressing] = useState(false);
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
+    if (!files || files.length === 0) return;
     
-    const newFiles = Array.from(files);
-    setImages(prev => [...prev, ...newFiles]);
+    setCompressing(true);
+    const toastId = toast.loading('Optimizing image files for faster upload...');
     
-    const newPreviews = newFiles.map(file => URL.createObjectURL(file));
-    setPreviews(prev => [...prev, ...newPreviews]);
+    try {
+      const newFiles = Array.from(files);
+      const compressedFiles: File[] = [];
+      
+      for (const file of newFiles) {
+        // Compress images to a standard web-friendly size (e.g. 1200x1200px max, 75% quality)
+        const compressed = await compressImage(file, 1200, 1200, 0.75);
+        compressedFiles.push(compressed);
+      }
+      
+      setImages(prev => [...prev, ...compressedFiles]);
+      
+      const newPreviews = compressedFiles.map(file => URL.createObjectURL(file));
+      setPreviews(prev => [...prev, ...newPreviews]);
+      
+      toast.success('Images optimized and ready!', { id: toastId });
+    } catch (err) {
+      toast.error('Failed to optimize some images.', { id: toastId });
+    } finally {
+      setCompressing(false);
+    }
   };
 
   const removeNewImage = (index: number) => {
@@ -187,10 +209,15 @@ const ProductFormPage: React.FC = () => {
             ))}
 
             {/* Upload Button */}
-            <label className="w-32 h-32 rounded-xl border-2 border-dashed border-surface-border hover:border-brand-500 flex flex-col items-center justify-center cursor-pointer bg-surface/50 hover:bg-surface transition-colors group">
-              <UploadCloud size={28} className="text-slate-400 group-hover:text-brand-400 mb-2 transition-colors" />
-              <span className="text-xs font-medium text-slate-400 group-hover:text-brand-300">Upload Image</span>
-              <input type="file" multiple accept="image/*" className="hidden" onChange={handleImageChange} />
+            <label className={clsx(
+              "w-32 h-32 rounded-xl border-2 border-dashed border-surface-border flex flex-col items-center justify-center bg-surface/50 transition-colors group",
+              compressing ? "cursor-not-allowed opacity-55" : "hover:border-brand-500 hover:bg-surface cursor-pointer"
+            )}>
+              <UploadCloud size={28} className={clsx("text-slate-400 mb-2 transition-colors", !compressing && "group-hover:text-brand-400")} />
+              <span className={clsx("text-xs font-medium text-slate-400", !compressing && "group-hover:text-brand-300")}>
+                {compressing ? 'Optimizing...' : 'Upload Image'}
+              </span>
+              <input type="file" multiple accept="image/*" className="hidden" onChange={handleImageChange} disabled={compressing} />
             </label>
           </div>
         </div>
@@ -249,11 +276,11 @@ const ProductFormPage: React.FC = () => {
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-surface-border">
-          <Button variant="secondary" type="button" onClick={() => navigate(ROUTES.DASHBOARD_PRODUCTS)} disabled={isSaving}>
+          <Button variant="secondary" type="button" onClick={() => navigate(ROUTES.DASHBOARD_PRODUCTS)} disabled={isSaving || compressing}>
             Cancel
           </Button>
-          <Button type="submit" loading={isSaving} icon={!isSaving && <Save size={18} />} className={clsx(isSaving && 'opacity-80')}>
-            {isSaving ? 'Saving Product...' : isEdit ? 'Save Changes' : 'Create Product'}
+          <Button type="submit" loading={isSaving || compressing} icon={!(isSaving || compressing) && <Save size={18} />} className={clsx((isSaving || compressing) && 'opacity-80')}>
+            {compressing ? 'Optimizing Images...' : isSaving ? 'Saving Product...' : isEdit ? 'Save Changes' : 'Create Product'}
           </Button>
         </div>
       </form>

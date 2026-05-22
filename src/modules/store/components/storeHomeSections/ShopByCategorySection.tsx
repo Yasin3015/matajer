@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ROUTES } from '@/core/constants';
+import { useStorefrontCategories } from '@/modules/store/hooks/useStorefrontData';
 import type { Product } from '@/core/types';
 
 type FallbackId = 'sports' | 'accessories' | 'beauty' | 'homeDecor' | 'fashion' | 'electronics';
@@ -19,34 +20,43 @@ const FALLBACK_TILES: { id: FallbackId; image: string }[] = [
   { id: 'electronics', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80' },
 ];
 
-function buildCategoryTiles(products: Product[]): CategoryTile[] {
-  const seen = new Set<string>();
-  const fromStore: CategoryTile[] = [];
-  for (const p of products) {
-    if (seen.has(p.category)) continue;
-    seen.add(p.category);
-    fromStore.push({ type: 'category', name: p.category, image: p.images[0] ?? FALLBACK_TILES[0].image });
-    if (fromStore.length >= 6) break;
-  }
-  for (const f of FALLBACK_TILES) {
-    if (fromStore.length >= 6) break;
-    const key = `fb:${f.id}`;
-    if (!seen.has(key)) {
-      seen.add(key);
-      fromStore.push({ type: 'fallback', id: f.id, image: f.image });
-    }
-  }
-  return fromStore.slice(0, 6);
-}
-
 interface ShopByCategorySectionProps {
   storeSlug: string;
   products: Product[];
 }
 
-export const ShopByCategorySection: React.FC<ShopByCategorySectionProps> = ({ storeSlug, products }) => {
+export const ShopByCategorySection: React.FC<ShopByCategorySectionProps> = ({ storeSlug }) => {
   const { t } = useTranslation();
-  const tiles = useMemo(() => buildCategoryTiles(products), [products]);
+  const { data: apiCategories = [] } = useStorefrontCategories(storeSlug);
+
+  const tiles = useMemo(() => {
+    const list: CategoryTile[] = [];
+    const seen = new Set<string>();
+
+    // 1. Add categories created by the vendor from the backend API
+    for (const cat of apiCategories) {
+      if (seen.has(cat.name)) continue;
+      seen.add(cat.name);
+      list.push({
+        type: 'category',
+        name: cat.name,
+        // If the category has a saved image, use it; otherwise use a premium Unsplash fallback
+        image: cat.image || FALLBACK_TILES[list.length % FALLBACK_TILES.length].image,
+      });
+      if (list.length >= 6) break;
+    }
+
+    // 2. Fill the remaining spots up to 6 tiles with fallback/mock categories
+    for (const f of FALLBACK_TILES) {
+      if (list.length >= 6) break;
+      const key = `fb:${f.id}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        list.push({ type: 'fallback', id: f.id, image: f.image });
+      }
+    }
+    return list;
+  }, [apiCategories]);
 
   return (
     <section className="py-14 sm:py-16">

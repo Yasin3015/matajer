@@ -10,7 +10,7 @@ const mapProduct = (p: any): Product => ({
   price: Number(p.price) || 0,
   comparePrice: p.price_before ? Number(p.price_before) : undefined,
   stock: p.stock || 0,
-  category: p.category?.name || 'Uncategorized',
+  category: p.category?.name || '',
   images: (() => {
     if (p.images && p.images.length > 0 && p.images[0].url) return p.images.map((img: any) => img.url);
     if (p.image && typeof p.image === 'string' && p.image.trim() !== '') return [p.image];
@@ -19,6 +19,11 @@ const mapProduct = (p: any): Product => ({
   })(),
   rating: p.rating || 0,
   reviewCount: p.reviews_count || 0,
+  // Required Product interface fields
+  sku: p.sku || p.id || '',
+  status: p.is_active === false ? 'archived' : 'active',
+  storeSlug: p.vendor_slug || p.storeSlug || '',
+  createdAt: p.created_at || new Date().toISOString(),
 });
 
 // ── Storefront Products ───────────────────────────────────────────────────────

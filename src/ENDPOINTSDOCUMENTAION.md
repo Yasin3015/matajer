@@ -692,3 +692,543 @@ JSON
 {
   "search": "el"
 }
+
+
+# Tere Is Some New End Points Need To be Implemented
+
+# Note Not all the comming endpoints need to be Implemented Becasue some of them are Implemted In The Project
+
+# API Documentation
+
+## Table of Contents
+- [1. Platform Admin Module](#1-platform-admin-module)
+  - [Auth](#auth)
+  - [Admins](#admins)
+  - [Subscription Plans](#subscription-plans)
+  - [Vendors](#vendors)
+- [2. System / Vendor Dashboard Module](#2-system--vendor-dashboard-module)
+  - [Auth](#auth-1)
+  - [Sub-Users / Staff](#sub-users--staff)
+  - [Notifications](#notifications)
+- [3. Store Management & Catalog Module](#3-store-management--catalog-module)
+  - [Category Management](#category-management)
+  - [Product & Media Management](#product--media-management)
+- [4. Clients & CRM Management Module](#4-clients--crm-management-module)
+- [5. Vendor Fulfillment Orders Module](#5-vendor-fulfillment-orders-module)
+- [6. Front Store Module](#6-front-store-module)
+
+## 1. Platform Admin Module
+
+### Auth
+
+#### POST Admin Logout
+```http
+POST {{base_url}}/platform/auth/logout
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+### Admins
+
+#### GET List Admins
+```http
+GET {{base_url}}/platform/admins
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+#### GET Show Admin Details
+```http
+GET {{base_url}}/platform/admins/{admin_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+*Example:* `{{base_url}}/platform/admins/01kqf40tac1hzctykakj14jtxs`
+
+#### POST Create Admin
+```http
+POST {{base_url}}/platform/admins
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "name": "malik",
+    "email": "malik@system.com",
+    "phone": "01234567892",
+    "password": "password123",
+    "password_confirmation": "password123"
+}
+```
+
+#### PUT Update Admin Profile / Password
+```http
+PUT {{base_url}}/platform/admins/{admin_id}
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data  (If uploading profile assets)
+Accept: application/json
+```
+**Body (JSON / Form Data):**
+```json
+{
+    "password": "password123",
+    "password_confirmation": "password123"
+}
+```
+
+#### DELETE Delete Admin
+```http
+DELETE {{base_url}}/platform/admins/{admin_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+### Subscription Plans
+
+#### GET List Subscription Plans (Platform Admin View)
+```http
+GET {{base_url}}/platform/plans
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+#### GET Show Single Plan Details
+```http
+GET {{base_url}}/platform/plans/{plan_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+#### PUT Update Subscription Plan Settings
+```http
+PUT {{base_url}}/platform/plans/{plan_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "name": "Basic Plan",
+    "price": 20,
+    "duration_days": 60,
+    "features": {
+        "products_limit": 50,
+        "orders_limit": 100,
+        "support": "Email Only",
+        "custom_domain": false
+    },
+    "is_active": true
+}
+```
+
+### Vendors
+
+#### GET List All Registered Vendors
+```http
+GET {{base_url}}/platform/vendors
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+#### POST Create Vendor Instance
+```http
+POST {{base_url}}/platform/vendors
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+  "owner_name": "John Doe",
+  "email": "john@example.com",
+  "phone": "201012345678",
+  "password": "123456",
+  "password_confirmation": "123456",
+  "vendor_name": "Tech World Store",
+  "slug": "tech-world-store",
+  "custom_domain": "store.techworld.com"
+}
+```
+
+#### PUT Update Vendor Instance Details
+```http
+PUT {{base_url}}/platform/vendors/{vendor_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+  "vendor_name": "Tech World Updated",
+  "slug": "tech-world-updated",
+  "custom_domain": "shop.techworld.com",
+  "owner_name": "John Updated",
+  "email": "newemail@example.com",
+  "is_active": true
+}
+```
+
+#### DELETE Delete Vendor
+```http
+DELETE {{base_url}}/platform/vendors/{vendor_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+## 2. System / Vendor Dashboard Module
+
+> Used when an authenticated manager or user configures entities on a specific storefront portal.
+
+### Auth
+
+#### POST Public Vendor Registration (SaaS Landing Page Signup)
+```http
+POST {{base_url}}/vendor/register
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+  "owner_name": "John Carter",
+  "email": "john.carter@example.com",
+  "phone": "201012345678",
+  "password": "secret123",
+  "password_confirmation": "secret123",
+  "vendor_name": "Tech World Store",
+  "slug": "tech-world-store",
+  "custom_domain": "store.techworld.com"
+}
+```
+
+#### POST Vendor Dashboard Login
+```http
+POST {{base_url}}/vendor/auth/login
+Content-Type: application/json
+Accept: application/json
+Vendor: {{vendor_slug}}  (Crucial to identify target store database context)
+```
+**Body (JSON):**
+```json
+{
+    "identity": "admin@vendor.com",
+    "password": "123456",
+    "token": "fcm_token_example_78912",
+    "device": "android_phone_vendor"
+}
+```
+> Save this token separate from your superadmin token as `{{token_vendor}}`
+
+#### POST Vendor Dashboard Logout
+```http
+POST {{base_url}}/vendor/auth/logout
+Authorization: Bearer {{token_vendor}}
+Accept: application/json
+```
+
+### Sub-Users / Staff
+
+#### GET List Vendor Sub-Users / Staff members
+```http
+GET {{base_url}}/vendor/users
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+
+#### POST Create Vendor Sub-User / Staff
+```http
+POST {{base_url}}/vendor/users
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "name": "John Vendor",
+    "email": "john.vendor@example.com",
+    "phone": "01012345678",
+    "password": "123456",
+    "is_active": true
+}
+```
+
+#### PUT Update Vendor Sub-User / Staff
+```http
+PUT {{base_url}}/vendor/users
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body (JSON):** (Same attributes as Create)
+
+#### DELETE Delete Vendor Sub-User
+```http
+DELETE {{base_url}}/vendor/users/{user_id}
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+
+### Notifications
+
+#### GET List System Notifications
+```http
+GET {{base_url}}/notifications?page=2
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+*Query Parameters:* `?page=2` (Optional)
+
+#### GET Mark Notification Read
+```http
+GET {{base_url}}/notifications/{notification_id}/read
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+#### DELETE Delete Notification
+```http
+DELETE {{base_url}}/notifications/{notification_id}
+Authorization: Bearer {{token}}
+Accept: application/json
+```
+
+## 3. Store Management & Catalog Module (Vendor Scoped)
+
+### Category Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `{{base_url}}/vendor/categories` | List Store Categories |
+| POST | `{{base_url}}/vendor/categories` | Create Category |
+| PUT | `{{base_url}}/vendor/categories/{category_id}` | Update Category |
+| DELETE | `{{base_url}}/vendor/categories/{category_id}` | Delete Category |
+
+**POST Create Category Body:**
+```json
+{
+  "name": "Electronics",
+  "slug": "electronics",
+  "description": "الكترونيات وأجهزة ذكية"
+}
+```
+
+**PUT Update Category Body:**
+```json
+{
+  "name": "الكترونيات محدثة",
+  "slug": "electronics",
+  "description": "الكترونيات وأجهزة ذكية"
+}
+```
+
+### Product & Media Management
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `{{base_url}}/vendor/products` | List Store Products |
+| POST | `{{base_url}}/vendor/products` | Create Product |
+| PUT | `{{base_url}}/vendor/products/{product_id}` | Update Product |
+| DELETE | `{{base_url}}/vendor/products/{product_id}` | Delete Product |
+| DELETE | `{{base_url}}/vendor/product-media/{media_id}` | Delete Specific Media Attachment |
+
+**POST Create Product Body:**
+```json
+{
+  "category_id": "01krw8hywet78v1h1eds5g6vw7",
+  "name": "iPhone 15 Pro",
+  "slug": "iphone-15-pro",
+  "description": "Latest Apple smartphone",
+  "price": 55000,
+  "price_before": 62000,
+  "stock": 10
+}
+```
+
+**PUT Update Product Body:**
+```json
+{
+  "category_id": "01krw8hywet78v1h1eds5g6vw7",
+  "name": "iPhone 15 Pro",
+  "slug": "iphone-15-pro",
+  "description": "Latest Apple smartphone",
+  "price": 55000,
+  "price_before": 62000,
+  "stock": 20
+}
+```
+
+## 4. Clients & CRM Management Module
+
+> Used inside the dashboard to view and track clients who purchased from the vendor store.
+
+#### GET List Vendor Store Customers
+```http
+GET {{base_url}}/vendor/clients
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+
+#### POST Log/Create Customer Entry Manually
+```http
+POST {{base_url}}/vendor/clients
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "name": "Ahmed Mohamed",
+    "phone": "01012345678",
+    "email": "ahmed@gmail.com",
+    "city": "Cairo",
+    "address": "Nasr City",
+    "notes": "VIP customer"
+}
+```
+
+#### PUT Update Customer Information Profile
+```http
+PUT {{base_url}}/vendor/clients/{client_id}
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "name": "Ahmed Updated",
+    "city": "Giza"
+}
+```
+
+#### DELETE Remove Customer Entry
+```http
+DELETE {{base_url}}/vendor/clients/{client_id}
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+
+## 5. Vendor Fulfillment Orders Module
+
+> Used on the internal dashboard interface to move or modify invoice records.
+
+#### GET List Vendor Incoming Orders
+```http
+GET {{base_url}}/vendor/orders
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+
+#### PUT Update Order Fulfillment Status & Fees
+```http
+PUT {{base_url}}/vendor/orders/{order_id}
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "status": "confirmed",
+    "extra_fees": 75,
+    "notes": "Customer confirmed by phone"
+}
+```
+*Status values:* `pending`, `confirmed`, `shipped`, `cancelled`
+
+#### DELETE Cancel / Terminate Order
+```http
+DELETE {{base_url}}/vendor/orders/{order_id}
+Authorization: Bearer {{token_vendor}}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+
+## 6. Front Store Module (Public eCommerce & Checkout Layouts)
+
+> Used on the public-facing store app layouts where customers add items to bags and submit purchases anonymously.
+
+#### GET View Public SaaS Pricing Tiers
+```http
+GET {{base_url}}/plans
+Accept: application/json
+```
+
+#### GET View Single Public SaaS Plan Description
+```http
+GET {{base_url}}/plans/{id}
+Accept: application/json
+```
+
+#### GET Query / Filter Public Catalog Products
+```http
+GET {{base_url}}/store/products
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body / Query Parameter Option (JSON):**
+```json
+{
+  "min_price": 1000
+  // "category_id": "01HXYZABC123",  // Optional
+  // "search": "iphone"              // Optional
+}
+```
+
+#### GET View Individual Product Page Details
+```http
+GET {{base_url}}/store/products/{slug_or_id}
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+*Example:* `{{base_url}}/store/products/iphone-15-pro`
+
+#### GET Fetch Public Layout Category Navigation Bar
+```http
+GET {{base_url}}/store/categories
+Vendor: {{vendor_slug}}
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+  "search": "el"
+}
+```
+
+#### POST Submit Shopping Cart Checkout Order
+```http
+POST {{base_url}}/store/checkout
+Vendor: {{vendor_slug}}
+Content-Type: application/json
+Accept: application/json
+```
+**Body (JSON):**
+```json
+{
+    "name": "Ahmed Mohamed",
+    "phone": "01012345678",
+    "email": "ahmed@gmail.com",
+    "city": "Cairo",
+    "address": "Nasr City",
+    "notes": "Call before delivery",
+    "extra_fees": 50,
+    "products": [
+        {
+            "product_id": "01krz4n2k9t19jpjfa3sbd3cwh",
+            "quantity": 2
+        },
+        {
+            "product_id": "01krz54jbeexvp0knrhx2d9k4b",
+            "quantity": 1
+        }
+    ]
+}
+```

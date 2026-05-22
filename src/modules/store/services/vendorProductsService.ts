@@ -47,7 +47,8 @@ const buildProductFormData = (payload: any): FormData => {
   if (payload.images && payload.images.length > 0) {
     for (let i = 0; i < payload.images.length; i++) {
       const file = payload.images[i];
-      fd.append(`images[${i}]`, file, file.name);
+      // Use standard array key 'images[]' so backends (like Laravel/PHP) can correctly group multiple files
+      fd.append('images[]', file, file.name);
     }
   }
   return fd;
@@ -77,9 +78,14 @@ export const vendorProductsService = {
    * POST /vendor/products
    */
   create: (vendorSlug: string, payload: CreateVendorProductPayload) => {
-    const data = payload.images?.length ? buildProductFormData(payload) : payload;
+    const hasImages = !!payload.images?.length;
+    const data = hasImages ? buildProductFormData(payload) : payload;
     const headers: Record<string, string> = { Vendor: vendorSlug };
-    return api.post<ApiResponse<ApiProduct>>('/vendor/products', data, { headers });
+    return api.post<ApiResponse<ApiProduct>>('/vendor/products', data, {
+      headers,
+      // If we are uploading files, increase timeout to 2 minutes to prevent network/abort errors on slow networks
+      ...(hasImages && { timeout: 120000 }),
+    });
   },
 
   /**
@@ -94,6 +100,8 @@ export const vendorProductsService = {
       data.append('_method', 'PUT');
       return api.post<ApiResponse<ApiProduct>>(`/vendor/products/${id}`, data, {
         headers: { Vendor: vendorSlug },
+        // Increase timeout to 2 minutes for multipart file uploads
+        timeout: 120000,
       });
     }
     return api.put<ApiResponse<ApiProduct>>(`/vendor/products/${id}`, payload, {

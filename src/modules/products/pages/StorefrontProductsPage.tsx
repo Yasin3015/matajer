@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Star, Search, SlidersHorizontal } from 'lucide-react';
-import { useStorefrontProducts } from '@/modules/store/hooks/useStorefrontData';
+import { useStorefrontProducts, useStorefrontCategories } from '@/modules/store/hooks/useStorefrontData';
 import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Spinner } from '@/shared/ui/Feedback';
@@ -16,14 +16,20 @@ const StorefrontProductsPage: React.FC = () => {
   const { storeSlug: storeSlugParam } = useParams<{ storeSlug?: string }>();
   const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
   const { data: products = [], isLoading } = useStorefrontProducts(storeSlug);
+  // Fetch real categories from the API so vendor-created categories appear in the filter bar
+  const { data: apiCategories = [] } = useStorefrontCategories(storeSlug);
   const addToCart = useCartStore((s) => s.addToCart);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(FILTER_ALL);
 
-  const categories = useMemo(
-    () => [FILTER_ALL, ...new Set(products.map((p) => p.category))],
-    [products],
-  );
+  // Build category list: real API categories first, then deduplicate with any product categories
+  const categories = useMemo(() => {
+    const apiNames = apiCategories.map((c) => c.name);
+    // Also include any product categories that may not be in the API list (edge case safety)
+    const productNames = products.map((p) => p.category).filter((c) => c && c !== 'Uncategorized');
+    const allNames = [...new Set([...apiNames, ...productNames])];
+    return [FILTER_ALL, ...allNames];
+  }, [apiCategories, products]);
 
   const filtered = products.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
@@ -102,7 +108,9 @@ const StorefrontProductsPage: React.FC = () => {
                 </div>
               </Link>
               <div className="p-4">
-                <p className="text-[10px] text-blue-600 font-medium uppercase tracking-wider mb-1">{product.category}</p>
+                {product.category && (
+                  <p className="text-[10px] text-blue-600 font-medium uppercase tracking-wider mb-1">{product.category}</p>
+                )}
                 <Link to={ROUTES.storeProduct(storeSlug, product.id)}>
                   <h3 className="font-semibold text-slate-900 text-sm hover:text-blue-600 transition-colors line-clamp-2">
                     {product.name}
