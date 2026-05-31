@@ -162,7 +162,17 @@
     "outOfStock": "غير متوفر",
     "filterAll": "الكل",
     "addToCartAria": "إضافة {{name}} إلى السلة",
-    "addedShort": "تمت الإضافة!"
+    "addedShort": "تمت الإضافة!",
+    "clearCategoryFilter": "عرض جميع المنتجات"
+  },
+  "categories": {
+    "title": "جميع الفئات",
+    "subtitle": "تصفّح كل فئات هذا المتجر.",
+    "count": "{{count}} فئة",
+    "emptyTitle": "لا توجد فئات بعد",
+    "emptyHint": "لم يضف هذا المتجر أي فئات بعد.",
+    "browseProducts": "تصفّح جميع المنتجات",
+    "backToHome": "العودة للرئيسية"
   },
   "platform": {
     "signIn": "تسجيل الدخول",

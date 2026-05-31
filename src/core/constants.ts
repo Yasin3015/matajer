@@ -1,6 +1,11 @@
 /** Default tenant served at `/` without `/store/:slug` prefix. */
 export const DEFAULT_STORE_SLUG = 'Yallamatgar';
 
+/** Demo storefront — fallback/demo categories are shown only for this slug. */
+export function isDemoStore(storeSlug: string): boolean {
+  return storeSlug === DEFAULT_STORE_SLUG;
+}
+
 export const ROUTES = {
   /** Platform marketing landing. */
   HOME: '/',
@@ -27,6 +32,7 @@ export const ROUTES = {
   // Storefront helpers
   store: (slug: string) => `/store/${slug}`,
   storeProducts: (slug: string) => `/store/${slug}/products`,
+  storeCategories: (slug: string) => `/store/${slug}/categories`,
   storeProduct: (slug: string, id: string) => `/store/${slug}/products/${id}`,
   storeCart: (slug: string) => `/store/${slug}/cart`,
   storeCheckout: (slug: string) => `/store/${slug}/checkout`,

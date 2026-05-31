@@ -162,7 +162,17 @@
     "outOfStock": "Out of stock",
     "filterAll": "All",
     "addToCartAria": "Add {{name}} to cart",
-    "addedShort": "Added!"
+    "addedShort": "Added!",
+    "clearCategoryFilter": "View all products"
+  },
+  "categories": {
+    "title": "All categories",
+    "subtitle": "Browse every category in this store.",
+    "count": "{{count}} categories",
+    "emptyTitle": "No categories yet",
+    "emptyHint": "This store has not added any categories.",
+    "browseProducts": "Browse all products",
+    "backToHome": "Back to home"
   },
   "platform": {
     "signIn": "Sign In",

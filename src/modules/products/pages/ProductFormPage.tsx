@@ -42,7 +42,7 @@ const ProductFormPage: React.FC = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [existingMedia, setExistingMedia] = useState<Array<{ id: string; url: string }>>([]);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ProductForm>();
+  const { register, handleSubmit, reset, getValues, formState: { errors } } = useForm<ProductForm>();
 
   useEffect(() => {
     if (isEdit && productToEdit) {
@@ -84,7 +84,6 @@ const ProductFormPage: React.FC = () => {
       const compressedFiles: File[] = [];
       
       for (const file of newFiles) {
-        // Compress images to a standard web-friendly size (e.g. 1200x1200px max, 75% quality)
         const compressed = await compressImage(file, 1200, 1200, 0.75);
         compressedFiles.push(compressed);
       }
@@ -235,19 +234,27 @@ const ProductFormPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              label="Price *"
+              label="Sell Price *"
               type="number"
               step="0.01"
               placeholder="e.g. 55000"
-              {...register('price', { required: true, min: 0 })}
-              error={errors.price ? 'Valid price is required' : undefined}
+              {...register('price', { required: true, min: { value: 0, message: 'Price must be positive' } })}
+              error={errors.price ? errors.price.message || 'Sell price is required' : undefined}
             />
             <Input
               label="Price Before Discount (Optional)"
               type="number"
               step="0.01"
               placeholder="e.g. 62000"
-              {...register('price_before')}
+              {...register('price_before', {
+                required: false,
+                validate: (value) => {
+                  if (!value && value !== 0) return true;
+                  const sellPrice = Number(getValues('price'));
+                  return Number(value) >= sellPrice || 'Must be greater than or equal to the Sell Price';
+                },
+              })}
+              error={errors.price_before ? errors.price_before.message || 'Must be greater than or equal to Sell Price' : undefined}
             />
           </div>
 

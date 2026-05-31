@@ -31,7 +31,7 @@ const StoreHomePage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6 pt-8 sm:pt-10 space-y-0">
       <StoreHomeHero storeSlug={storeSlug} storeName={storeName} />
-      <ShopByCategorySection storeSlug={storeSlug} products={products} />
+      <ShopByCategorySection storeSlug={storeSlug} />
       <OnSaleSection storeSlug={storeSlug} products={products} onAddToCart={handleAdd} />
       <OurCatalogSection
         storeSlug={storeSlug}

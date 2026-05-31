@@ -91,7 +91,10 @@ export const StoreLayout: React.FC = () => {
                 <Link to={ROUTES.storeProducts(storeSlug)} className="text-slate-600 hover:text-blue-600 transition-colors">
                   {t('nav.newArrivals')}
                 </Link>
-                <Link to={ROUTES.storeProducts(storeSlug)} className="text-slate-600 hover:text-blue-600 transition-colors">
+                <Link
+                to={ROUTES.storeCategories(storeSlug)}
+                className="text-slate-600 hover:text-blue-600 transition-colors"
+              >
                   {t('nav.collections')}
                 </Link>
                 <NavLink to={ROUTES.storeCart(storeSlug)} className={navLinkClass}>
@@ -139,7 +142,7 @@ export const StoreLayout: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.storeProducts(storeSlug)} className="hover:text-blue-600 transition-colors">
+                <Link to={ROUTES.storeCategories(storeSlug)} className="hover:text-blue-600 transition-colors">
                   {t('nav.collections')}
                 </Link>
               </li>

@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Star, Search, SlidersHorizontal } from 'lucide-react';
 import { useStorefrontProducts, useStorefrontCategories } from '@/modules/store/hooks/useStorefrontData';
@@ -7,6 +7,8 @@ import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Spinner } from '@/shared/ui/Feedback';
 import { Input } from '@/shared/ui/Input';
+import { ProductPrice } from '@/shared/components/ProductPrice';
+import { hasSalePrice } from '@/shared/utils/productPrice';
 import toast from 'react-hot-toast';
 
 const FILTER_ALL = '__all__';
@@ -15,17 +17,31 @@ const StorefrontProductsPage: React.FC = () => {
   const { t } = useTranslation();
   const { storeSlug: storeSlugParam } = useParams<{ storeSlug?: string }>();
   const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
   const { data: products = [], isLoading } = useStorefrontProducts(storeSlug);
-  // Fetch real categories from the API so vendor-created categories appear in the filter bar
   const { data: apiCategories = [] } = useStorefrontCategories(storeSlug);
   const addToCart = useCartStore((s) => s.addToCart);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(FILTER_ALL);
 
-  // Build category list: real API categories first, then deduplicate with any product categories
+  const categoryFromUrl = useMemo(() => {
+    if (!categoryParam) return null;
+    return (
+      apiCategories.find((c) => c.slug === categoryParam || c.id === categoryParam) ?? null
+    );
+  }, [categoryParam, apiCategories]);
+
+  useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl.name);
+    } else if (!categoryParam) {
+      setSelectedCategory(FILTER_ALL);
+    }
+  }, [categoryFromUrl, categoryParam]);
+
   const categories = useMemo(() => {
     const apiNames = apiCategories.map((c) => c.name);
-    // Also include any product categories that may not be in the API list (edge case safety)
     const productNames = products.map((p) => p.category).filter((c) => c && c !== 'Uncategorized');
     const allNames = [...new Set([...apiNames, ...productNames])];
     return [FILTER_ALL, ...allNames];
@@ -42,8 +58,18 @@ const StorefrontProductsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 mb-1">{t('products.title')}</h1>
+        <h1 className="text-3xl font-bold text-slate-900 mb-1">
+          {categoryFromUrl ? categoryFromUrl.name : t('products.title')}
+        </h1>
         <p className="text-slate-600 text-sm">{t('products.count', { count: filtered.length })}</p>
+        {categoryFromUrl && (
+          <Link
+            to={ROUTES.storeProducts(storeSlug)}
+            className="inline-block mt-2 text-sm text-blue-600 hover:text-blue-700"
+          >
+            {t('products.clearCategoryFilter')}
+          </Link>
+        )}
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -89,13 +115,13 @@ const StorefrontProductsPage: React.FC = () => {
               className="card !p-0 overflow-hidden group hover:border-blue-200 hover:shadow-lg transition-all duration-300 animate-fade-in"
             >
               <Link to={ROUTES.storeProduct(storeSlug, product.id)}>
-                <div className="aspect-square overflow-hidden bg-slate-50 relative">
+                <div className="aspect-square overflow-hidden bg-slate-50 relative flex items-center justify-center p-3">
                   <img
                     src={product.images[0]}
                     alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-500"
                   />
-                  {product.comparePrice && (
+                  {hasSalePrice(product) && (
                     <span className="absolute top-2 start-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                       {t('products.saleBadge')}
                     </span>
@@ -116,7 +142,7 @@ const StorefrontProductsPage: React.FC = () => {
                     {product.name}
                   </h3>
                 </Link>
-                {product.rating && (
+                {product.rating != null && product.rating > 0 && (
                   <div className="flex items-center gap-1 mt-1.5">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -125,16 +151,13 @@ const StorefrontProductsPage: React.FC = () => {
                         className={i < Math.floor(product.rating!) ? 'text-amber-400 fill-amber-400' : 'text-slate-300'}
                       />
                     ))}
-                    <span className="text-[10px] text-slate-500 ms-1">({product.reviewCount})</span>
+                    {product.reviewCount != null && product.reviewCount > 0 && (
+                      <span className="text-[10px] text-slate-500 ms-1">({product.reviewCount})</span>
+                    )}
                   </div>
                 )}
                 <div className="flex items-center justify-between mt-3">
-                  <div>
-                    <span className="font-bold text-slate-900">${product.price.toFixed(2)}</span>
-                    {product.comparePrice && (
-                      <span className="ms-1.5 text-xs text-slate-400 line-through">${product.comparePrice.toFixed(2)}</span>
-                    )}
-                  </div>
+                  <ProductPrice price={product.price} comparePrice={product.comparePrice} size="sm" />
                   <button
                     type="button"
                     onClick={() => {

@@ -7,6 +7,8 @@ import { useCartStore } from '@/modules/cart/hooks/useCartStore';
 import { ROUTES, DEFAULT_STORE_SLUG } from '@/core/constants';
 import { Button } from '@/shared/ui/Button';
 import { Spinner } from '@/shared/ui/Feedback';
+import { ProductPrice } from '@/shared/components/ProductPrice';
+import { saleDiscountPercent } from '@/shared/utils/productPrice';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
 
@@ -42,10 +44,7 @@ const StorefrontProductDetailPage: React.FC = () => {
 
   const images = product.images.length ? product.images : [];
   const mainSrc = images[activeImage] ?? images[0];
-
-  const discount = product.comparePrice
-    ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
-    : 0;
+  const discount = saleDiscountPercent(product);
 
   const handleAddToCart = () => {
     addToCart(storeSlug, product, quantity);
@@ -74,11 +73,11 @@ const StorefrontProductDetailPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
         <div>
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 group">
+          <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 group flex items-center justify-center p-4 sm:p-6">
             <img
               src={mainSrc}
               alt={product.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-500"
             />
             {discount > 0 && (
               <div className="absolute top-4 start-4 bg-emerald-600 text-white font-bold text-sm px-3 py-1 rounded-full">
@@ -94,11 +93,11 @@ const StorefrontProductDetailPage: React.FC = () => {
                   type="button"
                   onClick={() => setActiveImage(i)}
                   className={clsx(
-                    'w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all',
+                    'w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-all bg-slate-50 flex items-center justify-center p-1',
                     activeImage === i ? 'border-blue-600 ring-2 ring-blue-500/20' : 'border-transparent opacity-80 hover:opacity-100',
                   )}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img src={img} alt="" className="max-w-full max-h-full object-contain" />
                 </button>
               ))}
             </div>
@@ -108,11 +107,11 @@ const StorefrontProductDetailPage: React.FC = () => {
         <div className="space-y-6">
           <div>
             <p className="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-2">{t('product.premiumBadge')}</p>
-            {product.category && (
+            {product.category ? (
               <p className="text-sm text-blue-600 font-medium uppercase tracking-wider mb-1">{product.category}</p>
-            )}
+            ) : null}
             <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
-            {product.rating && (
+            {product.rating != null && product.rating > 0 && (
               <div className="flex items-center gap-2 mt-3 flex-wrap">
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -123,19 +122,16 @@ const StorefrontProductDetailPage: React.FC = () => {
                     />
                   ))}
                 </div>
-                <span className="text-sm text-slate-600">
-                  {t('product.reviews', { rating: product.rating, count: product.reviewCount ?? 0 })}
-                </span>
+                {product.reviewCount != null && product.reviewCount > 0 && (
+                  <span className="text-sm text-slate-600">
+                    {t('product.reviews', { rating: product.rating, count: product.reviewCount })}
+                  </span>
+                )}
               </div>
             )}
           </div>
 
-          <div className="flex items-baseline gap-3 flex-wrap">
-            <span className="text-4xl font-extrabold text-slate-900">${product.price.toFixed(2)}</span>
-            {product.comparePrice && (
-              <span className="text-xl text-slate-400 line-through">${product.comparePrice.toFixed(2)}</span>
-            )}
-          </div>
+          <ProductPrice price={product.price} comparePrice={product.comparePrice} size="lg" />
 
           <p className="text-slate-600 leading-relaxed">{product.description}</p>
 

@@ -35,6 +35,7 @@ const SettingsPage             = lazy(() => import('@/modules/store/pages/Settin
 // Storefront
 const StoreHomePage            = lazy(() => import('@/modules/store/pages/StoreHomePage'));
 const StorefrontProductsPage   = lazy(() => import('@/modules/products/pages/StorefrontProductsPage'));
+const StorefrontCategoriesPage = lazy(() => import('@/modules/products/pages/StorefrontCategoriesPage'));
 const StorefrontProductDetail  = lazy(() => import('@/modules/products/pages/StorefrontProductDetailPage'));
 const CartPage                 = lazy(() => import('@/modules/cart/pages/CartPage'));
 const CheckoutPage             = lazy(() => import('@/modules/checkout/pages/CheckoutPage'));
@@ -58,6 +59,7 @@ const SuspenseWrapper: React.FC<{ children: React.ReactNode; loaderVariant?: 'li
 
 const storefrontChildRoutes: RouteObject[] = [
   { index: true,                               element: <SuspenseWrapper><StoreHomePage /></SuspenseWrapper> },
+  { path: 'categories',                        element: <SuspenseWrapper><StorefrontCategoriesPage /></SuspenseWrapper> },
   { path: 'products',                          element: <SuspenseWrapper><StorefrontProductsPage /></SuspenseWrapper> },
   { path: 'products/:productId',               element: <SuspenseWrapper><StorefrontProductDetail /></SuspenseWrapper> },
   { path: 'cart',                              element: <SuspenseWrapper><CartPage /></SuspenseWrapper> },

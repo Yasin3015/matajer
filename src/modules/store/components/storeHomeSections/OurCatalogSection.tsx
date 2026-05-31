@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ROUTES } from '@/core/constants';
 import type { Product } from '@/core/types';
 import { useStorefrontCategories } from '@/modules/store/hooks/useStorefrontData';
+import { ProductPrice } from '@/shared/components/ProductPrice';
 import toast from 'react-hot-toast';
 import { Spinner } from '@/shared/ui/Feedback';
 
@@ -86,8 +87,8 @@ export const OurCatalogSection: React.FC<OurCatalogSectionProps> = ({
                 key={product.id}
                 className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col"
               >
-                <Link to={ROUTES.storeProduct(storeSlug, product.id)} className="block aspect-[4/3] bg-slate-50">
-                  <img src={product.images[0]} alt="" className="w-full h-full object-cover" />
+                <Link to={ROUTES.storeProduct(storeSlug, product.id)} className="block aspect-[4/3] bg-slate-50 flex items-center justify-center p-3">
+                  <img src={product.images[0]} alt="" className="max-w-full max-h-full w-auto h-auto object-contain" />
                 </Link>
                 <div className="p-4 flex flex-col flex-1 text-start">
                   {product.category && product.category !== 'Uncategorized' && (
@@ -100,7 +101,7 @@ export const OurCatalogSection: React.FC<OurCatalogSectionProps> = ({
                       {product.name}
                     </h3>
                   </Link>
-                  <p className="mt-2 text-lg font-bold text-slate-900">${product.price.toFixed(2)}</p>
+                  <ProductPrice price={product.price} comparePrice={product.comparePrice} size="sm" className="mt-2" />
                   <div className="mt-auto pt-4">
                     <button
                       type="button"
