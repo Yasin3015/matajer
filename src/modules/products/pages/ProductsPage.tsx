@@ -52,7 +52,7 @@ const ProductsPage: React.FC = () => {
             className="w-10 h-10 rounded-lg object-cover bg-surface-hover"
           />
           <div>
-            <p className="font-medium text-white text-sm">{p.name}</p>
+            <p className="font-medium text-textPrimary text-sm">{p.name}</p>
             <p className="text-xs text-slate-500">{p.slug || '—'}</p>
           </div>
         </div>
@@ -71,7 +71,7 @@ const ProductsPage: React.FC = () => {
       sortable: true,
       render: (p) => (
         <div>
-          <span className="font-semibold text-white">${Number(p.price).toFixed(2)}</span>
+          <span className="font-semibold text-textPrimary">${Number(p.price).toFixed(2)}</span>
           {p.price_before && (
             <span className="ms-1.5 text-xs text-slate-500 line-through">
               ${Number(p.price_before).toFixed(2)}
@@ -133,7 +133,7 @@ const ProductsPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Products</h1>
+          <h1 className="text-2xl font-bold text-textPrimary">Products</h1>
           <p className="text-slate-400 text-sm mt-1">{products.length} products in your store.</p>
         </div>
         <Button icon={<Plus size={16} />} onClick={() => navigate('/dashboard/products/new')}>
@@ -194,7 +194,7 @@ const ProductsPage: React.FC = () => {
       >
         <p className="text-slate-300">
           Are you sure you want to delete{' '}
-          <span className="text-white font-semibold">"{deleteConfirm?.name}"</span>? This action
+          <span className="text-textPrimary font-semibold">"{deleteConfirm?.name}"</span>? This action
           cannot be undone.
         </p>
       </Modal>

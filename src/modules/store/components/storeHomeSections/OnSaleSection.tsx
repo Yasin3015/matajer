@@ -31,10 +31,10 @@ export const OnSaleSection: React.FC<OnSaleSectionProps> = ({ storeSlug, product
   if (grid.length === 0) return null;
 
   return (
-    <section className="py-14 sm:py-16 border-t border-slate-100">
+    <section className="py-14 sm:py-16 border-t border-border">
       <div className="flex items-center justify-start gap-2 mb-10">
-        <Tag className="text-red-500 shrink-0" size={22} strokeWidth={2} aria-hidden />
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">{t('home.onSale.title')}</h2>
+        <Tag className="text-danger shrink-0" size={22} strokeWidth={2} aria-hidden />
+        <h2 className="text-2xl sm:text-3xl font-bold text-textPrimary tracking-tight">{t('home.onSale.title')}</h2>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -43,26 +43,27 @@ export const OnSaleSection: React.FC<OnSaleSectionProps> = ({ storeSlug, product
           return (
             <article
               key={product.id}
-              className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+              className="rounded-2xl bg-white border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
               <Link
                 to={ROUTES.storeProduct(storeSlug, product.id)}
-                className="block relative aspect-[4/3] bg-slate-50 flex items-center justify-center p-3"
+                className="block relative overflow-hidden hover:opacity-90 transition-opacity"
+                style={{ height: '220px' }}
               >
                 <img
                   src={product.images[0]}
-                  alt=""
-                  className="max-w-full max-h-full w-auto h-auto object-contain"
+                  alt={product.name}
+                  className="w-full h-full object-cover object-center block"
                 />
                 {pct > 0 && (
-                  <span className="absolute top-3 end-3 w-12 h-12 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center shadow-md">
+                  <span className="absolute top-3 end-3 w-12 h-12 rounded-full bg-danger text-white text-xs font-bold flex items-center justify-center shadow-md">
                     -{pct}%
                   </span>
                 )}
               </Link>
               <div className="p-4 text-start">
                 <Link to={ROUTES.storeProduct(storeSlug, product.id)}>
-                  <h3 className="font-semibold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2">
+                  <h3 className="font-semibold text-textPrimary hover:text-primary transition-colors line-clamp-2">
                     {product.name}
                   </h3>
                 </Link>
@@ -81,9 +82,9 @@ export const OnSaleSection: React.FC<OnSaleSectionProps> = ({ storeSlug, product
                     toast.success(t('common.toastAddedToCart'));
                   }}
                   disabled={product.stock === 0}
-                  className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-sm font-medium py-2.5 disabled:opacity-40 transition-colors"
+                  className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-white hover:bg-appBg text-textPrimary text-sm font-medium py-2.5 disabled:opacity-40 transition-colors"
                 >
-                  <ShoppingCart size={16} className="text-slate-600" />
+                  <ShoppingCart size={16} className="text-textSecondary" />
                   {product.stock === 0 ? t('product.outOfStock') : t('product.addToCart')}
                 </button>
               </div>

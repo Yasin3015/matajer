@@ -72,7 +72,7 @@ const UsersPage: React.FC = () => {
             </span>
           </div>
           <div>
-            <p className="font-medium text-white text-sm">{a.name}</p>
+            <p className="font-medium text-textPrimary text-sm">{a.name}</p>
             <p className="text-xs text-slate-500">{a.email}</p>
           </div>
         </div>
@@ -149,7 +149,7 @@ const UsersPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Admins</h1>
+          <h1 className="text-2xl font-bold text-textPrimary">Admins</h1>
           <p className="text-slate-400 text-sm mt-1">Manage all platform administrators.</p>
         </div>
         <Button icon={<UserPlus size={16} />} onClick={() => setAddOpen(true)}>
@@ -295,19 +295,19 @@ const UsersPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-slate-500">ID</p>
-                <p className="text-sm text-white font-mono mt-1">{viewAdmin.id}</p>
+                <p className="text-sm text-textSecondary font-mono mt-1">{viewAdmin.id}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Name</p>
-                <p className="text-sm text-white mt-1">{viewAdmin.name}</p>
+                <p className="text-sm text-textSecondary mt-1">{viewAdmin.name}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Email</p>
-                <p className="text-sm text-white mt-1">{viewAdmin.email}</p>
+                <p className="text-sm text-textSecondary mt-1">{viewAdmin.email}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Phone</p>
-                <p className="text-sm text-white mt-1">{viewAdmin.phone || '—'}</p>
+                <p className="text-sm text-textSecondary mt-1">{viewAdmin.phone || '—'}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Status</p>
@@ -330,7 +330,7 @@ const UsersPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-slate-500">Joined At</p>
-                <p className="text-sm text-white mt-1">
+                <p className="text-sm text-textSecondary mt-1">
                   {viewAdmin.created_at ? new Date(viewAdmin.created_at).toLocaleString() : '—'}
                 </p>
               </div>
@@ -365,7 +365,7 @@ const UsersPage: React.FC = () => {
         }
       >
         <p className="text-slate-300">
-          Are you sure you want to delete the admin <span className="text-white font-semibold">{deleteConfirm?.name}</span>? This action cannot be undone.
+          Are you sure you want to delete the admin <span className="text-textPrimary font-semibold">{deleteConfirm?.name}</span>? This action cannot be undone.
         </p>
       </Modal>
     </div>

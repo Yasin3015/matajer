@@ -173,7 +173,7 @@ const ViewCategoryModal: React.FC<ViewCategoryModalProps> = ({ category, onClose
         <div className="space-y-3">
           <div>
             <p className="text-xs font-medium text-slate-400 mb-1">Name</p>
-            <p className="text-white font-semibold">{category.name}</p>
+            <p className="text-textPrimary font-semibold">{category.name}</p>
           </div>
           <div>
             <p className="text-xs font-medium text-slate-400 mb-1">Slug</p>
@@ -295,7 +295,7 @@ const CategoriesPage: React.FC = () => {
             </div>
           )}
           <div>
-            <p className="font-medium text-white text-sm">{c.name}</p>
+            <p className="font-medium text-textPrimary text-sm">{c.name}</p>
             <p className="text-xs text-slate-500">/{c.slug}</p>
           </div>
         </div>
@@ -355,7 +355,7 @@ const CategoriesPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Categories</h1>
+          <h1 className="text-2xl font-bold text-textPrimary">Categories</h1>
           <p className="text-slate-400 text-sm mt-1">
             Organize your products into categories.
           </p>
@@ -513,7 +513,7 @@ const CategoriesPage: React.FC = () => {
       >
         <p className="text-slate-300">
           Are you sure you want to delete the category{' '}
-          <span className="text-white font-semibold">"{deleteConfirm?.name}"</span>?
+          <span className="text-textPrimary font-semibold">"{deleteConfirm?.name}"</span>?
           Products in this category may be affected.
         </p>
       </Modal>

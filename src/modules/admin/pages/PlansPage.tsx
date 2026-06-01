@@ -72,7 +72,7 @@ const PlansPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold text-white">Subscription Plans</h1>
+        <h1 className="text-2xl font-bold text-textPrimary">Subscription Plans</h1>
         <p className="text-slate-400 text-sm mt-1">Manage platform pricing plans and features.</p>
       </div>
 
@@ -87,9 +87,9 @@ const PlansPage: React.FC = () => {
             </div>
 
             <div className="mb-4 pt-2">
-              <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+              <h3 className="text-xl font-bold text-textPrimary mb-2">{plan.name}</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-extrabold text-white">${Number(plan.price).toFixed(2)}</span>
+                <span className="text-3xl font-extrabold text-textPrimary">${Number(plan.price).toFixed(2)}</span>
                 <span className="text-slate-400 text-sm">/ {plan.duration_days} days</span>
               </div>
             </div>
@@ -190,7 +190,7 @@ const PlansPage: React.FC = () => {
           />
 
           <div className="col-span-1 md:col-span-2">
-            <h4 className="text-sm font-medium text-white mb-2 pb-1 border-b border-surface-border">Features Configuration</h4>
+            <h4 className="text-sm font-medium text-textPrimary mb-2 pb-1 border-b border-surface-border">Features Configuration</h4>
           </div>
 
           <Input
@@ -235,19 +235,19 @@ const PlansPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-slate-500">ID</p>
-                <p className="text-sm text-white font-mono mt-1">{viewPlan.id}</p>
+                <p className="text-sm text-textSecondary font-mono mt-1">{viewPlan.id}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Name</p>
-                <p className="text-sm text-white mt-1">{viewPlan.name}</p>
+                <p className="text-sm text-textSecondary mt-1">{viewPlan.name}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Price</p>
-                <p className="text-sm text-white mt-1">${Number(viewPlan.price).toFixed(2)}</p>
+                <p className="text-sm text-textSecondary mt-1">${Number(viewPlan.price).toFixed(2)}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Duration</p>
-                <p className="text-sm text-white mt-1">{viewPlan.duration_days} Days</p>
+                <p className="text-sm text-textSecondary mt-1">{viewPlan.duration_days} Days</p>
               </div>
               <div>
                 <p className="text-xs text-slate-500">Status</p>
@@ -262,27 +262,27 @@ const PlansPage: React.FC = () => {
             <hr className="border-surface-border" />
 
             <div>
-              <h4 className="text-sm font-medium text-white mb-3">Features</h4>
+              <h4 className="text-sm font-medium text-textPrimary mb-3">Features</h4>
               <div className="grid grid-cols-2 gap-4 bg-surface rounded-lg p-4 border border-surface-border">
                 <div>
                   <p className="text-xs text-slate-500">Products Limit</p>
-                  <p className="text-sm text-white mt-1">
+                  <p className="text-sm text-textSecondary mt-1">
                     {viewPlan.features?.products_limit === null ? 'Unlimited' : viewPlan.features?.products_limit}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Orders Limit</p>
-                  <p className="text-sm text-white mt-1">
+                  <p className="text-sm text-textSecondary mt-1">
                     {viewPlan.features?.orders_limit === null ? 'Unlimited' : viewPlan.features?.orders_limit}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Support</p>
-                  <p className="text-sm text-white mt-1">{viewPlan.features?.support || 'Standard'}</p>
+                  <p className="text-sm text-textSecondary mt-1">{viewPlan.features?.support || 'Standard'}</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Custom Domain</p>
-                  <p className="text-sm text-white mt-1">
+                  <p className="text-sm text-textSecondary mt-1">
                     {viewPlan.features?.custom_domain ? 'Enabled' : 'Disabled'}
                   </p>
                 </div>

@@ -4,7 +4,7 @@ import { useOrders, useUpdateVendorOrder, useDeleteVendorOrder } from '../hooks/
 import { Table, Column } from '@/shared/components/Table';
 import { Badge, statusBadge } from '@/shared/ui/Badge';
 import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Input, Select, Textarea } from '@/shared/ui/Input';
 import { Modal } from '@/shared/components/Modal';
 import { EmptyState } from '@/shared/ui/Feedback';
 import { Eye, Pencil, Trash2, Search, ShoppingBag, X } from 'lucide-react';
@@ -49,9 +49,9 @@ const ViewOrderModal: React.FC<ViewOrderModalProps> = ({ order, onClose, onEdit 
     >
       <div className="space-y-6">
         {/* Order Header / Status Banner */}
-        <div className="flex items-center justify-between border-b border-surface-border pb-4">
+        <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
-            <p className="text-xs text-slate-400">Status</p>
+            <p className="text-xs text-textSecondary">Status</p>
             <div className="mt-1">
               <Badge variant={statusBadge(order.status)}>
                 {order.status.toUpperCase()}
@@ -59,8 +59,8 @@ const ViewOrderModal: React.FC<ViewOrderModalProps> = ({ order, onClose, onEdit 
             </div>
           </div>
           <div className="text-right">
-            <p className="text-xs text-slate-400">Order Date</p>
-            <p className="text-slate-200 text-sm font-medium mt-1">
+            <p className="text-xs text-textSecondary">Order Date</p>
+            <p className="text-textPrimary text-sm font-medium mt-1">
               {order.created_at ? new Date(order.created_at).toLocaleString() : '—'}
             </p>
           </div>
@@ -68,36 +68,36 @@ const ViewOrderModal: React.FC<ViewOrderModalProps> = ({ order, onClose, onEdit 
 
         {/* Customer Details Section */}
         <div className="space-y-3">
-          <h4 className="text-xs font-semibold text-brand-400 uppercase tracking-wider">Customer details</h4>
-          <div className="bg-surface p-4 rounded-xl border border-surface-border space-y-2.5">
+          <h4 className="text-[11px] font-bold text-primary uppercase tracking-[0.5px]">Customer details</h4>
+          <div className="bg-appBg p-4 rounded-xl border border-border space-y-2.5">
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-slate-500">Name</p>
-                <p className="text-slate-200 font-medium mt-0.5">{order.customerName || '—'}</p>
+                <p className="text-xs text-textSecondary">Name</p>
+                <p className="text-textPrimary font-medium mt-0.5">{order.customerName || '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Phone</p>
-                <p className="text-slate-200 font-medium mt-0.5">{order.customerPhone || '—'}</p>
+                <p className="text-xs text-textSecondary">Phone</p>
+                <p className="text-textPrimary font-medium mt-0.5">{order.customerPhone || '—'}</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 text-sm pt-2 border-t border-surface-border/50">
+            <div className="grid grid-cols-2 gap-3 text-sm pt-2 border-t border-border/50">
               <div>
-                <p className="text-xs text-slate-500">Email</p>
-                <p className="text-slate-200 font-medium mt-0.5 break-all">{order.customerEmail || '—'}</p>
+                <p className="text-xs text-textSecondary">Email</p>
+                <p className="text-textPrimary font-medium mt-0.5 break-all">{order.customerEmail || '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">City</p>
-                <p className="text-slate-200 font-medium mt-0.5">{order.city || '—'}</p>
+                <p className="text-xs text-textSecondary">City</p>
+                <p className="text-textPrimary font-medium mt-0.5">{order.city || '—'}</p>
               </div>
             </div>
-            <div className="pt-2 border-t border-surface-border/50 text-sm">
-              <p className="text-xs text-slate-500">Shipping Address</p>
-              <p className="text-slate-300 mt-0.5">{order.address || '—'}</p>
+            <div className="pt-2 border-t border-border/50 text-sm">
+              <p className="text-xs text-textSecondary">Shipping Address</p>
+              <p className="text-textPrimary mt-0.5">{order.address || '—'}</p>
             </div>
             {order.notes && (
-              <div className="pt-2 border-t border-surface-border/50 text-sm">
-                <p className="text-xs text-slate-500">Customer Notes</p>
-                <p className="text-slate-300 italic mt-0.5">"{order.notes}"</p>
+              <div className="pt-2 border-t border-border/50 text-sm">
+                <p className="text-xs text-textSecondary">Customer Notes</p>
+                <p className="text-textPrimary italic mt-0.5">"{order.notes}"</p>
               </div>
             )}
           </div>
@@ -105,10 +105,10 @@ const ViewOrderModal: React.FC<ViewOrderModalProps> = ({ order, onClose, onEdit 
 
         {/* Order Items Table */}
         <div className="space-y-2">
-          <h4 className="text-xs font-semibold text-brand-400 uppercase tracking-wider">Order items</h4>
-          <div className="overflow-x-auto max-h-48 border border-surface-border rounded-xl">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-surface text-slate-400 text-xs uppercase border-b border-surface-border">
+          <h4 className="text-[11px] font-bold text-primary uppercase tracking-[0.5px]">Order items</h4>
+          <div className="overflow-x-auto max-h-48 border border-border rounded-xl">
+            <table className="w-full text-left text-sm text-textPrimary">
+              <thead className="bg-appBg text-textPrimary text-[12px] font-semibold uppercase tracking-[0.5px] border-b border-border">
                 <tr>
                   <th className="px-4 py-2">Item</th>
                   <th className="px-4 py-2 text-center">Qty</th>
@@ -116,21 +116,21 @@ const ViewOrderModal: React.FC<ViewOrderModalProps> = ({ order, onClose, onEdit 
                   <th className="px-4 py-2 text-right">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-surface-border">
+              <tbody className="divide-y divide-border">
                 {items.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-3 text-center text-slate-500">No items in this order.</td>
+                    <td colSpan={4} className="px-4 py-3 text-center text-textSecondary">No items in this order.</td>
                   </tr>
                 ) : (
                   items.map((item, idx) => {
                     const price = item.price || item.product?.price || 0;
                     const name = item.name || item.product?.name || `Product ID: ${item.product_id}`;
                     return (
-                      <tr key={idx} className="hover:bg-surface/30">
-                        <td className="px-4 py-2.5 font-medium text-white">{name}</td>
-                        <td className="px-4 py-2.5 text-center">{item.quantity}</td>
-                        <td className="px-4 py-2.5 text-right">${price.toFixed(2)}</td>
-                        <td className="px-4 py-2.5 text-right text-white font-medium">${(price * item.quantity).toFixed(2)}</td>
+                      <tr key={idx} className="hover:bg-primaryLight">
+                        <td className="px-4 py-2.5 font-medium">{name}</td>
+                        <td className="px-4 py-2.5 text-center text-textSecondary">{item.quantity}</td>
+                        <td className="px-4 py-2.5 text-right text-textSecondary">${price.toFixed(2)}</td>
+                        <td className="px-4 py-2.5 text-right font-medium">${(price * item.quantity).toFixed(2)}</td>
                       </tr>
                     );
                   })
@@ -141,18 +141,18 @@ const ViewOrderModal: React.FC<ViewOrderModalProps> = ({ order, onClose, onEdit 
         </div>
 
         {/* Invoice Summary */}
-        <div className="pt-3 border-t border-surface-border flex flex-col items-end gap-1.5 text-sm text-slate-400">
+        <div className="pt-3 border-t border-border flex flex-col items-end gap-1.5 text-sm text-textSecondary">
           <div className="flex justify-between w-full max-w-[240px]">
             <span>Subtotal:</span>
-            <span className="text-slate-200 font-medium">${subtotal.toFixed(2)}</span>
+            <span className="text-textPrimary font-medium">${subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between w-full max-w-[240px]">
             <span>Extra Fees:</span>
-            <span className="text-slate-200 font-medium">${extraFees.toFixed(2)}</span>
+            <span className="text-textPrimary font-medium">${extraFees.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between w-full max-w-[240px] text-base font-bold text-white border-t border-surface-border pt-1.5">
+          <div className="flex justify-between w-full max-w-[240px] text-base font-bold text-textPrimary border-t border-border pt-1.5">
             <span>Grand Total:</span>
-            <span className="text-green-400">${(order.total || grandTotal).toFixed(2)}</span>
+            <span className="text-success">${(order.total || grandTotal).toFixed(2)}</span>
           </div>
         </div>
       </div>
@@ -185,7 +185,7 @@ const OrdersPage: React.FC = () => {
 
   const openEdit = (o: VendorOrder) => {
     reset({
-      status: o.status,
+      status: o.status as any,
       extra_fees: o.extra_fees || 0,
       notes: o.notes || '',
     });
@@ -211,7 +211,7 @@ const OrdersPage: React.FC = () => {
       header: 'Order #',
       sortable: true,
       render: (o) => (
-        <span className="font-mono font-medium text-white">
+        <span className="font-mono font-medium text-textPrimary">
           {o.orderNumber || o.id.slice(0, 8).toUpperCase()}
         </span>
       ),
@@ -222,8 +222,8 @@ const OrdersPage: React.FC = () => {
       sortable: true,
       render: (o) => (
         <div>
-          <p className="text-white text-sm font-medium">{o.customerName || 'Anonymous Customer'}</p>
-          <p className="text-xs text-slate-500">{o.customerEmail || 'No email'}</p>
+          <p className="text-textPrimary text-sm font-medium">{o.customerName || 'Anonymous Customer'}</p>
+          <p className="text-xs text-textSecondary">{o.customerEmail || 'No email'}</p>
         </div>
       ),
     },
@@ -232,14 +232,14 @@ const OrdersPage: React.FC = () => {
       header: 'Items',
       render: (o) => {
         const count = o.products?.reduce((acc, item) => acc + item.quantity, 0) || 0;
-        return <span className="text-slate-400 text-sm">{count} item{count !== 1 ? 's' : ''}</span>;
+        return <span className="text-textSecondary text-sm">{count} item{count !== 1 ? 's' : ''}</span>;
       },
     },
     {
       key: 'total',
       header: 'Total Amount',
       sortable: true,
-      render: (o) => <span className="font-semibold text-green-400">${o.total.toFixed(2)}</span>,
+      render: (o) => <span className="font-semibold text-success">${o.total.toFixed(2)}</span>,
     },
     {
       key: 'status',
@@ -255,7 +255,7 @@ const OrdersPage: React.FC = () => {
       header: 'Date',
       sortable: true,
       render: (o) => (
-        <span className="text-slate-400 text-sm">
+        <span className="text-textSecondary text-sm">
           {o.created_at ? new Date(o.created_at).toLocaleDateString() : '—'}
         </span>
       ),
@@ -267,21 +267,21 @@ const OrdersPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewOrder(o)}
-            className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="View details"
           >
             <Eye size={15} />
           </button>
           <button
             onClick={() => openEdit(o)}
-            className="p-1.5 text-slate-400 hover:text-brand-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="Update order status"
           >
             <Pencil size={15} />
           </button>
           <button
             onClick={() => setDeleteConfirm(o)}
-            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-danger transition-colors"
             title="Terminate / Cancel order"
           >
             <X size={16} />
@@ -295,8 +295,8 @@ const OrdersPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Orders</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-textPrimary">Orders</h1>
+          <p className="text-textSecondary text-sm mt-1">
             {orders.length} order invoices placed in your storefront catalog.
           </p>
         </div>
@@ -350,20 +350,16 @@ const OrdersPage: React.FC = () => {
         }
       >
         <form className="space-y-4" onSubmit={handleSubmit(onEditSubmit)}>
-          <div>
-            <label className="text-sm font-medium text-slate-300 block mb-2">
-              Fulfillment Status *
-            </label>
-            <select
-              className="w-full bg-surface border border-surface-border text-white rounded-xl px-3 py-2.5 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm"
-              {...register('status', { required: true })}
-            >
-              <option value="pending">PENDING</option>
-              <option value="confirmed">CONFIRMED</option>
-              <option value="shipped">SHIPPED</option>
-              <option value="cancelled">CANCELLED</option>
-            </select>
-          </div>
+          <Select
+            label="Fulfillment Status *"
+            options={[
+              { label: 'PENDING', value: 'pending' },
+              { label: 'CONFIRMED', value: 'confirmed' },
+              { label: 'SHIPPED', value: 'shipped' },
+              { label: 'CANCELLED', value: 'cancelled' },
+            ]}
+            {...register('status', { required: true })}
+          />
 
           <Input
             label="Extra Shipping / Handling Fees ($)"
@@ -373,17 +369,11 @@ const OrdersPage: React.FC = () => {
             {...register('extra_fees')}
           />
 
-          <div>
-            <label className="text-sm font-medium text-slate-300 block mb-2">
-              Order Notes / Action Remarks
-            </label>
-            <textarea
-              className="w-full bg-surface border border-surface-border text-white rounded-xl px-3 py-2.5 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none text-sm resize-none"
-              rows={4}
-              placeholder="e.g. Customer confirmed shipping details via call."
-              {...register('notes')}
-            />
-          </div>
+          <Textarea
+            label="Order Notes / Action Remarks"
+            placeholder="e.g. Customer confirmed shipping details via call."
+            {...register('notes')}
+          />
         </form>
       </Modal>
 
@@ -410,9 +400,9 @@ const OrdersPage: React.FC = () => {
           </>
         }
       >
-        <p className="text-slate-300">
+        <p className="text-textSecondary">
           Are you sure you want to terminate order{' '}
-          <span className="text-white font-semibold">"#{deleteConfirm?.orderNumber || deleteConfirm?.id.slice(0, 8)}"</span>?
+          <span className="text-textPrimary font-semibold">"#{deleteConfirm?.orderNumber || deleteConfirm?.id.slice(0, 8)}"</span>?
           This action represents canceling/deleting the record in fulfillment.
         </p>
       </Modal>

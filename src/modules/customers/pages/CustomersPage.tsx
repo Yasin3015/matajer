@@ -9,7 +9,7 @@ import {
 } from '../hooks/useCustomers';
 import { Table, Column } from '@/shared/components/Table';
 import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Input, Textarea } from '@/shared/ui/Input';
 import { Modal } from '@/shared/components/Modal';
 import { EmptyState } from '@/shared/ui/Feedback';
 import { useForm } from 'react-hook-form';
@@ -48,48 +48,48 @@ const ViewCustomerModal: React.FC<ViewCustomerModalProps> = ({ customer, onClose
       }
     >
       <div className="space-y-5">
-        <div className="flex items-center gap-4 border-b border-surface-border pb-4">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-600/30 to-brand-800/20 flex items-center justify-center border border-brand-500/20 shrink-0">
-            <span className="text-brand-300 font-semibold text-lg">{customer.name[0]}</span>
+        <div className="flex items-center gap-4 border-b border-border pb-4">
+          <div className="w-14 h-14 rounded-full bg-primaryLight flex items-center justify-center border border-primary/10 shrink-0">
+            <span className="text-primary font-semibold text-lg">{customer.name[0]}</span>
           </div>
           <div>
-            <h3 className="text-white font-bold text-lg">{customer.name}</h3>
-            <p className="text-xs text-slate-400">ID: {customer.id}</p>
+            <h3 className="text-textPrimary font-bold text-lg">{customer.name}</h3>
+            <p className="text-xs text-textSecondary">ID: {customer.id}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p className="text-xs font-medium text-slate-400 mb-1">Email</p>
-            <p className="text-slate-200 text-sm font-medium">{customer.email || '—'}</p>
+            <p className="text-xs font-medium text-textSecondary mb-1">Email</p>
+            <p className="text-textPrimary text-sm font-medium">{customer.email || '—'}</p>
           </div>
           <div>
-            <p className="text-xs font-medium text-slate-400 mb-1">Phone</p>
-            <p className="text-slate-200 text-sm font-medium">{customer.phone || '—'}</p>
+            <p className="text-xs font-medium text-textSecondary mb-1">Phone</p>
+            <p className="text-textPrimary text-sm font-medium">{customer.phone || '—'}</p>
           </div>
           <div>
-            <p className="text-xs font-medium text-slate-400 mb-1">City</p>
-            <p className="text-slate-200 text-sm font-medium">{customer.city || '—'}</p>
+            <p className="text-xs font-medium text-textSecondary mb-1">City</p>
+            <p className="text-textPrimary text-sm font-medium">{customer.city || '—'}</p>
           </div>
           <div>
-            <p className="text-xs font-medium text-slate-400 mb-1">Address</p>
-            <p className="text-slate-200 text-sm font-medium">{customer.address || '—'}</p>
+            <p className="text-xs font-medium text-textSecondary mb-1">Address</p>
+            <p className="text-textPrimary text-sm font-medium">{customer.address || '—'}</p>
           </div>
         </div>
         {customer.notes && (
-          <div className="bg-surface p-3 rounded-lg border border-surface-border">
-            <p className="text-xs font-medium text-slate-400 mb-1">Notes</p>
-            <p className="text-slate-300 text-sm">{customer.notes}</p>
+          <div className="bg-appBg p-3 rounded-lg border border-border">
+            <p className="text-xs font-medium text-textSecondary mb-1">Notes</p>
+            <p className="text-textPrimary text-sm">{customer.notes}</p>
           </div>
         )}
         {(customer.totalOrders !== undefined || customer.totalSpent !== undefined) && (
-          <div className="grid grid-cols-2 gap-3 pt-3 border-t border-surface-border text-center">
-            <div className="bg-surface p-2 rounded-lg">
-              <p className="text-xs text-slate-400">Total Orders</p>
-              <p className="text-white font-bold text-lg">{customer.totalOrders ?? 0}</p>
+          <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border text-center">
+            <div className="bg-appBg p-2 rounded-lg border border-border">
+              <p className="text-xs text-textSecondary">Total Orders</p>
+              <p className="text-textPrimary font-bold text-lg">{customer.totalOrders ?? 0}</p>
             </div>
-            <div className="bg-surface p-2 rounded-lg">
-              <p className="text-xs text-slate-400">Total Spent</p>
-              <p className="text-green-400 font-bold text-lg">${(customer.totalSpent ?? 0).toFixed(2)}</p>
+            <div className="bg-appBg p-2 rounded-lg border border-border">
+              <p className="text-xs text-textSecondary">Total Spent</p>
+              <p className="text-success font-bold text-lg">${(customer.totalSpent ?? 0).toFixed(2)}</p>
             </div>
           </div>
         )}
@@ -171,24 +171,24 @@ const CustomersPage: React.FC = () => {
       sortable: true,
       render: (c) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-600/30 to-brand-800/20 flex items-center justify-center shrink-0">
-            <span className="text-brand-300 font-semibold text-xs">{c.name[0]}</span>
+          <div className="w-8 h-8 rounded-full bg-primaryLight flex items-center justify-center shrink-0">
+            <span className="text-primary font-semibold text-xs">{c.name[0]}</span>
           </div>
           <div>
-            <p className="font-medium text-white text-sm">{c.name}</p>
-            <p className="text-xs text-slate-500">{c.email || 'No email'}</p>
+            <p className="font-medium text-textPrimary text-sm">{c.name}</p>
+            <p className="text-xs text-textSecondary">{c.email || 'No email'}</p>
           </div>
         </div>
       ),
     },
-    { key: 'phone', header: 'Phone', render: (c) => <span className="text-slate-400 text-sm">{c.phone || '—'}</span> },
-    { key: 'city', header: 'City', sortable: true, render: (c) => <span className="text-slate-400 text-sm">{c.city || '—'}</span> },
-    { key: 'totalOrders' as keyof VendorClient, header: 'Orders', sortable: true, render: (c) => <span className="font-medium text-white">{c.totalOrders ?? 0}</span> },
+    { key: 'phone', header: 'Phone', render: (c) => <span className="text-textSecondary text-sm">{c.phone || '—'}</span> },
+    { key: 'city', header: 'City', sortable: true, render: (c) => <span className="text-textSecondary text-sm">{c.city || '—'}</span> },
+    { key: 'totalOrders' as keyof VendorClient, header: 'Orders', sortable: true, render: (c) => <span className="font-medium text-textPrimary">{c.totalOrders ?? 0}</span> },
     {
       key: 'totalSpent' as keyof VendorClient,
       header: 'Total Spent',
       sortable: true,
-      render: (c) => <span className="font-semibold text-green-400">${(c.totalSpent ?? 0).toFixed(2)}</span>,
+      render: (c) => <span className="font-semibold text-success">${(c.totalSpent ?? 0).toFixed(2)}</span>,
     },
     {
       key: 'actions' as keyof VendorClient,
@@ -197,21 +197,21 @@ const CustomersPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewCustomer(c)}
-            className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="View details"
           >
             <Eye size={15} />
           </button>
           <button
             onClick={() => openEdit(c)}
-            className="p-1.5 text-slate-400 hover:text-brand-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="Edit customer"
           >
             <Pencil size={15} />
           </button>
           <button
             onClick={() => setDeleteConfirm(c)}
-            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-danger transition-colors"
             title="Delete customer"
           >
             <Trash2 size={15} />
@@ -225,8 +225,8 @@ const CustomersPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Customers</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-textPrimary">Customers</h1>
+          <p className="text-textSecondary text-sm mt-1">
             {customers.length} customer records registered in your store CRM.
           </p>
         </div>
@@ -319,7 +319,7 @@ const CustomersPage: React.FC = () => {
               {...registerAdd('address')}
             />
           </div>
-          <Input
+          <Textarea
             label="Internal Notes"
             placeholder="VIP customer, calls before delivery"
             {...registerAdd('notes')}
@@ -373,7 +373,7 @@ const CustomersPage: React.FC = () => {
               {...registerEdit('address')}
             />
           </div>
-          <Input
+          <Textarea
             label="Internal Notes"
             placeholder="VIP customer, calls before delivery"
             {...registerEdit('notes')}
@@ -404,9 +404,9 @@ const CustomersPage: React.FC = () => {
           </>
         }
       >
-        <p className="text-slate-300">
+        <p className="text-textSecondary">
           Are you sure you want to delete the customer profile{' '}
-          <span className="text-white font-semibold">"{deleteConfirm?.name}"</span>?
+          <span className="text-textPrimary font-semibold">"{deleteConfirm?.name}"</span>?
           This action will permanently delete their CRM record.
         </p>
       </Modal>

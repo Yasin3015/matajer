@@ -156,12 +156,12 @@ const ProductFormPage: React.FC = () => {
       <div className="flex items-center gap-4">
         <button 
           onClick={() => navigate(ROUTES.DASHBOARD_PRODUCTS)}
-          className="p-2 rounded-full hover:bg-surface-hover text-slate-400 hover:text-white transition-colors"
+          className="p-2 rounded-full hover:bg-surface-hover text-slate-400 hover:text-textPrimary transition-colors"
         >
           <ArrowLeft size={20} />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-white">{isEdit ? 'Edit Product' : 'Create New Product'}</h1>
+          <h1 className="text-2xl font-bold text-textPrimary">{isEdit ? 'Edit Product' : 'Create New Product'}</h1>
           <p className="text-slate-400 text-sm mt-1">Fill in the details to list your product.</p>
         </div>
       </div>
@@ -170,7 +170,7 @@ const ProductFormPage: React.FC = () => {
         
         {/* Images Section */}
         <div className="card space-y-4">
-          <h2 className="text-lg font-semibold text-white">Product Images</h2>
+          <h2 className="text-lg font-semibold text-textPrimary">Product Images</h2>
           <p className="text-sm text-slate-400">Upload at least one image. High-quality images increase sales.</p>
           
           <div className="flex flex-wrap gap-4">
@@ -223,7 +223,7 @@ const ProductFormPage: React.FC = () => {
 
         {/* Basic Details */}
         <div className="card space-y-4">
-          <h2 className="text-lg font-semibold text-white">Basic Details</h2>
+          <h2 className="text-lg font-semibold text-textPrimary">Basic Details</h2>
           
           <Input
             label="Product Name *"

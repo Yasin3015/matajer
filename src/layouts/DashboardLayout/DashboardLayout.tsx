@@ -26,13 +26,11 @@ export const DashboardLayout: React.FC = () => {
   const { sidebarOpen, toggleSidebar } = useUIStore();
   const navigate = useNavigate();
 
-  const visibleItems = navItems.filter(
-    (item) => {
-      if (item.minRole === 'any') return true;
-      const r = (vendorUser as any)?.role?.toLowerCase() ?? '';
-      return r === 'platform_admin' || r === 'admin' || r === item.minRole?.toLowerCase() || !r;
-    }
-  );
+  const visibleItems = navItems.filter((item) => {
+    if (item.minRole === 'any') return true;
+    const r = (vendorUser as any)?.role?.toLowerCase() ?? '';
+    return r === 'platform_admin' || r === 'admin' || r === item.minRole?.toLowerCase() || !r;
+  });
 
   const handleLogout = () => {
     logout();
@@ -40,34 +38,39 @@ export const DashboardLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-surface overflow-hidden">
+    <div className="flex h-screen bg-appBg overflow-hidden">
+      {/* Sidebar */}
       <aside
         className={clsx(
-          'flex flex-col bg-surface-card border-r border-surface-border transition-all duration-300 z-20 flex-shrink-0',
+          'flex flex-col bg-white border-r border-border transition-all duration-300 z-20 flex-shrink-0',
           sidebarOpen ? 'w-64' : 'w-16'
         )}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 py-5 border-b border-surface-border">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center gap-3 px-4 py-5 border-b border-border">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-primaryHover flex items-center justify-center flex-shrink-0 shadow-sm">
             <Store size={16} className="text-white" />
           </div>
           {sidebarOpen && (
             <div className="animate-fade-in overflow-hidden">
-              <p className="font-bold text-white text-sm leading-tight capitalize">{(storeSlug || 'Vendor').replace('-', ' ')}</p>
-              <p className="text-[10px] text-brand-400 font-medium">Store Dashboard</p>
+              <p className="font-bold text-textPrimary text-sm leading-tight capitalize">
+                {(storeSlug || 'Vendor').replace('-', ' ')}
+              </p>
+              <p className="text-[10px] text-primary font-semibold">Store Dashboard</p>
             </div>
           )}
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
           {visibleItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.end}
-              className={({ isActive }) => clsx('sidebar-link', isActive && 'active', !sidebarOpen && 'justify-center px-2')}
+              className={({ isActive }) =>
+                clsx('sidebar-link', isActive && 'active', !sidebarOpen && 'justify-center px-2 border-l-0 rounded-xl')
+              }
               title={!sidebarOpen ? item.label : undefined}
             >
               <span className="flex-shrink-0">{item.icon}</span>
@@ -81,7 +84,7 @@ export const DashboardLayout: React.FC = () => {
           <div className="px-3 pb-2">
             <NavLink
               to={ROUTES.store(storeSlug ?? '')}
-              className="flex items-center gap-2 text-xs text-brand-400 hover:text-brand-300 px-3 py-2 rounded-lg hover:bg-surface-hover transition-colors"
+              className="flex items-center gap-2 text-xs text-textSecondary hover:text-primary px-3 py-2 rounded-xl hover:bg-primaryLight transition-colors"
             >
               <Store size={14} />
               View Storefront ↗
@@ -90,10 +93,13 @@ export const DashboardLayout: React.FC = () => {
         )}
 
         {/* Logout */}
-        <div className="p-3 border-t border-surface-border">
+        <div className="p-3 border-t border-border">
           <button
             onClick={handleLogout}
-            className={clsx('sidebar-link w-full text-red-400 hover:text-red-300 hover:bg-red-900/20', !sidebarOpen && 'justify-center px-2')}
+            className={clsx(
+              'sidebar-link w-full text-danger hover:text-danger hover:bg-dangerLight border-l-0 rounded-xl',
+              !sidebarOpen && 'justify-center px-2'
+            )}
           >
             <LogOut size={18} />
             {sidebarOpen && <span>Logout</span>}
@@ -103,31 +109,36 @@ export const DashboardLayout: React.FC = () => {
 
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 bg-surface-card border-b border-surface-border flex items-center justify-between px-6 flex-shrink-0">
+        {/* Topbar */}
+        <header className="h-16 bg-white border-b border-border flex items-center justify-between px-6 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <button onClick={toggleSidebar} className="text-slate-400 hover:text-white hover:bg-surface-hover p-2 rounded-lg transition-colors">
+            <button
+              onClick={toggleSidebar}
+              className="text-textSecondary hover:text-textPrimary hover:bg-gray-100 p-2 rounded-xl transition-colors"
+            >
               <Menu size={18} />
             </button>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <NotificationsPanel />
-            <div className="flex items-center gap-2 cursor-pointer hover:bg-surface-hover px-3 py-1.5 rounded-lg transition-colors">
-              <div className="w-7 h-7 rounded-full bg-brand-600/40 flex items-center justify-center flex-shrink-0">
-                <span className="text-brand-300 text-xs font-bold uppercase">
+            <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-3 py-1.5 rounded-xl transition-colors">
+              <div className="w-7 h-7 rounded-full bg-primaryLight flex items-center justify-center flex-shrink-0">
+                <span className="text-primary text-xs font-bold uppercase">
                   {vendorUser?.name?.charAt(0) ?? 'V'}
                 </span>
               </div>
               {sidebarOpen && (
                 <div className="hidden sm:block">
-                  <p className="text-xs font-medium text-white leading-tight">{vendorUser?.name ?? 'Manager'}</p>
-                  <p className="text-[10px] text-slate-500 capitalize">{storeSlug}</p>
+                  <p className="text-xs font-semibold text-textPrimary leading-tight">{vendorUser?.name ?? 'Manager'}</p>
+                  <p className="text-[10px] text-textSecondary capitalize">{storeSlug}</p>
                 </div>
               )}
-              <ChevronDown size={14} className="text-slate-400" />
+              <ChevronDown size={14} className="text-textSecondary" />
             </div>
           </div>
         </header>
 
+        {/* Content */}
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>

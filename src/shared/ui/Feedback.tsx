@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw, PackageOpen } from 'lucide-react';
 
 interface ErrorStateProps {
   message?: string;
@@ -11,12 +11,12 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   onRetry,
 }) => (
   <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
-    <div className="w-14 h-14 rounded-2xl bg-red-900/30 flex items-center justify-center">
-      <AlertTriangle size={28} className="text-red-400" />
+    <div className="w-14 h-14 rounded-2xl bg-dangerLight flex items-center justify-center">
+      <AlertTriangle size={28} className="text-danger" />
     </div>
     <div>
-      <p className="text-slate-300 font-medium">Error</p>
-      <p className="text-sm text-slate-500 mt-1 max-w-xs">{message}</p>
+      <p className="text-textPrimary font-semibold">Something went wrong</p>
+      <p className="text-sm text-textSecondary mt-1 max-w-xs">{message}</p>
     </div>
     {onRetry && (
       <button
@@ -24,7 +24,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         className="btn-secondary flex items-center gap-2 text-sm"
       >
         <RefreshCw size={14} />
-        Retry
+        Try again
       </button>
     )}
   </div>
@@ -45,13 +45,13 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 }) => (
   <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
     {icon && (
-      <div className="w-14 h-14 rounded-2xl bg-surface-hover flex items-center justify-center text-slate-400">
+      <div className="w-14 h-14 rounded-2xl bg-primaryLight flex items-center justify-center text-primary">
         {icon}
       </div>
     )}
     <div>
-      <p className="text-slate-300 font-medium">{title}</p>
-      <p className="text-sm text-slate-500 mt-1 max-w-xs">{description}</p>
+      <p className="text-textPrimary font-semibold">{title}</p>
+      <p className="text-sm text-textSecondary mt-1 max-w-xs">{description}</p>
     </div>
     {action}
   </div>
@@ -62,13 +62,11 @@ export const Spinner: React.FC<{ size?: 'sm' | 'md' | 'lg'; tone?: 'default' | '
   tone = 'default',
 }) => {
   const s = { sm: 'w-4 h-4', md: 'w-8 h-8', lg: 'w-12 h-12' };
-  const ring =
-    tone === 'onLight'
-      ? 'border-blue-600 border-t-transparent'
-      : 'border-brand-500 border-t-transparent';
   return (
     <div className="flex items-center justify-center py-8">
-      <span className={`${s[size]} border-2 ${ring} rounded-full animate-spin`} />
+      <span
+        className={`${s[size]} border-2 border-primary border-t-transparent rounded-full animate-spin`}
+      />
     </div>
   );
 };

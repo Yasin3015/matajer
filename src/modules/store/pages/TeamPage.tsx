@@ -94,12 +94,12 @@ const TeamPage: React.FC = () => {
       sortable: true,
       render: (u) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-600/30 to-brand-800/20 flex items-center justify-center">
-            <span className="text-brand-300 font-semibold text-xs">{u.name[0]}</span>
+          <div className="w-8 h-8 rounded-full bg-primaryLight flex items-center justify-center">
+            <span className="text-primary font-semibold text-xs">{u.name[0]}</span>
           </div>
           <div>
-            <p className="font-medium text-white text-sm">{u.name}</p>
-            <p className="text-xs text-slate-500">{u.email}</p>
+            <p className="font-medium text-textPrimary text-sm">{u.name}</p>
+            <p className="text-xs text-textSecondary">{u.email}</p>
           </div>
         </div>
       ),
@@ -107,7 +107,7 @@ const TeamPage: React.FC = () => {
     {
       key: 'phone',
       header: 'Phone',
-      render: (u) => <span className="text-slate-400 text-sm">{u.phone || '—'}</span>,
+      render: (u) => <span className="text-textSecondary text-sm">{u.phone || '—'}</span>,
     },
     {
       key: 'is_active',
@@ -123,7 +123,7 @@ const TeamPage: React.FC = () => {
       header: 'Joined',
       sortable: true,
       render: (u) => (
-        <span className="text-slate-400 text-sm">
+        <span className="text-textSecondary text-sm">
           {u.created_at ? new Date(u.created_at).toLocaleDateString() : '—'}
         </span>
       ),
@@ -135,21 +135,21 @@ const TeamPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewUser(u)}
-            className="p-1.5 text-slate-400 hover:text-emerald-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-success transition-colors"
             title="View details"
           >
             <Eye size={15} />
           </button>
           <button
             onClick={() => openEdit(u)}
-            className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="Edit member"
           >
             <Pencil size={15} />
           </button>
           <button
             onClick={() => setDeleteConfirm(u)}
-            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-danger transition-colors"
             title="Remove member"
           >
             <Trash2 size={15} />
@@ -163,8 +163,8 @@ const TeamPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Team</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your store team members.</p>
+          <h1 className="text-2xl font-bold text-textPrimary">Team</h1>
+          <p className="text-textSecondary text-sm mt-1">Manage your store team members.</p>
         </div>
         <Button icon={<Plus size={16} />} onClick={() => setAddOpen(true)}>
           Add Member
@@ -308,23 +308,23 @@ const TeamPage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500">ID</p>
-                <p className="text-sm text-white font-mono mt-1">{viewUser.id}</p>
+                <p className="text-xs text-textSecondary">ID</p>
+                <p className="text-sm text-textPrimary font-mono mt-1">{viewUser.id}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Name</p>
-                <p className="text-sm text-white mt-1">{viewUser.name}</p>
+                <p className="text-xs text-textSecondary">Name</p>
+                <p className="text-sm text-textPrimary mt-1">{viewUser.name}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Email</p>
-                <p className="text-sm text-white mt-1">{viewUser.email}</p>
+                <p className="text-xs text-textSecondary">Email</p>
+                <p className="text-sm text-textPrimary mt-1">{viewUser.email}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Phone</p>
-                <p className="text-sm text-white mt-1">{viewUser.phone || '—'}</p>
+                <p className="text-xs text-textSecondary">Phone</p>
+                <p className="text-sm text-textPrimary mt-1">{viewUser.phone || '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Status</p>
+                <p className="text-xs text-textSecondary">Status</p>
                 <p className="text-sm mt-1">
                   <Badge variant={viewUser.is_active ? 'green' : 'slate'}>
                     {viewUser.is_active ? 'Active' : 'Inactive'}
@@ -332,8 +332,8 @@ const TeamPage: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Joined</p>
-                <p className="text-sm text-white mt-1">
+                <p className="text-xs text-textSecondary">Joined</p>
+                <p className="text-sm text-textPrimary mt-1">
                   {viewUser.created_at ? new Date(viewUser.created_at).toLocaleString() : '—'}
                 </p>
               </div>
@@ -367,9 +367,9 @@ const TeamPage: React.FC = () => {
           </>
         }
       >
-        <p className="text-slate-300">
+        <p className="text-textSecondary">
           Are you sure you want to remove{' '}
-          <span className="text-white font-semibold">{deleteConfirm?.name}</span> from the team?
+          <span className="text-textPrimary font-semibold">{deleteConfirm?.name}</span> from the team?
           This action cannot be undone.
         </p>
       </Modal>

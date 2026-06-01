@@ -15,10 +15,11 @@ const DEMO_LOGINS: {
   email: string;
   password: string;
   color: string;
+  bg: string;
 }[] = [
-  { labelKey: 'login.demoPlatformAdmin', email: 'admin@matajer.com', password: 'admin123', color: 'text-brand-400' },
-  { labelKey: 'login.demoStoreDemo', email: 'sarah@Yallamatgar.com', password: 'store123', color: 'text-green-400' },
-  { labelKey: 'login.demoStoreTech', email: 'mark@tech-store.com', password: 'store123', color: 'text-yellow-400' },
+  { labelKey: 'login.demoPlatformAdmin', email: 'admin@matajer.com', password: 'admin123', color: 'text-primary', bg: 'bg-primaryLight' },
+  { labelKey: 'login.demoStoreDemo',     email: 'sarah@Yallamatgar.com', password: 'store123', color: 'text-success', bg: 'bg-successLight' },
+  { labelKey: 'login.demoStoreTech',     email: 'mark@tech-store.com', password: 'store123', color: 'text-amber-700', bg: 'bg-amber-50' },
 ];
 
 const LoginPage: React.FC = () => {
@@ -70,44 +71,51 @@ const LoginPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-surface flex items-center justify-center p-4 relative"
+      className="min-h-screen bg-appBg flex items-center justify-center p-4 relative"
       dir={rtl ? 'rtl' : 'ltr'}
       lang={i18n.language}
     >
       <div className="absolute top-4 end-4 z-10">
-        <LanguageSwitcher variant="dark" />
+        <LanguageSwitcher />
       </div>
 
+      {/* Subtle background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 start-1/2 -translate-x-1/2 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-md relative">
+        {/* Logo & Heading */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 mb-4 shadow-xl shadow-brand-900/40">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primaryHover mb-4 shadow-lg shadow-primary/20">
             <Store size={28} className="text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-white">{t('login.welcome')}</h1>
-          <p className="text-slate-400 text-sm mt-1">{t('login.subtitle')}</p>
+          <h1 className="text-2xl font-bold text-textPrimary">{t('login.welcome')}</h1>
+          <p className="text-textSecondary text-sm mt-1">{t('login.subtitle')}</p>
         </div>
 
-        <div className="card mb-6 space-y-2">
-          <p className="text-xs font-medium text-slate-400 mb-3">{t('login.demoHint')}</p>
+        {/* Demo logins */}
+        <div className="card mb-5 space-y-2">
+          <p className="text-xs font-semibold text-textSecondary mb-3 uppercase tracking-wider">{t('login.demoHint')}</p>
           <div className="grid gap-2">
             {DEMO_LOGINS.map((d) => (
               <button
                 key={d.email}
                 type="button"
                 onClick={() => fillDemo(d.email, d.password)}
-                className="flex items-center justify-between text-start px-3 py-2 rounded-lg bg-surface hover:bg-surface-hover transition-colors group"
+                className={clsx(
+                  'flex items-center justify-between text-start px-3 py-2.5 rounded-xl transition-colors group border border-border hover:border-transparent',
+                  d.bg
+                )}
               >
-                <span className={`text-xs font-medium ${d.color}`}>{t(d.labelKey)}</span>
-                <span className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors">{t('login.clickToFill')}</span>
+                <span className={clsx('text-xs font-semibold', d.color)}>{t(d.labelKey)}</span>
+                <span className="text-xs text-textSecondary group-hover:text-textPrimary transition-colors">{t('login.clickToFill')}</span>
               </button>
             ))}
           </div>
         </div>
 
+        {/* Login form */}
         <div className="card">
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
@@ -127,7 +135,7 @@ const LoginPage: React.FC = () => {
                 {t('login.password')}
               </label>
               <div className="relative">
-                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-textSecondary pointer-events-none">
                   <Lock size={16} />
                 </span>
                 <input
@@ -136,23 +144,21 @@ const LoginPage: React.FC = () => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={clsx(
-                    'input ps-10 pe-10',
-                    errors.password && 'border-red-500 focus:ring-red-500',
-                  )}
+                  className={clsx('input ps-10 pe-10', errors.password && 'border-danger')}
+                  style={errors.password ? { borderColor: '#BA1A1A', boxShadow: '0 0 0 3px rgba(186,26,26,0.15)' } : undefined}
                   autoComplete="current-password"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute end-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-textSecondary hover:text-textPrimary transition-colors"
                   aria-label={showPassword ? t('login.hidePassword') : t('login.showPassword')}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password[0]}</p>}
+              {errors.password && <p className="mt-1.5 text-xs text-danger font-medium">{errors.password[0]}</p>}
             </div>
             <Button type="submit" className="w-full justify-center" loading={loading} size="lg">
               {t('login.signIn')}
@@ -160,10 +166,10 @@ const LoginPage: React.FC = () => {
           </form>
         </div>
 
-        <p className="text-center text-xs text-slate-600 mt-6">{t('login.footerTag')}</p>
-        <p className="text-center text-xs text-slate-700 mt-2">
+        <p className="text-center text-xs text-textSecondary mt-6">{t('login.footerTag')}</p>
+        <p className="text-center text-xs text-textSecondary mt-2">
           Store owner?{' '}
-          <a href="/vendor/login" className="text-brand-500 hover:text-brand-400 transition-colors">
+          <a href="/vendor/login" className="text-primary hover:text-primaryHover font-semibold transition-colors">
             Sign in to your vendor dashboard →
           </a>
         </p>

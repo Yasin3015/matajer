@@ -60,7 +60,7 @@ export function Table<T extends { id: string }>({
     return (
       <div className="card animate-pulse space-y-3">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-10 bg-surface-hover rounded-lg" />
+          <div key={i} className="h-12 bg-appBg rounded-xl" />
         ))}
       </div>
     );
@@ -71,13 +71,14 @@ export function Table<T extends { id: string }>({
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-surface-border">
+            <tr className="border-b border-border bg-appBg">
               {columns.map((col) => (
                 <th
                   key={String(col.key)}
                   className={clsx(
-                    'px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider',
-                    col.sortable && 'cursor-pointer hover:text-white select-none',
+                    'px-4 py-3 text-left text-textPrimary uppercase tracking-[0.5px] select-none',
+                    'text-[12px] font-semibold',
+                    col.sortable && 'cursor-pointer hover:text-primary transition-colors',
                     col.className
                   )}
                   onClick={() => col.sortable && handleSort(String(col.key))}
@@ -95,21 +96,18 @@ export function Table<T extends { id: string }>({
           <tbody>
             {paginated.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-4 py-12 text-center text-slate-500">
+                <td colSpan={columns.length} className="px-4 py-12 text-center text-textSecondary text-sm">
                   {emptyMessage}
                 </td>
               </tr>
             ) : (
-              paginated.map((row, idx) => (
+              paginated.map((row) => (
                 <tr
                   key={row.id}
-                  className={clsx(
-                    'border-b border-surface-border/50 hover:bg-surface-hover/40 transition-colors',
-                    idx % 2 === 0 ? '' : 'bg-white/[0.01]'
-                  )}
+                  className="border-b border-border/60 hover:bg-primaryLight transition-colors"
                 >
                   {columns.map((col) => (
-                    <td key={String(col.key)} className={clsx('px-4 py-3 text-slate-300', col.className)}>
+                    <td key={String(col.key)} className={clsx('px-4 py-3.5 text-textSecondary', col.className)}>
                       {col.render
                         ? col.render(row)
                         : String(getNestedValue(row, String(col.key)) ?? '—')}
@@ -124,15 +122,15 @@ export function Table<T extends { id: string }>({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-3 border-t border-surface-border">
-          <span className="text-xs text-slate-500">
+        <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-appBg/50">
+          <span className="text-xs text-textSecondary">
             {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, data.length)} of {data.length}
           </span>
           <div className="flex items-center gap-1">
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-hover disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="p-1.5 rounded-lg text-textSecondary hover:text-primary hover:bg-primaryLight disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft size={16} />
             </button>
@@ -143,8 +141,8 @@ export function Table<T extends { id: string }>({
                 className={clsx(
                   'w-7 h-7 rounded-lg text-xs font-medium transition-colors',
                   page === i + 1
-                    ? 'bg-brand-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-surface-hover'
+                    ? 'bg-primary text-white'
+                    : 'text-textSecondary hover:text-primary hover:bg-primaryLight'
                 )}
               >
                 {i + 1}
@@ -153,7 +151,7 @@ export function Table<T extends { id: string }>({
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-hover disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="p-1.5 rounded-lg text-textSecondary hover:text-primary hover:bg-primaryLight disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight size={16} />
             </button>

@@ -13,16 +13,15 @@ const CartPage: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { storeSlug: storeSlugParam } = useParams<{ storeSlug?: string }>();
   const storeSlug = storeSlugParam ?? DEFAULT_STORE_SLUG;
-  const getCart = useCartStore((s) => s.getCart);
+  const carts = useCartStore((s) => s.carts);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeFromCart = useCartStore((s) => s.removeFromCart);
-  const getTotal = useCartStore((s) => s.getTotal);
   const clearCart = useCartStore((s) => s.clearCart);
 
   const [discountInput, setDiscountInput] = useState('');
 
-  const cart = getCart(storeSlug);
-  const total = getTotal(storeSlug);
+  const cart = carts[storeSlug] ?? [];
+  const total = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const shipping = total > 0 ? (total > 100 ? 0 : 9.99) : 0;
   const tax = total * (TAX_PCT / 100);
 

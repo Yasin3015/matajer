@@ -36,4 +36,5 @@ export const ROUTES = {
   storeProduct: (slug: string, id: string) => `/store/${slug}/products/${id}`,
   storeCart: (slug: string) => `/store/${slug}/cart`,
   storeCheckout: (slug: string) => `/store/${slug}/checkout`,
+  storeFavorites: (slug: string) => `/store/${slug}/favorites`,
 } as const;

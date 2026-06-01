@@ -22,12 +22,12 @@ const SettingsPage: React.FC = () => {
   return (
     <div className="space-y-6 animate-fade-in max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-white">Store Settings</h1>
+        <h1 className="text-2xl font-bold text-textPrimary">Store Settings</h1>
         <p className="text-slate-400 text-sm mt-1">Configure your store's identity and preferences.</p>
       </div>
 
       <Card>
-        <h2 className="font-semibold text-white mb-4">General Information</h2>
+        <h2 className="font-semibold text-textPrimary mb-4">General Information</h2>
         <div className="space-y-4">
           <Input label="Store Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           <Textarea label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
@@ -44,7 +44,7 @@ const SettingsPage: React.FC = () => {
       </Card>
 
       <Card>
-        <h2 className="font-semibold text-white mb-4">Store URL</h2>
+        <h2 className="font-semibold text-textPrimary mb-4">Store URL</h2>
         <div className="flex items-center gap-2">
           <span className="text-slate-500 text-sm">matajer.app/store/</span>
           <Input value={slug} disabled className="!w-auto flex-1 opacity-60 cursor-not-allowed" hint="Contact platform admin to change your store slug." />

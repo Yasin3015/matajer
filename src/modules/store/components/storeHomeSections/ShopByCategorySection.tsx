@@ -56,12 +56,12 @@ export const ShopByCategorySection: React.FC<ShopByCategorySectionProps> = ({ st
   return (
     <section className="py-14 sm:py-16">
       <div className="flex items-end justify-between gap-4 mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight text-start">
+        <h2 className="text-2xl sm:text-3xl font-bold text-textPrimary tracking-tight text-start">
           {t('home.category.title')}
         </h2>
         <Link
           to={ROUTES.storeCategories(storeSlug)}
-          className="text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors shrink-0"
+          className="text-sm font-medium text-textSecondary hover:text-primary transition-colors shrink-0"
         >
           {t('home.category.viewAll')}
         </Link>

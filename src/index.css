@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,67 +6,106 @@
 
 @layer base {
   * {
-    @apply border-surface-border;
+    @apply border-border;
+    box-sizing: border-box;
   }
   body {
-    @apply bg-surface text-slate-100 font-sans antialiased;
+    @apply bg-appBg text-textPrimary font-sans antialiased;
   }
   ::-webkit-scrollbar {
     @apply w-1.5;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-surface;
+    @apply bg-appBg;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-hover rounded-full;
+    @apply bg-gray-300 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
   }
 }
 
 @layer components {
+  /* ─── Sidebar Navigation ─────────────────────────────── */
   .sidebar-link {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-hover transition-all duration-150 text-sm font-medium;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-textSecondary hover:text-textPrimary hover:bg-gray-100 transition-all duration-150 text-sm font-medium;
   }
   .sidebar-link.active {
-    @apply text-white bg-brand-600 hover:bg-brand-700;
+    @apply text-primary bg-primaryLight font-semibold border-l-4 border-primary rounded-r-xl rounded-l-none;
   }
+
+  /* ─── Cards ──────────────────────────────────────────── */
   .card {
-    @apply bg-surface-card border border-surface-border rounded-xl p-6;
+    @apply bg-white border border-border rounded-2xl p-6;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   }
+
+  /* ─── Buttons ────────────────────────────────────────── */
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center gap-2 bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply inline-flex items-center gap-2 bg-surface-hover hover:bg-surface-border text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150;
+    @apply inline-flex items-center gap-2 bg-primaryLight hover:bg-blue-100 text-primary px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-150;
   }
   .btn-danger {
-    @apply inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-150;
+    @apply inline-flex items-center gap-2 bg-danger hover:bg-red-800 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-150;
   }
-  .input {
-    @apply w-full bg-surface-card border border-surface-border text-slate-100 placeholder-slate-500 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all;
-  }
-  .label {
-    @apply block text-sm font-medium text-slate-300 mb-1.5;
-  }
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-  .badge-green  { @apply badge bg-green-900/50  text-green-400  ring-1 ring-green-500/30; }
-  .badge-yellow { @apply badge bg-yellow-900/50 text-yellow-400 ring-1 ring-yellow-500/30; }
-  .badge-red    { @apply badge bg-red-900/50    text-red-400    ring-1 ring-red-500/30; }
-  .badge-blue   { @apply badge bg-blue-900/50   text-blue-400   ring-1 ring-blue-500/30; }
-  .badge-slate  { @apply badge bg-slate-800     text-slate-400  ring-1 ring-slate-600; }
 
-  /* Public storefront (light theme) — nested under <main> from StoreLayout */
-  .storefront-page .label {
-    @apply text-slate-700;
+  /* ─── Inputs ─────────────────────────────────────────── */
+  .input {
+    @apply w-full bg-appBg border border-inputBorder text-textPrimary placeholder-textSecondary/60 rounded-xl px-4 text-sm transition-all;
+    height: 50px;
+    outline: none;
   }
-  .storefront-page .input {
-    @apply bg-white border-slate-200 text-slate-900 placeholder:text-slate-400;
+  .input:focus {
+    border-color: #0051D5;
+    box-shadow: 0 0 0 3px rgba(0, 81, 213, 0.15);
   }
-  .storefront-page .card {
-    @apply bg-white border-slate-200 shadow-sm;
+  .input.error {
+    @apply border-danger;
   }
-  .storefront-page .btn-secondary {
-    @apply bg-slate-100 text-slate-800 border border-slate-200 hover:bg-slate-200;
+  .input.error:focus {
+    border-color: #BA1A1A;
+    box-shadow: 0 0 0 3px rgba(186, 26, 26, 0.15);
+  }
+  .input:disabled {
+    @apply opacity-60 cursor-not-allowed;
+  }
+  textarea.input {
+    height: auto;
+    @apply py-3;
+  }
+  select.input {
+    @apply cursor-pointer appearance-none;
+  }
+
+  /* ─── Labels ─────────────────────────────────────────── */
+  .label {
+    @apply block text-sm font-medium text-textSecondary mb-1.5;
+  }
+
+  /* ─── Badges ─────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .badge-green  {
+    background-color: rgba(0, 105, 71, 0.10);
+    @apply text-success ring-1;
+    ring-color: rgba(0, 105, 71, 0.30);
+  }
+  .badge-red    {
+    background-color: rgba(186, 26, 26, 0.10);
+    @apply text-danger ring-1;
+    ring-color: rgba(186, 26, 26, 0.30);
+  }
+  .badge-yellow {
+    @apply bg-amber-100 text-amber-700 ring-1 ring-amber-300/60;
+  }
+  .badge-blue   {
+    @apply bg-primaryLight text-primary ring-1 ring-primary/30;
+  }
+  .badge-slate  {
+    @apply bg-gray-100 text-textSecondary ring-1 ring-gray-300;
   }
 }

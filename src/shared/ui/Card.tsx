@@ -12,7 +12,7 @@ export const Card: React.FC<CardProps> = ({ children, className, onClick, hover 
   <div
     className={clsx(
       'card animate-fade-in',
-      hover && 'cursor-pointer hover:border-brand-500/50 hover:shadow-lg hover:shadow-brand-900/20 transition-all duration-200',
+      hover && 'cursor-pointer hover:border-primary/30 transition-all duration-200',
       className
     )}
     onClick={onClick}
@@ -27,27 +27,38 @@ interface StatCardProps {
   icon: React.ReactNode;
   change?: string;
   changeType?: 'positive' | 'negative' | 'neutral';
-  color?: 'brand' | 'green' | 'yellow' | 'red';
+  color?: 'primary' | 'success' | 'warning' | 'danger';
 }
 
-export const StatCard: React.FC<StatCardProps> = ({ title, value, icon, change, changeType = 'neutral', color = 'brand' }) => {
-  const colors = {
-    brand:  'from-brand-600/20 to-brand-800/10 text-brand-400',
-    green:  'from-green-600/20 to-green-800/10 text-green-400',
-    yellow: 'from-yellow-600/20 to-yellow-800/10 text-yellow-400',
-    red:    'from-red-600/20 to-red-800/10 text-red-400',
+export const StatCard: React.FC<StatCardProps> = ({
+  title,
+  value,
+  icon,
+  change,
+  changeType = 'neutral',
+  color = 'primary',
+}) => {
+  const iconColors = {
+    primary: 'bg-primaryLight text-primary',
+    success: 'bg-successLight text-success',
+    warning: 'bg-amber-50 text-amber-600',
+    danger:  'bg-dangerLight text-danger',
   };
-  const changeColors = { positive: 'text-green-400', negative: 'text-red-400', neutral: 'text-slate-400' };
+  const changeColors = {
+    positive: 'text-success',
+    negative: 'text-danger',
+    neutral:  'text-textSecondary',
+  };
 
   return (
     <Card className="flex items-start gap-4">
-      <div className={clsx('w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center flex-shrink-0', colors[color])}>
+      <div className={clsx('w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0', iconColors[color])}>
         {icon}
       </div>
       <div>
-        <p className="text-sm text-slate-400">{title}</p>
-        <p className="text-2xl font-bold text-white mt-0.5">{value}</p>
-        {change && <p className={clsx('text-xs mt-1', changeColors[changeType])}>{change}</p>}
+        <p className="text-sm text-textSecondary">{title}</p>
+        <p className="text-2xl font-bold text-textPrimary mt-0.5">{value}</p>
+        {change && <p className={clsx('text-xs mt-1 font-medium', changeColors[changeType])}>{change}</p>}
       </div>
     </Card>
   );

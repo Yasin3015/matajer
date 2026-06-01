@@ -55,12 +55,12 @@ const ProductDetailsPage: React.FC = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate(ROUTES.DASHBOARD_PRODUCTS)}
-            className="p-2 rounded-full hover:bg-surface-hover text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-full hover:bg-surface-hover text-slate-400 hover:text-textPrimary transition-colors"
           >
             <ArrowLeft size={20} />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-white">{product.name}</h1>
+            <h1 className="text-2xl font-bold text-textPrimary">{product.name}</h1>
             <p className="text-sm text-slate-400 mt-1">/{product.slug}</p>
           </div>
         </div>
@@ -77,7 +77,7 @@ const ProductDetailsPage: React.FC = () => {
         {/* Left Column: Images */}
         <div className="lg:col-span-5 space-y-4">
           <div className="card space-y-4">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-textPrimary flex items-center gap-2">
               <ImageIcon size={18} className="text-brand-400" /> Images
             </h2>
             {allImages.length > 0 ? (
@@ -146,7 +146,7 @@ const ProductDetailsPage: React.FC = () => {
           
           <div className="card space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-textPrimary flex items-center gap-2">
                 <Box size={18} className="text-brand-400" /> Product Information
               </h2>
               <Badge variant={product.is_active !== false ? 'green' : 'slate'}>
@@ -158,7 +158,7 @@ const ProductDetailsPage: React.FC = () => {
               <div>
                 <p className="text-xs font-medium text-slate-400 mb-1">Price</p>
                 <div className="flex items-baseline gap-2">
-                  <p className="text-xl font-bold text-white">${Number(product.price).toFixed(2)}</p>
+                  <p className="text-xl font-bold text-textPrimary">${Number(product.price).toFixed(2)}</p>
                   {product.price_before && (
                     <p className="text-sm font-medium text-slate-500 line-through">
                       ${Number(product.price_before).toFixed(2)}
@@ -169,7 +169,7 @@ const ProductDetailsPage: React.FC = () => {
 
               <div>
                 <p className="text-xs font-medium text-slate-400 mb-1">Stock Level</p>
-                <p className={product.stock > 0 ? "text-lg font-semibold text-white" : "text-lg font-semibold text-red-400"}>
+                <p className={product.stock > 0 ? "text-lg font-semibold text-textPrimary" : "text-lg font-semibold text-red-400"}>
                   {product.stock > 0 ? `${product.stock} units` : 'Out of stock'}
                 </p>
               </div>
@@ -179,7 +179,7 @@ const ProductDetailsPage: React.FC = () => {
                 {product.category ? (
                   <div className="flex items-center gap-2">
                     <Tag size={14} className="text-brand-400" />
-                    <span className="text-sm font-medium text-white">{product.category.name}</span>
+                    <span className="text-sm font-medium text-textPrimary">{product.category.name}</span>
                   </div>
                 ) : (
                   <p className="text-sm text-slate-500">—</p>

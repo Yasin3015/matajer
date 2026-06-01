@@ -74,12 +74,12 @@ const StoresPage: React.FC = () => {
       sortable: true,
       render: (v) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-600/20 to-brand-800/10 flex items-center justify-center">
-            <span className="text-brand-400 font-bold text-xs uppercase">{v.name.charAt(0)}</span>
+          <div className="w-8 h-8 rounded-lg bg-primaryLight flex items-center justify-center">
+            <span className="text-primary font-bold text-xs uppercase">{v.name.charAt(0)}</span>
           </div>
           <div>
-            <p className="font-medium text-white text-sm">{v.name}</p>
-            <p className="text-xs text-slate-500">/{v.slug}</p>
+            <p className="font-medium text-textPrimary text-sm">{v.name}</p>
+            <p className="text-xs text-textSecondary">/{v.slug}</p>
           </div>
         </div>
       ),
@@ -89,8 +89,8 @@ const StoresPage: React.FC = () => {
       header: 'Owner',
       render: (v) => (
         <div>
-          <p className="text-sm text-white">{v.owner?.name ?? '—'}</p>
-          <p className="text-xs text-slate-500">{v.owner?.email}</p>
+          <p className="text-sm text-textPrimary">{v.owner?.name ?? '—'}</p>
+          <p className="text-xs text-textSecondary">{v.owner?.email}</p>
         </div>
       ),
     },
@@ -108,7 +108,7 @@ const StoresPage: React.FC = () => {
       header: 'Started',
       sortable: true,
       render: (v) => (
-        <span className="text-slate-400 text-sm">
+        <span className="text-textSecondary text-sm">
           {v.start_at ? new Date(v.start_at).toLocaleDateString() : '—'}
         </span>
       ),
@@ -120,28 +120,28 @@ const StoresPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <Link
             to={ROUTES.store(v.slug)}
-            className="p-1.5 text-slate-400 hover:text-brand-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="Visit storefront"
           >
             <ExternalLink size={15} />
           </Link>
           <button
             onClick={() => setViewVendor(v)}
-            className="p-1.5 text-slate-400 hover:text-emerald-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-success transition-colors"
             title="View details"
           >
             <Eye size={15} />
           </button>
           <button
             onClick={() => openEdit(v)}
-            className="p-1.5 text-slate-400 hover:text-blue-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-primary transition-colors"
             title="Edit vendor"
           >
             <Pencil size={15} />
           </button>
           <button
             onClick={() => setDeleteConfirm(v)}
-            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+            className="p-1.5 text-textSecondary hover:text-danger transition-colors"
             title="Delete vendor"
           >
             <Trash2 size={15} />
@@ -155,8 +155,8 @@ const StoresPage: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Stores</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage all platform vendors.</p>
+          <h1 className="text-2xl font-bold text-textPrimary">Stores</h1>
+          <p className="text-textSecondary text-sm mt-1">Manage all platform vendors.</p>
         </div>
         <Button icon={<Plus size={16} />} onClick={() => setAddOpen(true)}>
           New Store
@@ -323,23 +323,23 @@ const StoresPage: React.FC = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500">Vendor ID</p>
-                <p className="text-sm text-white font-mono mt-1">{viewVendor.id}</p>
+                <p className="text-xs text-textSecondary">Vendor ID</p>
+                <p className="text-sm text-textPrimary font-mono mt-1">{viewVendor.id}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Store Name</p>
-                <p className="text-sm text-white mt-1">{viewVendor.name}</p>
+                <p className="text-xs text-textSecondary">Store Name</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.name}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Slug</p>
-                <p className="text-sm text-white mt-1">{viewVendor.slug}</p>
+                <p className="text-xs text-textSecondary">Slug</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.slug}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Custom Domain</p>
-                <p className="text-sm text-white mt-1">{viewVendor.custom_domain || '—'}</p>
+                <p className="text-xs text-textSecondary">Custom Domain</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.custom_domain || '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Status</p>
+                <p className="text-xs text-textSecondary">Status</p>
                 <p className="text-sm mt-1">
                   <Badge variant={viewVendor.is_active ? 'green' : 'slate'}>
                     {viewVendor.is_active ? 'Active' : 'Inactive'}
@@ -347,40 +347,40 @@ const StoresPage: React.FC = () => {
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Users Count</p>
-                <p className="text-sm text-white mt-1">{viewVendor.users_count ?? '—'}</p>
+                <p className="text-xs text-textSecondary">Users Count</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.users_count ?? '—'}</p>
               </div>
             </div>
 
-            <hr className="border-surface-border" />
+            <hr className="border-border" />
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500">Owner Name</p>
-                <p className="text-sm text-white mt-1">{viewVendor.owner?.name ?? '—'}</p>
+                <p className="text-xs text-textSecondary">Owner Name</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.owner?.name ?? '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Owner Email</p>
-                <p className="text-sm text-white mt-1">{viewVendor.owner?.email ?? '—'}</p>
+                <p className="text-xs text-textSecondary">Owner Email</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.owner?.email ?? '—'}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Owner Phone</p>
-                <p className="text-sm text-white mt-1">{viewVendor.owner?.phone ?? '—'}</p>
+                <p className="text-xs text-textSecondary">Owner Phone</p>
+                <p className="text-sm text-textPrimary mt-1">{viewVendor.owner?.phone ?? '—'}</p>
               </div>
             </div>
 
-            <hr className="border-surface-border" />
+            <hr className="border-border" />
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500">Started At</p>
-                <p className="text-sm text-white mt-1">
+                <p className="text-xs text-textSecondary">Started At</p>
+                <p className="text-sm text-textPrimary mt-1">
                   {viewVendor.start_at ? new Date(viewVendor.start_at).toLocaleString() : '—'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Expires At</p>
-                <p className="text-sm text-white mt-1">
+                <p className="text-xs text-textSecondary">Expires At</p>
+                <p className="text-sm text-textPrimary mt-1">
                   {viewVendor.expire_at ? new Date(viewVendor.expire_at).toLocaleString() : '—'}
                 </p>
               </div>
@@ -414,8 +414,8 @@ const StoresPage: React.FC = () => {
           </>
         }
       >
-        <p className="text-slate-300">
-          Are you sure you want to delete the store <span className="text-white font-semibold">{deleteConfirm?.name}</span>? This action cannot be undone.
+        <p className="text-textSecondary">
+          Are you sure you want to delete the store <span className="text-textPrimary font-semibold">{deleteConfirm?.name}</span>? This action cannot be undone.
         </p>
       </Modal>
     </div>

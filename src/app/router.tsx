@@ -39,6 +39,7 @@ const StorefrontCategoriesPage = lazy(() => import('@/modules/products/pages/Sto
 const StorefrontProductDetail  = lazy(() => import('@/modules/products/pages/StorefrontProductDetailPage'));
 const CartPage                 = lazy(() => import('@/modules/cart/pages/CartPage'));
 const CheckoutPage             = lazy(() => import('@/modules/checkout/pages/CheckoutPage'));
+const FavoritesPage            = lazy(() => import('@/modules/favorites/pages/FavoritesPage'));
 
 const PageLoader: React.FC<{ variant?: 'light' | 'dark' }> = ({ variant = 'light' }) => (
   <div
@@ -64,6 +65,7 @@ const storefrontChildRoutes: RouteObject[] = [
   { path: 'products/:productId',               element: <SuspenseWrapper><StorefrontProductDetail /></SuspenseWrapper> },
   { path: 'cart',                              element: <SuspenseWrapper><CartPage /></SuspenseWrapper> },
   { path: 'checkout',                          element: <SuspenseWrapper><CheckoutPage /></SuspenseWrapper> },
+  { path: 'favorites',                         element: <SuspenseWrapper><FavoritesPage /></SuspenseWrapper> },
 ];
 
 const router = createBrowserRouter([

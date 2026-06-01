@@ -7,28 +7,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50:  '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-        },
-        surface: {
-          DEFAULT: '#0f172a',
-          card:    '#1e293b',
-          hover:   '#334155',
-          border:  '#334155',
-        },
+        /* ── Brand ── */
+        primary:      '#0051D5',
+        primaryHover: '#316BF3',
+        primaryLight: '#EFF6FF',
+
+        /* ── Semantic ── */
+        success:      '#006947',
+        successLight: 'rgba(0,105,71,0.10)',
+        danger:       '#BA1A1A',
+        dangerLight:  'rgba(186,26,26,0.10)',
+
+        /* ── Text ── */
+        textPrimary:   '#191C1E',
+        textSecondary: '#424754',
+
+        /* ── Surfaces ── */
+        appBg:  '#F2F4F6',
+        border: '#E5E7EB',
+        inputBorder: '#DCE0E5',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out',

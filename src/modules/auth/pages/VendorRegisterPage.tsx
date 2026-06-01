@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { Store, ArrowLeft, Rocket } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Store, BarChart2, Zap, Shield, Truck } from 'lucide-react';
 import { Input } from '@/shared/ui/Input';
 import { Button } from '@/shared/ui/Button';
 import { useRegisterVendor } from '@/modules/admin/hooks/useVendors';
@@ -10,10 +11,21 @@ import { RegisterVendorPayload } from '@/modules/admin/services/vendorsService';
 
 const VendorRegisterPage: React.FC = () => {
   const { register, handleSubmit, setError, formState: { errors } } = useForm<RegisterVendorPayload>();
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [termsError, setTermsError] = useState(false);
   const registerVendor = useRegisterVendor();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language === 'ar';
+  const pageDir = isRtl ? 'rtl' : 'ltr';
 
   const onSubmit = async (data: RegisterVendorPayload) => {
+    if (!acceptedTerms) {
+      setTermsError(true);
+      return;
+    }
+    setTermsError(false);
+
     try {
       await registerVendor.mutateAsync(data);
       navigate(ROUTES.LOGIN);
@@ -31,152 +43,215 @@ const VendorRegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-surface">
-      {/* Left Side: Branding / Image */}
-      <div className="hidden lg:flex flex-col flex-1 relative overflow-hidden bg-brand-900/40 p-12 justify-between">
-        {/* Abstract Background */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-600/20 rounded-full blur-[100px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px]" />
-        </div>
-
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
-            <Store size={20} className="text-white" />
+    <div className="min-h-screen flex bg-white font-sans" dir={pageDir}>
+      {/* ── Left Side: Registration Form (45%) ── */}
+      <div className="w-full lg:w-[45%] flex flex-col justify-center px-6 sm:px-12 xl:px-20 py-12 overflow-y-auto">
+        <div className="w-full max-w-md mx-auto">
+          {/* Logo */}
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+              <Store size={20} className="text-white" />
+            </div>
+            <span className="font-bold text-textPrimary text-xl">Matajer</span>
           </div>
-          <span className="font-bold text-white text-xl">Matajer Suite</span>
-        </div>
 
-        <div className="relative z-10 max-w-lg mt-20">
-          <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
-            Launch Your E-Commerce Empire Today
-          </h1>
-          <p className="text-slate-300 text-lg mb-10">
-            Join thousands of successful vendors. Get your customizable storefront, full admin control, and scalable infrastructure in seconds.
+          {/* Heading */}
+          <h1 className="text-3xl font-bold text-textPrimary mb-2">{t('vendorRegister.title')}</h1>
+          <p className="text-textSecondary mb-8 text-sm sm:text-base">
+            {t('vendorRegister.subtitle')}
           </p>
 
-          {/* Example Data Card for visual appeal */}
-          <div className="bg-surface/60 backdrop-blur-md p-6 rounded-2xl border border-surface-border max-w-sm transform hover:-translate-y-2 transition-transform duration-300">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                <Rocket className="text-emerald-400" />
-              </div>
-              <div>
-                <p className="text-slate-400 text-sm">Stores Created</p>
-                <p className="text-white font-bold text-2xl">16,048</p>
-              </div>
-            </div>
-            <div className="w-full bg-surface-border h-2 rounded-full overflow-hidden">
-              <div className="bg-gradient-to-r from-emerald-400 to-brand-400 w-3/4 h-full rounded-full" />
-            </div>
-          </div>
-        </div>
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <Input
+              label={t('vendorRegister.ownerName')}
+              placeholder={t('vendorRegister.ownerNamePlaceholder')}
+              {...register('owner_name', { required: true })}
+              error={errors.owner_name?.message || (errors.owner_name ? t('vendorRegister.ownerNameRequired') : undefined)}
+            />
 
-        <div className="relative z-10 text-slate-500 text-sm mt-20">
-          © {new Date().getFullYear()} Matajer. All rights reserved.
-        </div>
-      </div>
+            <Input
+              label={t('vendorRegister.storeName')}
+              placeholder={t('vendorRegister.storeNamePlaceholder')}
+              {...register('vendor_name', { required: true })}
+              error={errors.vendor_name?.message || (errors.vendor_name ? t('vendorRegister.storeNameRequired') : undefined)}
+            />
 
-      {/* Right Side: Registration Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative overflow-y-auto">
-        {/* Mobile Header (visible only on small screens) */}
-        <div className="lg:hidden absolute top-6 left-6 flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
-            <Store size={16} className="text-white" />
-          </div>
-          <span className="font-bold text-white text-lg">Matajer</span>
-        </div>
+            <Input
+              label={t('vendorRegister.email')}
+              type="email"
+              placeholder={t('vendorRegister.emailPlaceholder')}
+              {...register('email', { required: true })}
+              error={errors.email?.message || (errors.email ? t('vendorRegister.emailRequired') : undefined)}
+              dir="ltr"
+            />
 
-        <div className="w-full max-w-md my-auto">
-          <Link to={ROUTES.HOME} className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm mb-8">
-            <ArrowLeft size={16} />
-            Back to store
-          </Link>
-
-          <h2 className="text-3xl font-bold text-white mb-2">Create Your Store</h2>
-          <p className="text-slate-400 mb-8">Fill in the details to register your new vendor account.</p>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <Input
-                label="Owner Name"
-                placeholder="John Carter"
-                {...register('owner_name', { required: true })}
-                error={errors.owner_name?.message || (errors.owner_name ? 'Owner name is required' : undefined)}
-              />
-              <Input
-                label="Store Name"
-                placeholder="Tech World Store"
-                {...register('vendor_name', { required: true })}
-                error={errors.vendor_name?.message || (errors.vendor_name ? 'Store name is required' : undefined)}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                label="Email"
-                type="email"
-                placeholder="john@example.com"
-                {...register('email', { required: true })}
-                error={errors.email?.message || (errors.email ? 'Email is required' : undefined)}
-              />
-              <Input
-                label="Phone"
-                placeholder="201012345678"
+                label={t('vendorRegister.phone')}
+                placeholder={t('vendorRegister.phonePlaceholder')}
                 {...register('phone')}
                 error={errors.phone?.message}
+                dir="ltr"
               />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                label="Store Slug"
-                placeholder="tech-world-store"
+                label={t('vendorRegister.slug')}
+                placeholder={t('vendorRegister.slugPlaceholder')}
                 {...register('slug', { required: true })}
-                error={errors.slug?.message || (errors.slug ? 'Slug is required' : undefined)}
-              />
-              <Input
-                label="Custom Domain (optional)"
-                placeholder="store.techworld.com"
-                {...register('custom_domain')}
-                error={errors.custom_domain?.message}
+                error={errors.slug?.message || (errors.slug ? t('vendorRegister.slugRequired') : undefined)}
+                dir="ltr"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label={t('vendorRegister.customDomain')}
+              placeholder={t('vendorRegister.customDomainPlaceholder')}
+              {...register('custom_domain')}
+              error={errors.custom_domain?.message}
+              dir="ltr"
+            />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <Input
-                label="Password"
+                label={t('vendorRegister.password')}
                 type="password"
-                placeholder="••••••••"
+                placeholder={t('vendorRegister.passwordPlaceholder')}
                 {...register('password', { required: true, minLength: 6 })}
-                error={errors.password?.message || (errors.password ? 'Password must be at least 6 characters' : undefined)}
+                error={errors.password?.message || (errors.password ? t('vendorRegister.passwordLength') : undefined)}
+                dir="ltr"
               />
               <Input
-                label="Confirm Password"
+                label={t('vendorRegister.confirmPassword')}
                 type="password"
-                placeholder="••••••••"
+                placeholder={t('vendorRegister.confirmPasswordPlaceholder')}
                 {...register('password_confirmation', { required: true })}
-                error={errors.password_confirmation?.message || (errors.password_confirmation ? 'Confirmation is required' : undefined)}
+                error={errors.password_confirmation?.message || (errors.password_confirmation ? t('vendorRegister.confirmPasswordRequired') : undefined)}
+                dir="ltr"
               />
             </div>
+
+            {/* Terms & Conditions */}
+            <div className="flex items-start gap-3 py-2">
+              <div className="flex items-center h-5 mt-0.5">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => {
+                    setAcceptedTerms(e.target.checked);
+                    if (e.target.checked) setTermsError(false);
+                  }}
+                  className="w-4 h-4 rounded border-inputBorder text-primary focus:ring-primary/20 cursor-pointer"
+                />
+              </div>
+              <label htmlFor="terms" className="text-sm text-textSecondary cursor-pointer leading-tight">
+                {t('vendorRegister.termsText1')}
+                <a href="#" className="text-primary hover:underline font-medium">{t('vendorRegister.termsLink1')}</a>
+                {t('vendorRegister.termsText2')}
+                <a href="#" className="text-primary hover:underline font-medium">{t('vendorRegister.termsLink2')}</a>
+                {t('vendorRegister.termsText3')}
+              </label>
+            </div>
+            {termsError && <p className="text-xs text-danger font-medium -mt-2">{t('vendorRegister.termsRequired')}</p>}
 
             <Button
               type="submit"
-              className="w-full mt-6"
+              className="w-full justify-center text-base"
               size="lg"
               loading={registerVendor.isPending}
             >
-              Register Store
+              {t('vendorRegister.submitBtn')}
             </Button>
           </form>
 
-          <div className="mt-8 text-center border-t border-surface-border pt-6">
-            <p className="text-slate-400 text-sm">
-              Already have a store account?{' '}
-              <Link to={ROUTES.LOGIN} className="text-brand-400 hover:text-brand-300 font-medium">
-                Log in
+          <div className="mt-8 text-center pt-6">
+            <p className="text-textSecondary text-sm">
+              {t('vendorRegister.alreadyHaveAccount')}
+              <Link to={ROUTES.LOGIN} className="text-primary hover:text-primaryHover font-bold transition-colors">
+                {t('vendorRegister.loginLink')}
               </Link>
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Right Side: Marketing Showcase Panel (55%) ── */}
+      <div
+        className="hidden lg:flex flex-col w-[55%] relative overflow-hidden p-12 justify-center"
+        style={{ background: 'linear-gradient(135deg, #0051D5 0%, #316BF3 100%)' }}
+      >
+        {/* Soft background effects */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-white/10 rounded-full blur-[80px]" />
+          <div className="absolute bottom-[-10%] left-[-20%] w-[500px] h-[500px] bg-[#316BF3] rounded-full blur-[100px] mix-blend-screen opacity-50" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center text-center">
+          {/* Hero Content */}
+          <h1 className="text-5xl xl:text-6xl font-bold text-white leading-tight mb-6 tracking-tight drop-shadow-sm">
+            {t('vendorRegister.heroTitle')}
+          </h1>
+          <p className="text-lg xl:text-xl text-white/90 mb-16 leading-relaxed max-w-xl">
+            {t('vendorRegister.heroSubtitle')}
+          </p>
+
+          {/* Feature Grid (2x2) */}
+          <div className="grid grid-cols-2 gap-4 w-full mb-16">
+            {/* Feature 1 */}
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 text-start flex flex-col gap-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/20 hover:-translate-y-1 transition-transform" dir={pageDir}>
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <BarChart2 size={20} className="text-primary" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#191C1E] text-lg mb-1">{t('vendorRegister.feat1Title')}</h3>
+                <p className="text-sm text-[#424754]">{t('vendorRegister.feat1Desc')}</p>
+              </div>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 text-start flex flex-col gap-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/20 hover:-translate-y-1 transition-transform" dir={pageDir}>
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Zap size={20} className="text-primary" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#191C1E] text-lg mb-1">{t('vendorRegister.feat2Title')}</h3>
+                <p className="text-sm text-[#424754]">{t('vendorRegister.feat2Desc')}</p>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 text-start flex flex-col gap-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/20 hover:-translate-y-1 transition-transform" dir={pageDir}>
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Shield size={20} className="text-primary" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#191C1E] text-lg mb-1">{t('vendorRegister.feat3Title')}</h3>
+                <p className="text-sm text-[#424754]">{t('vendorRegister.feat3Desc')}</p>
+              </div>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 text-start flex flex-col gap-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white/20 hover:-translate-y-1 transition-transform" dir={pageDir}>
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Truck size={20} className="text-primary" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#191C1E] text-lg mb-1">{t('vendorRegister.feat4Title')}</h3>
+                <p className="text-sm text-[#424754]">{t('vendorRegister.feat4Desc')}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Proof */}
+          <div className="flex items-center gap-4 mt-auto">
+            <p className="text-sm font-medium text-white">{t('vendorRegister.socialProof')}</p>
+            <div className="flex -space-x-3 space-x-reverse">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="w-10 h-10 rounded-full border-2 border-[#0051D5] overflow-hidden bg-white z-10 relative">
+                  <img src={`https://i.pravatar.cc/100?img=${i + 40}`} alt="Merchant avatar" className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

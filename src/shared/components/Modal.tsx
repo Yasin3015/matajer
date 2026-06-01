@@ -46,13 +46,13 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
       {/* Panel */}
       <div
         className={clsx(
-          'relative w-full bg-surface-card border border-surface-border rounded-2xl shadow-2xl animate-slide-in',
+          'relative w-full bg-white border border-border rounded-2xl shadow-2xl animate-slide-in overflow-hidden',
           sizes[size]
         )}
         role="dialog"
@@ -61,13 +61,13 @@ export const Modal: React.FC<ModalProps> = ({
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-surface-border">
-            <h2 id="modal-title" className="text-base font-semibold text-white">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+            <h2 id="modal-title" className="text-base font-semibold text-textPrimary">
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white hover:bg-surface-hover rounded-lg p-1.5 transition-colors"
+              className="text-textSecondary hover:text-textPrimary hover:bg-gray-100 rounded-lg p-1.5 transition-colors"
               aria-label="Close modal"
             >
               <X size={18} />
@@ -80,7 +80,7 @@ export const Modal: React.FC<ModalProps> = ({
 
         {/* Footer */}
         {footer && (
-          <div className="flex justify-end gap-3 px-6 py-4 border-t border-surface-border">
+          <div className="flex justify-end gap-3 px-6 py-4 border-t border-border bg-appBg/50">
             {footer}
           </div>
         )}

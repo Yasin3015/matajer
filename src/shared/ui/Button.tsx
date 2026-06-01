@@ -18,12 +18,12 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const base = 'inline-flex items-center gap-2 font-medium rounded-lg transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed';
+  const base = 'inline-flex items-center gap-2 font-medium rounded-xl transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed';
   const variants = {
-    primary:   'bg-brand-600 hover:bg-brand-700 text-white',
-    secondary: 'bg-surface-hover hover:bg-surface-border text-slate-200',
-    danger:    'bg-red-600 hover:bg-red-700 text-white',
-    ghost:     'text-slate-400 hover:text-white hover:bg-surface-hover',
+    primary:   'bg-primary hover:bg-primaryHover text-white',
+    secondary: 'bg-primaryLight hover:bg-blue-100 text-primary',
+    danger:    'bg-danger hover:bg-red-800 text-white',
+    ghost:     'text-textSecondary hover:text-textPrimary hover:bg-gray-100',
   };
   const sizes = {
     sm: 'px-3 py-1.5 text-xs',
